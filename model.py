@@ -26,3 +26,4 @@ def Mysql():
     except:
         print("資料庫訪問失敗") 
                      
+
