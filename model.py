@@ -1,9 +1,28 @@
-from flask import Flask, app, redirect, session, request, jsonify, Response, url_for, abort, Blueprint,render_template
-from flask_sqlalchemy import SQLAlchemy
+import pymysql
 
-app = Flask(__name__,static_url_path ='/static/')
-app.config['SQLALCHEMY_DATABASE_URI'] = ""
-app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+config = {
+    'host':'localhost',
+    'port':3306,
+    'user':'root',
+    'passwd':'1234',
+    'db':'world',
+    'charset':'utf8mb4',
+    # 資料庫內容以字典格式輸出
+    #'cursorclass':pymysql.cursors.DictCursor,
+}
 
-db = SQLAlchemy(app)
-
+# 連接資料庫
+def Mysql():
+    # 連接資料庫
+    #db = pymysql.connect(host="localhost", port=3306, user="root", passwd="root", db="Geek_Web", charset="utf8mb4")
+    db = pymysql.connect(**config)
+    #cursor()方法獲取操作游標 
+    cursor = db.cursor()
+ 
+    try:
+        print('success')
+        return (db, cursor)
+ 
+    except:
+        print("資料庫訪問失敗") 
+                     
