@@ -3,9 +3,43 @@
 {% include '/frame/head.html' %}
 <body>
     {% include '/frame/header.html' %}
-    
+    <div id="wordcloud"></div>
     <main>
-        
+        <script>
+            // 載入文字資料
+            const textData = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed id tortor vel justo venenatis bibendum eget eget elit. Duis id ligula tellus. Maecenas sit amet mi eu sapien volutpat egestas ut in quam. Nullam eu magna vel nisi volutpat lobortis. Suspendisse consequat massa non nibh vestibulum lobortis. Sed nec malesuada tellus. Suspendisse potenti. Sed porta ultricies nulla ut dignissim. Aliquam eleifend nisl ut risus maximus ornare. Duis tincidunt bibendum nisi eu finibus. Donec imperdiet consequat ipsum. Donec nec risus ac libero viverra convallis vel eu dui. Sed in faucibus metus. Ut a tincidunt metus, at hendrerit nisl.";
+          
+            // 定義文字雲版型
+            const layout = d3.layout.cloud()
+              .size([500, 500])
+              .words(textData.split(/\s+/).map((word) => ({text: word, size: 10 + Math.random() * 90})))
+              .padding(5)
+              .rotate(() => ~~(Math.random() * 2) * 90)
+              .font("Impact")
+              .fontSize((d) => d.size)
+              .on("end", draw);
+          
+            // 建立文字雲版型
+            layout.start();
+          
+            // 繪製文字雲
+            function draw(words) {
+              d3.select("#wordcloud").append("svg")
+                .attr("width", layout.size()[0])
+                .attr("height", layout.size()[1])
+                .append("g")
+                .attr("transform", "translate(" + layout.size()[0] / 2 + "," + layout.size()[1] / 2 + ")")
+                .selectAll("text")
+                .data(words)
+                .enter().append("text")
+                .style("font-size", (d) => d.size + "px")
+                .style("font-family", "Impact")
+                .style("fill", () => d3.schemeCategory10[~~(Math.random() * 10)])
+                .attr("text-anchor", "middle")
+                .attr("transform", (d) => "translate(" + [d.x, d.y] + ")rotate(" + d.rotate + ")")
+                .text((d) => d.text);
+            }
+          </script>
     </main>
 
     {% include '/frame/footer.html' %}
