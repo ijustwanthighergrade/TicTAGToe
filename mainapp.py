@@ -34,6 +34,7 @@ def select_city(cityid, cityname):
     return result
 
 
+############################## page ##############################
 # 首頁
 @app.route("/")
 def Index():
@@ -49,6 +50,14 @@ def Index():
     return_dict = {'success': result}
 
     return render_template('index.html', result = result, return_dict = return_dict)
+############################## page ##############################
+
+
+# * ajax return format => oRes = {'res':'success or fail', 'data':[], 'msg':'error only'}
+# * ajax return example => return jsonify(**oRes)
+############################## ajax ##############################
+
+############################## ajax ##############################
 
 
 if __name__ == '__main__':
