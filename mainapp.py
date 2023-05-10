@@ -2,8 +2,14 @@ from flask import Flask, app, redirect, session, request, jsonify, Response, url
 from flask_sqlalchemy import SQLAlchemy
 import os,sys
 import json
-from model import Mysql
+import requests
+from bs4 import BeautifulSoup
+import lxml
+from selenium import webdriver
+from selenium.webdriver.chrome.options import Options
+import time
 
+from model import Mysql
 import src,model
 
 
@@ -49,7 +55,41 @@ def Index():
     
     return_dict = {'success': result}
 
-    return render_template('index.html', result = result, return_dict = return_dict)
+    return render_template('result.html', result = result, return_dict = return_dict)
+
+
+@app.route("/info")
+def Info():
+    options = Options()
+    options.add_argument("--disable-notifications")
+    edge = webdriver.Edge('./mesdgedriver', options=options)
+    # edge.get("https://www.facebook.com/")
+
+    # email = edge.find_element("id", "email")
+    # password = edge.find_element("id", "pass")
+
+    # email.send_keys('zzzz4444450@yahoo.com.tw')
+    # password.send_keys('Xxxx5555560')
+    # password.submit()
+
+    # time.sleep(3)
+    edge.get("https://www.facebook.com/hashtag/美食")
+    for x in range(1, 8):
+        edge.execute_script("window.scrollTo(0,document.body.scrollHeight)")
+        time.sleep(8)  
+    
+    soup = BeautifulSoup(edge.page_source, 'lxml')
+    titles = soup.find_all('div', {'class': 'xdj266r x11i5rnm xat24cr x1mh8g0r x1vvkbs x126k92a'})
+    post_user = []
+    for title in titles:
+        post = title.find('div', {'dir': 'auto'})
+        if post:
+            post_user.append(post.string)
+            print(post.string) 
+
+    edge.quit()
+
+    return render_template('info.html', post_user = post_user)
 ############################## page ##############################
 
 
