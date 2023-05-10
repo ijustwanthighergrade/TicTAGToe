@@ -7,11 +7,30 @@
     <title>Document</title>
 </head>
 <body>
-    {% for content in post_user%}
-    {% if content %}
-    <p>發文內容: {{ content }}</p>
+    {% for text in post_text%}
+    {% if text %}
+    <p>發文內容: {{ text }}</p>
     {% endif %}
     {% endfor %}
+
+    {% for name in post_name%}
+    {% if name %}
+    <p>發文者: {{ name }}</p>
+    {% endif %}
+    {% endfor %}
+
+    {% for club in post_club%}
+    {% if club %}
+    <p>發文社團: {{ club }}</p>
+    {% endif %}
+    {% endfor %}
+
+    {% for timme in time_list%}
+    {% if time %}
+    <p>發文時間: {{ timme }}</p>
+    {% endif %}
+    {% endfor %}
+
 
 </body>
 </html>
