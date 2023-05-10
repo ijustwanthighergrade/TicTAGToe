@@ -12,6 +12,13 @@ import time
 from model import Mysql
 import src,model
 
+url = {
+    'fb':'https://www.facebook.com/hashtag/',
+    'ig':'...',
+    'twitter':'...',
+
+}
+
 
 #主程式初始化
 app = Flask(__name__,static_url_path ='/static/')
@@ -60,6 +67,8 @@ def Index():
 
 @app.route("/info")
 def Info():
+    socialName = ''
+    tagName = ''
     options = Options()
     options.add_argument("--disable-notifications")
     edge = webdriver.Edge('./mesdgedriver', options=options)
@@ -73,7 +82,8 @@ def Info():
     # password.submit()
 
     # time.sleep(3)
-    edge.get("https://www.facebook.com/hashtag/美食")
+    # edge.get("https://www.facebook.com/hashtag/美食")
+    edge.get(f"{url[socialName]}{tagName}")
     for x in range(1, 8):
         edge.execute_script("window.scrollTo(0,document.body.scrollHeight)")
         time.sleep(8)  
