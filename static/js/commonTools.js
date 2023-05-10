@@ -1,3 +1,4 @@
+// * 常用的function
 // location to index
 function ReturnToIndex(){
     location.href = "/";
