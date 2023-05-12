@@ -51,18 +51,13 @@ def select_city(cityid, cityname):
 # 首頁
 @app.route("/")
 def Index():
-    cityid = 1
-    cityname = "Kabul"
-
-    data = request.get_data()
-
-    result = select_city(cityid = cityid, cityname = cityname)
-    if not result:
-        print('city where cityid="%s and cityname="%s" found!!' % (cityid, cityname))
+    # if request.method == 'GET':
+    #     CurrentData = request.args.getlist('')
     
-    return_dict = {'success': result}
+    # if request.method == 'POST':
+    #     CurrentData = request.form.getlist('')
 
-    return render_template('index.html', result = result, return_dict = return_dict,RelTagName=['test1','test2','test3'])
+    return render_template('index.html', RelTagName=['test1','test2','test3'])
 
 
 #抓取FB貼文資訊
@@ -126,8 +121,6 @@ def Info():
             time_list.append(post_time)
             print(post_time)
 
-
-
     edge.quit()
 
     return render_template('info.html', post_text = post_text, post_name = post_name, post_club = post_club, time_list = time_list)
@@ -137,6 +130,15 @@ def Info():
 # * ajax return format => oRes = {'res':'success or fail', 'data':[], 'msg':'error only'}
 # * ajax return example => return jsonify(**oRes)
 ############################## ajax ##############################
+@app.route("/testajax",methods=['GET','POST'])
+def TestAjax():
+    if request.method == 'GET':
+        CurrentData = request.args.getlist('test')
+    
+    if request.method == 'POST':
+        CurrentData = request.form.getlist('test')
+    print(CurrentData)
+    return jsonify(**{'data':CurrentData})
 
 ############################## ajax ##############################
 

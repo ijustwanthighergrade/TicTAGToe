@@ -1,4 +1,7 @@
-window.onload = function() {
-    console.log(relTagName);
-
-}
+$(function(){
+    // 
+    AjaxRequest('/testajax',{'test':'666'},
+    function(data){
+        console.log(data);
+    });
+})
