@@ -74,56 +74,136 @@ def Info():
     # edge.get(f"{url[socialName]}{tagName}")
     for x in range(1, 4):
         edge.execute_script("window.scrollTo(0,document.body.scrollHeight)")
-        time.sleep(6) 
+        time.sleep(5) 
     
     soup = BeautifulSoup(edge.page_source, 'lxml')
 
-    #發文內容
-    texts = soup.find_all('div', {'class': 'xdj266r x11i5rnm xat24cr x1mh8g0r x1vvkbs x126k92a'}) 
-    post_text = []
-
-    #發文者名稱
-    names = soup.find_all('a', {'class': 'x1i10hfl xjbqb8w x6umtig x1b1mbwd xaqea5y xav7gou x9f619 x1ypdohk xt0psk2 xe8uvvx xdj266r x11i5rnm xat24cr x1mh8g0r xexx8yu x4uap5 x18d9i69 xkhd6sd x16tdsg8 x1hl2dhg xggy1nq x1a2a7pz x1heor9g xt0b8zv xo1l8bm'})
-    post_name = []
-
-    #發文社團
-    clubs = soup.find_all('a', {'class': 'x1i10hfl xjbqb8w x6umtig x1b1mbwd xaqea5y xav7gou x9f619 x1ypdohk xt0psk2 xe8uvvx xdj266r x11i5rnm xat24cr x1mh8g0r xexx8yu x4uap5 x18d9i69 xkhd6sd x16tdsg8 x1hl2dhg xggy1nq x1a2a7pz xt0b8zv xzsf02u x1s688f'}) 
-    post_club = []
-
-    #發文時間
-    posts = soup.find_all('div', {'class': 'du4w35lb k4urcfbm l9j0dhe7 sjgh65i0'})
-    time_list = []
-
-    
-
-
-
-    for text in texts:
-        text1 = text.find('div', {'dir': 'auto'})
-        if text1:
-            post_text.append(text1.string)
-            print(text1.string) 
-    
-    for name in names:
-        name1 = name.find('b')
-        if name1:
-            post_name.append(name1.string)
-    
-    for club in clubs:
-        club1 = club.find('span')
-        if club1:
-            post_club.append(club.string)
+    #獨立貼文
+    posts = soup.find_all('div', {'class': 'x1yztbdb x1n2onr6 xh8yej3 x1ja2u2z'})
+    post_item = []
 
     for post in posts:
-        time_tag = post.find('span', {'class': 'a8c37x1j ni8dbmo4 stjgntxs l9j0dhe7'})
-        if time_tag:
-            post_time = time_tag.find('span', {'class': 'timestampContent'}).string
-            time_list.append(post_time)
-            print(post_time)
+        #發文者名稱
+        name = post.find('a', {'class': 'x1i10hfl xjbqb8w x6umtig x1b1mbwd xaqea5y xav7gou x9f619 x1ypdohk xt0psk2 xe8uvvx xdj266r x11i5rnm xat24cr x1mh8g0r xexx8yu x4uap5 x18d9i69 xkhd6sd x16tdsg8 x1hl2dhg xggy1nq x1a2a7pz x1heor9g xt0b8zv xo1l8bm'})
+        if name is not None:
+            name1 = name.find('b')
+        else:
+            name = post.find('a', {'class':'x1i10hfl xjbqb8w x6umtig x1b1mbwd xaqea5y xav7gou x9f619 x1ypdohk xt0psk2 xe8uvvx xdj266r x11i5rnm xat24cr x1mh8g0r xexx8yu x4uap5 x18d9i69 xkhd6sd x16tdsg8 x1hl2dhg xggy1nq x1a2a7pz xt0b8zv xzsf02u x1s688f'})
+            if name is not None:
+                name1 = name.find('strong').find('span')
+            else:
+                name = post.find('a', {'class': 'x1i10hfl xjbqb8w x6umtig x1b1mbwd xaqea5y xav7gou x9f619 x1ypdohk xt0psk2 xe8uvvx xdj266r x11i5rnm xat24cr x1mh8g0r xexx8yu x4uap5 x18d9i69 xkhd6sd x16tdsg8 x1hl2dhg xggy1nq x1a2a7pz xt0b8zv xzsf02u x1s688f'})
+                if name is not None:
+                    name1 = name.find('span', {'class', 'xt0psk2'}).find('span')
+                else:
+                    name1 = " "
+        
+        if name1 is not None:
+            name1 = name1.text
+        else:
+            continue
+
+        #發文社團
+        club = post.find('a', {'class': 'x1i10hfl xjbqb8w x6umtig x1b1mbwd xaqea5y xav7gou x9f619 x1ypdohk xt0psk2 xe8uvvx xdj266r x11i5rnm xat24cr x1mh8g0r xexx8yu x4uap5 x18d9i69 xkhd6sd x16tdsg8 x1hl2dhg xggy1nq x1a2a7pz xt0b8zv xzsf02u x1s688f'})
+        if club is not None:
+            club1 = club.find('span')
+        else:
+            club1 = " "
+        
+        if club1 is not None:
+            club1 = club1.text
+
+        #發文時間
+        timme = post.find('a', {'class': 'x1i10hfl xjbqb8w x6umtig x1b1mbwd xaqea5y xav7gou x9f619 x1ypdohk xt0psk2 xe8uvvx xdj266r x11i5rnm xat24cr x1mh8g0r xexx8yu x4uap5 x18d9i69 xkhd6sd x16tdsg8 x1hl2dhg xggy1nq x1a2a7pz x1heor9g xt0b8zv xo1l8bm'})
+        if timme is not None:
+            timme1 = timme.find('span')
+        else:
+            timme1 = " "
+
+        # if timme1 is not None:
+        #     timme1 = timme1.text
+
+        #發文內容
+        text = post.find('div', {'class': 'xdj266r x11i5rnm xat24cr x1mh8g0r x1vvkbs x126k92a'}) 
+        text3 = ""
+        if text:
+            text1 = text.find_all('div', {'dir': 'auto'})
+            for text2 in text1:
+                text3 += str(text2.text) + "\n"
+        else:
+            text = " "
+        
+        if text3 is not None:
+            text3 = text3
+        else:
+            text3 = " "
+
+        #發文hashtag
+        hashtag = post.find('div', {'class': 'xdj266r x11i5rnm xat24cr x1mh8g0r x1vvkbs x126k92a'})
+        post_hashtag_collect = []
+        hashtag3 = ""
+        if hashtag:
+            hashtag1 = hashtag.find_all('span')
+            for hashtag2 in hashtag1:
+                hashtag3 = hashtag2.find('a', {'class': 'x1i10hfl xjbqb8w x6umtig x1b1mbwd xaqea5y xav7gou x9f619 x1ypdohk xt0psk2 xe8uvvx xdj266r x11i5rnm xat24cr x1mh8g0r xexx8yu x4uap5 x18d9i69 xkhd6sd x16tdsg8 x1hl2dhg xggy1nq x1a2a7pz xt0b8zv x1qq9wsj xo1l8bm'})
+                if hashtag3:
+                    post_hashtag_collect.append(hashtag3.string)
+                else:
+                    post_hashtag_collect.append(" ")
+        else:
+            post_hashtag_collect.append(" ")
+        
+        #每篇貼文的資訊
+        post_detail = {}
+        post_detail = {
+            "post_name": name1,
+            "post_club": club1,
+            "post_time": timme1,
+            "post_text": text3,
+            "post_hashtag": post_hashtag_collect
+        }
+
+        print(post_detail)
+
+        #所有貼文的集合
+        post_item.append(post_detail)
+        
+        
+
+    
+    # for name in names:
+    #     name1 = name.find('b')
+    #     if name1:
+    #         post_name.append(name1.string)
+    
+    # for club in clubs:
+    #     club1 = club.find('span')
+    #     if club1:
+    #         post_club.append(club1.string)
+
+    # for timme in times:
+    #     time_tag = timme.find('span')
+    #     if time_tag:
+    #         time_list.append(time_tag.string)
+    #         print(time_tag)
+
+    # for hashtag in hashtags:
+    #     hashtag1 = hashtag.find_all('span')
+    #     post_hashtag_collect = []
+    #     for hashtag2 in hashtag1:
+    #         hashtag3 = hashtag2.find('a', {'class': 'x1i10hfl xjbqb8w x6umtig x1b1mbwd xaqea5y xav7gou x9f619 x1ypdohk xt0psk2 xe8uvvx xdj266r x11i5rnm xat24cr x1mh8g0r xexx8yu x4uap5 x18d9i69 xkhd6sd x16tdsg8 x1hl2dhg xggy1nq x1a2a7pz xt0b8zv x1qq9wsj xo1l8bm'})
+    #         if hashtag3:
+    #             post_hashtag_collect.append(hashtag3.string)
+    #             print(post_hashtag_collect)
+    #         else:
+    #             post_hashtag.append(" ")
+    #     post_hashtag.append(post_hashtag_collect)
+
+    
 
     edge.quit()
 
-    return render_template('info.html', post_text = post_text, post_name = post_name, post_club = post_club, time_list = time_list)
+    return render_template('info.html', post_item = post_item)
 ############################## page ##############################
 
 

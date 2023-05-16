@@ -5,32 +5,67 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+
+    <style>
+        /* 設定貼文卡片的樣式 */
+        .post-card {
+            background-color: #f2f2f2;
+            padding: 10px;
+            margin-bottom: 20px;
+            border-radius: 5px;
+        }
+
+        /* 設定貼文標題的樣式 */
+        .post-title {
+            font-weight: bold;
+            font-size: 18px;
+            color: #333;
+        }
+
+        /* 設定貼文內容的樣式 */
+        .post-content {
+            font-size: 14px;
+            color: #666;
+        }
+
+        /* 設定貼文時間的樣式 */
+        .post-time {
+            font-size: 12px;
+            color: #999;
+            margin-top: 5px;
+        }
+
+        /* 設定貼文 hashtag 的樣式 */
+        .post-hashtags {
+            margin-top: 10px;
+        }
+
+        .post-hashtag {
+            display: inline-block;
+            background-color: #ddd;
+            padding: 5px;
+            margin-right: 5px;
+            border-radius: 3px;
+            font-size: 12px;
+            color: #333;
+        }
+    </style>
 </head>
 <body>
-    {% for text in post_text%}
-    {% if text %}
-    <p>發文內容: {{ text }}</p>
-    {% endif %}
-    {% endfor %}
 
-    {% for name in post_name%}
-    {% if name %}
-    <p>發文者: {{ name }}</p>
-    {% endif %}
+    {% for item in post_item %}
+    <div class="post-card">
+        <p class="post-title">發文者: {{ item["post_name"] }}</p>
+        <p class="post-title">社團: {{ item["post_club"] }}</p>
+        <p class="post-time">發文時間: {{ item["post_time"] }}</p>
+        <p class="post-content">發文內容: {{ item["post_text"] }}</p>
+        <p class="post-hashtags">發文hashtag內容:
+            {% for hashtag in item["post_hashtag"] %} 
+            <span class="post-hashtag">{{ hashtag }}</span>
+            {% endfor %}
+        </p>
+    </div>
     {% endfor %}
-
-    {% for club in post_club%}
-    {% if club %}
-    <p>發文社團: {{ club }}</p>
-    {% endif %}
-    {% endfor %}
-
-    {% for timme in time_list%}
-    {% if time %}
-    <p>發文時間: {{ timme }}</p>
-    {% endif %}
-    {% endfor %}
-
 
 </body>
 </html>
