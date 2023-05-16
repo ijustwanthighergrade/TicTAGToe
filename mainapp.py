@@ -8,6 +8,7 @@ import lxml
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
 import time
+from selenium.webdriver.common.by import By
 
 from model import Mysql
 import src,model
@@ -60,6 +61,188 @@ def Index():
     return render_template('index.html', RelTagName=['test1','test2','test3'])
 
 
+#搜尋頁面
+@app.route("/search", methods=['POST'])
+def search():
+    if request.method == 'POST':
+        key = request.form['key']
+        socialName = "https://www.facebook.com/hashtag/"
+        tagName = str(key)
+        url = socialName + tagName
+
+        options = Options()
+        options.add_argument("--disable-notifications")
+        edge = webdriver.Edge('./mesdgedriver', options=options)
+        edge.get("https://www.facebook.com/")
+    
+        email = edge.find_element(By.ID, "email")
+        password = edge.find_element(By.ID, "pass")
+        
+        email.send_keys('ebo68885@omeie.com')
+        password.send_keys('zxcvb12345')
+        password.submit()
+
+        time.sleep(2)
+        edge.get(url)
+        # edge.get(f"{url[socialName]}{tagName}")
+        time.sleep(2)
+        time1 = 0
+        for x in range(1, 4):
+            edge.execute_script("window.scrollTo(0,document.body.scrollHeight)")
+
+            #影片目前抓取失敗
+            # video1 = edge.find('div', {'class': 'x1i10hfl x1qjc9v5 xjbqb8w xjqpnuy xa49m3k xqeqjp1 x2hbi6w x13fuv20 xu3j5b3 x1q0q8m5 x26u7qi x972fbf xcfux6l x1qhh985 xm0m39n x9f619 x1ypdohk xdl72j9 x2lah0s xe8uvvx xdj266r x11i5rnm xat24cr x1mh8g0r x2lwn1j xeuugli xexx8yu x4uap5 x18d9i69 xkhd6sd x1n2onr6 x16tdsg8 x1hl2dhg xggy1nq x1ja2u2z x1t137rt x1o1ewxj x3x9cwd x1e5q0jg x13rtm0m x1q0g3np x87ps6o x1lku1pv x78zum5 x1a2a7pz'})
+            # print(video1)
+            # if video1 is not None:
+            #     video1.click()
+            #     video2 = edge.find('div', {'class': 'x1i10hfl x1qjc9v5 xjbqb8w xjqpnuy xa49m3k xqeqjp1 x2hbi6w x13fuv20 xu3j5b3 x1q0q8m5 x26u7qi x972fbf xcfux6l x1qhh985 xm0m39n x9f619 x1ypdohk xdl72j9 x2lah0s xe8uvvx xdj266r x11i5rnm xat24cr x1mh8g0r x2lwn1j xeuugli xexx8yu x4uap5 x18d9i69 xkhd6sd x1n2onr6 x16tdsg8 x1hl2dhg xggy1nq x1ja2u2z x1t137rt x1q0g3np x87ps6o x1lku1pv x1a2a7pz x1lq5wgf xgqcy7u x30kzoy x9jhf4c x1lliihq'})
+            #     # print(video2)
+            #     if video2 is not None:
+            #         video2.click()
+            #     else:
+            #         video4 = ""
+            # else:
+            #     video4 = ""
+
+            time.sleep(5) 
+        
+        soup = BeautifulSoup(edge.page_source, 'lxml')
+
+        #獨立貼文
+        posts = soup.find_all('div', {'class': 'x1yztbdb x1n2onr6 xh8yej3 x1ja2u2z'})
+        post_item = []
+
+        for post in posts:
+            #發文者頭貼
+            image = post.find('image')
+            if image is not None:
+                image1 = image.get('xlink:href')
+            else:
+                image1 = " "
+
+
+            #發文者名稱
+            name = post.find('a', {'class': 'x1i10hfl xjbqb8w x6umtig x1b1mbwd xaqea5y xav7gou x9f619 x1ypdohk xt0psk2 xe8uvvx xdj266r x11i5rnm xat24cr x1mh8g0r xexx8yu x4uap5 x18d9i69 xkhd6sd x16tdsg8 x1hl2dhg xggy1nq x1a2a7pz x1heor9g xt0b8zv xo1l8bm'})
+            if name is not None:
+                name1 = name.find('b')
+            else:
+                name = post.find('a', {'class':'x1i10hfl xjbqb8w x6umtig x1b1mbwd xaqea5y xav7gou x9f619 x1ypdohk xt0psk2 xe8uvvx xdj266r x11i5rnm xat24cr x1mh8g0r xexx8yu x4uap5 x18d9i69 xkhd6sd x16tdsg8 x1hl2dhg xggy1nq x1a2a7pz xt0b8zv xzsf02u x1s688f'})
+                if name is not None:
+                    name1 = name.find('strong').find('span')
+                else:
+                    name = post.find('a', {'class': 'x1i10hfl xjbqb8w x6umtig x1b1mbwd xaqea5y xav7gou x9f619 x1ypdohk xt0psk2 xe8uvvx xdj266r x11i5rnm xat24cr x1mh8g0r xexx8yu x4uap5 x18d9i69 xkhd6sd x16tdsg8 x1hl2dhg xggy1nq x1a2a7pz xt0b8zv xzsf02u x1s688f'})
+                    if name is not None:
+                        name1 = name.find('span', {'class', 'xt0psk2'}).find('span')
+                    else:
+                        name1 = " "
+            
+            if name1 is not None:
+                name1 = name1.text
+            else:
+                continue
+
+
+            #發文社團
+            club = post.find('a', {'class': 'x1i10hfl xjbqb8w x6umtig x1b1mbwd xaqea5y xav7gou x9f619 x1ypdohk xt0psk2 xe8uvvx xdj266r x11i5rnm xat24cr x1mh8g0r xexx8yu x4uap5 x18d9i69 xkhd6sd x16tdsg8 x1hl2dhg xggy1nq x1a2a7pz xt0b8zv xzsf02u x1s688f'})
+            if club is not None:
+                club1 = club.find('span')
+            else:
+                club1 = " "
+            
+            if club1 is not None:
+                club1 = club1.text
+
+
+            #發文時間: 目前抓取失敗
+            timme = post.find('a', {'class': 'x1i10hfl xjbqb8w x6umtig x1b1mbwd xaqea5y xav7gou x9f619 x1ypdohk xt0psk2 xe8uvvx xdj266r x11i5rnm xat24cr x1mh8g0r xexx8yu x4uap5 x18d9i69 xkhd6sd x16tdsg8 x1hl2dhg xggy1nq x1a2a7pz x1heor9g xt0b8zv xo1l8bm'})
+            if timme is not None:
+                timme1 = timme.find('span')
+            else:
+                timme1 = " "
+
+            # if timme1 is not None:
+            #     timme1 = timme1.text
+
+
+            #發文內容
+            text = post.find('div', {'class': 'xdj266r x11i5rnm xat24cr x1mh8g0r x1vvkbs x126k92a'}) 
+            text3 = ""
+            if text:
+                text1 = text.find_all('div', {'dir': 'auto'})
+                for text2 in text1:
+                    text3 += str(text2.text) + "\n"
+            else:
+                text = " "
+            
+            if text3 is not None:
+                text3 = text3
+            else:
+                text3 = " "
+
+
+            #發文內容圖片
+            pictures = post.find_all('img', {'class': 'x1ey2m1c xds687c x5yr21d x10l6tqk x17qophe x13vifvy xh8yej3'})
+            picture_url = []
+            if pictures is not None:
+                for picture in pictures:
+                    picture_item = picture.get('src')
+                    picture_url.append(picture_item)
+
+            #發文內容影片
+            # video = post.find('video', {'class': 'x1lliihq x5yr21d xh8yej3'})
+            # if video is not None:
+            #     video1 = video.get('src')
+            #     print(video1)
+            # else:
+                # video1 = " "
+
+            # video3 = post.find('input', {'class': 'x1i10hfl xggy1nq x1s07b3s x1kdt53j x1a2a7pz xmjcpbm x1n2xptk xkbpzyx xdppsyt x1rr5fae xhk9q7s x1otrzb0 x1i1ezom x1o6z2jb x9f619 xzsf02u x1qlqyl8 xk50ysn x1y1aw1k xn6708d xwib8y2 x1ye3gou xh8yej3 xha3pab xyc4ar7 x10lcxz4 xzt8jt4 xiighnt xviufn9 x1b3pals x10bruuh x1yc453h xc9qbxq'})
+            # # print(video3)
+            # if video3 is not None:
+            #     video4 = video3.get('value')
+            #     # print(video4)
+            # else:
+                video4 = ""
+
+
+            #發文hashtag
+            hashtag = post.find('div', {'class': 'xdj266r x11i5rnm xat24cr x1mh8g0r x1vvkbs x126k92a'})
+            post_hashtag_collect = []
+            hashtag3 = ""
+            if hashtag:
+                hashtag1 = hashtag.find_all('span')
+                for hashtag2 in hashtag1:
+                    hashtag3 = hashtag2.find('a', {'class': 'x1i10hfl xjbqb8w x6umtig x1b1mbwd xaqea5y xav7gou x9f619 x1ypdohk xt0psk2 xe8uvvx xdj266r x11i5rnm xat24cr x1mh8g0r xexx8yu x4uap5 x18d9i69 xkhd6sd x16tdsg8 x1hl2dhg xggy1nq x1a2a7pz xt0b8zv x1qq9wsj xo1l8bm'})
+                    if hashtag3:
+                        post_hashtag_collect.append(hashtag3.string)
+                    else:
+                        post_hashtag_collect.append(" ")
+            else:
+                post_hashtag_collect.append(" ")
+            
+
+            #每篇貼文的資訊
+            post_detail = {}
+            post_detail = {
+                "post_image": image1,
+                "post_name": name1,
+                "post_club": club1,
+                "post_time": timme1,
+                "post_text": text3,
+                "post_picture": picture_url,
+                "post_video": video4,
+                "post_hashtag": post_hashtag_collect
+            }
+
+            # print(post_detail)
+
+            #所有貼文的集合
+            post_item.append(post_detail)
+
+        edge.quit()
+
+    return jsonify(result = post_item) 
+
 #抓取FB貼文資訊
 @app.route("/info")
 def Info():
@@ -68,12 +251,37 @@ def Info():
     options = Options()
     options.add_argument("--disable-notifications")
     edge = webdriver.Edge('./mesdgedriver', options=options)
+    edge.get("https://www.facebook.com/")
+ 
+    email = edge.find_element(By.ID, "email")
+    password = edge.find_element(By.ID, "pass")
+    
+    email.send_keys('ebo68885@omeie.com')
+    password.send_keys('zxcvb12345')
+    password.submit()
 
-    # time.sleep(3)
+    time.sleep(2)
     edge.get("https://www.facebook.com/hashtag/美食")
     # edge.get(f"{url[socialName]}{tagName}")
+    time.sleep(2)
+    time1 = 0
     for x in range(1, 4):
         edge.execute_script("window.scrollTo(0,document.body.scrollHeight)")
+
+        #影片目前抓取失敗
+        # video1 = edge.find('div', {'class': 'x1i10hfl x1qjc9v5 xjbqb8w xjqpnuy xa49m3k xqeqjp1 x2hbi6w x13fuv20 xu3j5b3 x1q0q8m5 x26u7qi x972fbf xcfux6l x1qhh985 xm0m39n x9f619 x1ypdohk xdl72j9 x2lah0s xe8uvvx xdj266r x11i5rnm xat24cr x1mh8g0r x2lwn1j xeuugli xexx8yu x4uap5 x18d9i69 xkhd6sd x1n2onr6 x16tdsg8 x1hl2dhg xggy1nq x1ja2u2z x1t137rt x1o1ewxj x3x9cwd x1e5q0jg x13rtm0m x1q0g3np x87ps6o x1lku1pv x78zum5 x1a2a7pz'})
+        # print(video1)
+        # if video1 is not None:
+        #     video1.click()
+        #     video2 = edge.find('div', {'class': 'x1i10hfl x1qjc9v5 xjbqb8w xjqpnuy xa49m3k xqeqjp1 x2hbi6w x13fuv20 xu3j5b3 x1q0q8m5 x26u7qi x972fbf xcfux6l x1qhh985 xm0m39n x9f619 x1ypdohk xdl72j9 x2lah0s xe8uvvx xdj266r x11i5rnm xat24cr x1mh8g0r x2lwn1j xeuugli xexx8yu x4uap5 x18d9i69 xkhd6sd x1n2onr6 x16tdsg8 x1hl2dhg xggy1nq x1ja2u2z x1t137rt x1q0g3np x87ps6o x1lku1pv x1a2a7pz x1lq5wgf xgqcy7u x30kzoy x9jhf4c x1lliihq'})
+        #     # print(video2)
+        #     if video2 is not None:
+        #         video2.click()
+        #     else:
+        #         video4 = ""
+        # else:
+        #     video4 = ""
+
         time.sleep(5) 
     
     soup = BeautifulSoup(edge.page_source, 'lxml')
@@ -83,6 +291,14 @@ def Info():
     post_item = []
 
     for post in posts:
+        #發文者頭貼
+        image = post.find('image')
+        if image is not None:
+            image1 = image.get('xlink:href')
+        else:
+            image1 = " "
+
+
         #發文者名稱
         name = post.find('a', {'class': 'x1i10hfl xjbqb8w x6umtig x1b1mbwd xaqea5y xav7gou x9f619 x1ypdohk xt0psk2 xe8uvvx xdj266r x11i5rnm xat24cr x1mh8g0r xexx8yu x4uap5 x18d9i69 xkhd6sd x16tdsg8 x1hl2dhg xggy1nq x1a2a7pz x1heor9g xt0b8zv xo1l8bm'})
         if name is not None:
@@ -103,6 +319,7 @@ def Info():
         else:
             continue
 
+
         #發文社團
         club = post.find('a', {'class': 'x1i10hfl xjbqb8w x6umtig x1b1mbwd xaqea5y xav7gou x9f619 x1ypdohk xt0psk2 xe8uvvx xdj266r x11i5rnm xat24cr x1mh8g0r xexx8yu x4uap5 x18d9i69 xkhd6sd x16tdsg8 x1hl2dhg xggy1nq x1a2a7pz xt0b8zv xzsf02u x1s688f'})
         if club is not None:
@@ -113,7 +330,8 @@ def Info():
         if club1 is not None:
             club1 = club1.text
 
-        #發文時間
+
+        #發文時間: 目前抓取失敗
         timme = post.find('a', {'class': 'x1i10hfl xjbqb8w x6umtig x1b1mbwd xaqea5y xav7gou x9f619 x1ypdohk xt0psk2 xe8uvvx xdj266r x11i5rnm xat24cr x1mh8g0r xexx8yu x4uap5 x18d9i69 xkhd6sd x16tdsg8 x1hl2dhg xggy1nq x1a2a7pz x1heor9g xt0b8zv xo1l8bm'})
         if timme is not None:
             timme1 = timme.find('span')
@@ -122,6 +340,7 @@ def Info():
 
         # if timme1 is not None:
         #     timme1 = timme1.text
+
 
         #發文內容
         text = post.find('div', {'class': 'xdj266r x11i5rnm xat24cr x1mh8g0r x1vvkbs x126k92a'}) 
@@ -138,6 +357,32 @@ def Info():
         else:
             text3 = " "
 
+
+        #發文內容圖片
+        pictures = post.find_all('img', {'class': 'x1ey2m1c xds687c x5yr21d x10l6tqk x17qophe x13vifvy xh8yej3'})
+        picture_url = []
+        if pictures is not None:
+            for picture in pictures:
+                picture_item = picture.get('src')
+                picture_url.append(picture_item)
+
+        #發文內容影片
+        # video = post.find('video', {'class': 'x1lliihq x5yr21d xh8yej3'})
+        # if video is not None:
+        #     video1 = video.get('src')
+        #     print(video1)
+        # else:
+            # video1 = " "
+
+        # video3 = post.find('input', {'class': 'x1i10hfl xggy1nq x1s07b3s x1kdt53j x1a2a7pz xmjcpbm x1n2xptk xkbpzyx xdppsyt x1rr5fae xhk9q7s x1otrzb0 x1i1ezom x1o6z2jb x9f619 xzsf02u x1qlqyl8 xk50ysn x1y1aw1k xn6708d xwib8y2 x1ye3gou xh8yej3 xha3pab xyc4ar7 x10lcxz4 xzt8jt4 xiighnt xviufn9 x1b3pals x10bruuh x1yc453h xc9qbxq'})
+        # # print(video3)
+        # if video3 is not None:
+        #     video4 = video3.get('value')
+        #     # print(video4)
+        # else:
+            video4 = ""
+
+
         #發文hashtag
         hashtag = post.find('div', {'class': 'xdj266r x11i5rnm xat24cr x1mh8g0r x1vvkbs x126k92a'})
         post_hashtag_collect = []
@@ -153,53 +398,26 @@ def Info():
         else:
             post_hashtag_collect.append(" ")
         
+
         #每篇貼文的資訊
         post_detail = {}
         post_detail = {
+            "post_image": image1,
             "post_name": name1,
             "post_club": club1,
             "post_time": timme1,
             "post_text": text3,
+            "post_picture": picture_url,
+            "post_video": video4,
             "post_hashtag": post_hashtag_collect
         }
 
-        print(post_detail)
+        # print(post_detail)
 
         #所有貼文的集合
         post_item.append(post_detail)
         
-        
-
-    
-    # for name in names:
-    #     name1 = name.find('b')
-    #     if name1:
-    #         post_name.append(name1.string)
-    
-    # for club in clubs:
-    #     club1 = club.find('span')
-    #     if club1:
-    #         post_club.append(club1.string)
-
-    # for timme in times:
-    #     time_tag = timme.find('span')
-    #     if time_tag:
-    #         time_list.append(time_tag.string)
-    #         print(time_tag)
-
-    # for hashtag in hashtags:
-    #     hashtag1 = hashtag.find_all('span')
-    #     post_hashtag_collect = []
-    #     for hashtag2 in hashtag1:
-    #         hashtag3 = hashtag2.find('a', {'class': 'x1i10hfl xjbqb8w x6umtig x1b1mbwd xaqea5y xav7gou x9f619 x1ypdohk xt0psk2 xe8uvvx xdj266r x11i5rnm xat24cr x1mh8g0r xexx8yu x4uap5 x18d9i69 xkhd6sd x16tdsg8 x1hl2dhg xggy1nq x1a2a7pz xt0b8zv x1qq9wsj xo1l8bm'})
-    #         if hashtag3:
-    #             post_hashtag_collect.append(hashtag3.string)
-    #             print(post_hashtag_collect)
-    #         else:
-    #             post_hashtag.append(" ")
-    #     post_hashtag.append(post_hashtag_collect)
-
-    
+        print(time1)
 
     edge.quit()
 

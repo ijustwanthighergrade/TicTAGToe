@@ -106,7 +106,29 @@
 
         <!-- Set Post Start-->
         <div data-container="socialPost">
-
+            {% for item in post_item %}
+            <div class="post-card">
+                <div class="circle-image">
+                    <img src="{{ item['post_image'] }}" alt="圖片">
+                </div>
+                <p class="post-title">發文者: {{ item["post_name"] }}</p>
+                <p class="post-title">社團: {{ item["post_club"] }}</p>
+                <p class="post-time">發文時間: {{ item["post_time"] }}</p>
+                <p class="post-content">
+                    發文內容: {{ item["post_text"] }}
+                    <p></p>
+                    {% for picture in item["post_picture"] %}
+                    <img src="{{ picture }}" class="content_pic" alt="圖片">
+                    {% endfor %}
+                    {{ item["post_video"] }}
+                </p>
+                <p class="post-hashtags">發文hashtag內容:
+                    {% for hashtag in item["post_hashtag"] %} 
+                    <span class="post-hashtag">{{ hashtag }}</span>
+                    {% endfor %}
+                </p>
+            </div>
+            {% endfor %}
         </div>
         <!-- Set Post End-->
 

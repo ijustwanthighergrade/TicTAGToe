@@ -49,16 +49,44 @@
             font-size: 12px;
             color: #333;
         }
+
+        .circle-image {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            overflow: hidden;
+        }
+
+        .circle-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .content_pic {
+            width: 150px;
+            height: 150px;
+        }
     </style>
 </head>
 <body>
 
     {% for item in post_item %}
     <div class="post-card">
+        <div class="circle-image">
+            <img src="{{ item['post_image'] }}" alt="圖片">
+        </div>
         <p class="post-title">發文者: {{ item["post_name"] }}</p>
         <p class="post-title">社團: {{ item["post_club"] }}</p>
         <p class="post-time">發文時間: {{ item["post_time"] }}</p>
-        <p class="post-content">發文內容: {{ item["post_text"] }}</p>
+        <p class="post-content">
+            發文內容: {{ item["post_text"] }}
+            <p></p>
+            {% for picture in item["post_picture"] %}
+            <img src="{{ picture }}" class="content_pic" alt="圖片">
+            {% endfor %}
+            {{ item["post_video"] }}
+        </p>
         <p class="post-hashtags">發文hashtag內容:
             {% for hashtag in item["post_hashtag"] %} 
             <span class="post-hashtag">{{ hashtag }}</span>
@@ -66,6 +94,6 @@
         </p>
     </div>
     {% endfor %}
-
+    <iframe src="https://www.facebook.com/plugins/video.php?height=476&href=https%3A%2F%2Fwww.facebook.com%2FJKNASID%2Fvideos%2F195356833326697%2F&show_text=false&width=267&t=0" width="267" height="476" style="border:none;overflow:hidden" scrolling="no" frameborder="0" allowfullscreen="true" allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share" allowFullScreen="true"></iframe>
 </body>
 </html>
