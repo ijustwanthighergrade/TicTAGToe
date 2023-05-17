@@ -64,8 +64,8 @@
         }
 
         .content_pic {
-            width: 150px;
-            height: 150px;
+            width: 10%;
+            height: 10%;
         }
     </style>
 </head>
@@ -87,11 +87,15 @@
             {% endfor %}
             {{ item["post_video"] }}
         </p>
+        {% if item["post_hashtag"] %}
         <p class="post-hashtags">發文hashtag內容:
             {% for hashtag in item["post_hashtag"] %} 
             <span class="post-hashtag">{{ hashtag }}</span>
             {% endfor %}
         </p>
+        {% endif %}
+        <p class="post-time">貼文讚數: {{ item["post_likes"] }}</p>
+        <p class="post-time">貼文留言數: {{ item["post_comments"] }}</p>
     </div>
     {% endfor %}
     <iframe src="https://www.facebook.com/plugins/video.php?height=476&href=https%3A%2F%2Fwww.facebook.com%2FJKNASID%2Fvideos%2F195356833326697%2F&show_text=false&width=267&t=0" width="267" height="476" style="border:none;overflow:hidden" scrolling="no" frameborder="0" allowfullscreen="true" allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share" allowFullScreen="true"></iframe>
