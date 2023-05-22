@@ -1,5 +1,4 @@
 $(function(){
-<<<<<<< HEAD
     // ajax example
     $("[data-btn='search']").on("click",function(){
         AjaxRequest('/search',{'keyword': $("[data-input='keyword']")[0].value},
@@ -100,7 +99,6 @@ $(function(){
         });
     })
     
-=======
     // click social button
     $("[data-social-btn='facebook']").on("click", function(){
         
@@ -117,5 +115,4 @@ $(function(){
     $("[data-social-btn='tictagtoe']").on("click", function(){
 
     });
->>>>>>> 895f03f5aafae9ecc6df8d8734e331de2ab769a5
 })
