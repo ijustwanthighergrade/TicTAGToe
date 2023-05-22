@@ -2,28 +2,4 @@
     <img src="" alt="" data-btn="index"/>
     <input type="text" placeholder="請輸入關鍵字" id="key" class="" data-input="keyword" />
     <button type="button" class="" id="btnPost" data-btn="search">搜尋</button>
-    <h3>Console : </h3>
-    <div id="console"></div>
-    <script>
-        $(function () {
-            var $btnPost = $('#btnPost');
-            var $key = $('#key');
-            var $console = $('#console');
-            $btnPost.off('click').on('click', function(){
-                $.ajax({
-                    url : '/search',
-                    data: {
-                        "key" : $key.val(),
-                    },
-                    type: 'POST',
-                    success: function (data) {
-                        $console.text(data.result);
-                    },
-                    error: function (xhr) {
-                        alert('Ajax request 發生錯誤');
-                    }
-                });
-            });
-        });
-    </script>
 </header>

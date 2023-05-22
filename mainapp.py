@@ -64,8 +64,9 @@ def Index():
 #搜尋頁面
 @app.route("/search", methods=['POST'])
 def search():
+    post_item = [] 
     if request.method == 'POST':
-        key = request.form['key']
+        key = request.form['keyword']
         socialName = "https://www.facebook.com/hashtag/"
         tagName = str(key)
         url = socialName + tagName
@@ -87,7 +88,7 @@ def search():
         # edge.get(f"{url[socialName]}{tagName}")
         time.sleep(2)
         time1 = 0
-        for x in range(1, 4):
+        for x in range(1, 3):
             edge.execute_script("window.scrollTo(0,document.body.scrollHeight)")
 
             #影片目前抓取失敗
@@ -104,7 +105,7 @@ def search():
             # else:
             #     video4 = ""
 
-            time.sleep(5) 
+            time.sleep(4) 
         
         soup = BeautifulSoup(edge.page_source, 'lxml')
 
@@ -153,15 +154,12 @@ def search():
                 club1 = club1.text
 
 
-            #發文時間: 目前抓取失敗
-            timme = post.find('a', {'class': 'x1i10hfl xjbqb8w x6umtig x1b1mbwd xaqea5y xav7gou x9f619 x1ypdohk xt0psk2 xe8uvvx xdj266r x11i5rnm xat24cr x1mh8g0r xexx8yu x4uap5 x18d9i69 xkhd6sd x16tdsg8 x1hl2dhg xggy1nq x1a2a7pz x1heor9g xt0b8zv xo1l8bm'})
+            #發文時間
+            timme = post.find('span', {'class': 'x4k7w5x x1h91t0o x1h9r5lt x1jfb8zj xv2umb2 x1beo9mf xaigb6o x12ejxvf x3igimt xarpa2k xedcshv x1lytzrv x1t2pt76 x7ja8zs x1qrby5j'}).find('a')
             if timme is not None:
-                timme1 = timme.find('span')
+                timme1 = timme.find('span').text
             else:
-                timme1 = " "
-
-            # if timme1 is not None:
-            #     timme1 = timme1.text
+                timme1 = ""
 
 
             #發文內容
@@ -215,11 +213,26 @@ def search():
                     hashtag3 = hashtag2.find('a', {'class': 'x1i10hfl xjbqb8w x6umtig x1b1mbwd xaqea5y xav7gou x9f619 x1ypdohk xt0psk2 xe8uvvx xdj266r x11i5rnm xat24cr x1mh8g0r xexx8yu x4uap5 x18d9i69 xkhd6sd x16tdsg8 x1hl2dhg xggy1nq x1a2a7pz xt0b8zv x1qq9wsj xo1l8bm'})
                     if hashtag3:
                         post_hashtag_collect.append(hashtag3.string)
-                    else:
-                        post_hashtag_collect.append(" ")
-            else:
-                post_hashtag_collect.append(" ")
+            #         else:
+            #             post_hashtag_collect.append(" ")
+            # else:
+            #     post_hashtag_collect.append(" ")
             
+
+            #貼文讚數
+            likes = post.find('span', {'class': 'xrbpyxo x6ikm8r x10wlt62 xlyipyv x1exxlbk'}).find('span')
+            if likes is not None:
+                likes1 = likes.find('span', {'class': 'xt0b8zv x1e558r4'}).text
+
+            
+            #貼文留言數
+            comments = post.find('div', {'class': 'x9f619 x1n2onr6 x1ja2u2z x78zum5 xdt5ytf x2lah0s x193iq5w xeuugli xg83lxy x1h0ha7o x10b6aqq x1yrsyyn'})
+            # print(comments)
+            if comments is not None:
+                comments1 = comments.find('span', {'class': 'x193iq5w xeuugli x13faqbe x1vvkbs x1xmvt09 x1lliihq x1s928wv xhkezso x1gmr53x x1cpjm7i x1fgarty x1943h6x xudqn12 x3x7a5m x6prxxf xvq8zen xo1l8bm xi81zsa'}).text
+            else:
+                comments1 = "0"
+
 
             #每篇貼文的資訊
             post_detail = {}
@@ -231,17 +244,18 @@ def search():
                 "post_text": text3,
                 "post_picture": picture_url,
                 "post_video": video4,
-                "post_hashtag": post_hashtag_collect
+                "post_hashtag": post_hashtag_collect,
+                "post_likes": likes1,
+                "post_comments": comments1
             }
 
-            # print(post_detail)
 
             #所有貼文的集合
             post_item.append(post_detail)
 
         edge.quit()
 
-    return jsonify(result = post_item) 
+    return jsonify(**{'data': post_item}) 
 
 #抓取FB貼文資訊
 @app.route("/info")
@@ -261,10 +275,10 @@ def Info():
     password.submit()
 
     time.sleep(2)
-    edge.get("https://www.facebook.com/hashtag/旅遊")
+    edge.get("https://www.facebook.com/hashtag/美食")
     # edge.get(f"{url[socialName]}{tagName}")
     time.sleep(2)
-    for x in range(1, 4):
+    for x in range(1, 3):
         edge.execute_script("window.scrollTo(0,document.body.scrollHeight)")
 
         # video2 = edge.find_elements(By.CLASS_NAME, "x9f619 x1n2onr6 x1ja2u2z x78zum5 x2lah0s x1qughib x1qjc9v5 xozqiw3 x1q0g3np x150jy0e x1e558r4 xjkvuk6 x1iorvi4 xwrv7xz x8182xy x4cne27 xifccgj")
@@ -279,7 +293,7 @@ def Info():
         #         video1.click()
 
 
-        time.sleep(5) 
+        time.sleep(4) 
     
     soup = BeautifulSoup(edge.page_source, 'lxml')
 
@@ -421,7 +435,6 @@ def Info():
             "post_comments": comments1
         }
 
-        # print(post_detail)
 
         #所有貼文的集合
         post_item.append(post_detail)
