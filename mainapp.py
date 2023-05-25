@@ -9,6 +9,7 @@ from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
 import time
 from selenium.webdriver.common.by import By
+import re
 
 from model import Mysql
 import src,model
@@ -17,7 +18,6 @@ url = {
     'fb':'https://www.facebook.com/hashtag/',
     'ig':'...',
     'twitter':'...',
-
 }
 
 
@@ -28,8 +28,8 @@ app = Flask(__name__,static_url_path ='/static/')
 tools_CommonTools = src.CommonTools.CommonTools()
 
 # 呼叫 Mysql() 函式以獲取 db 變數
-# db, cursor = Mysql()
-# cursor = db.cursor()
+db, cursor = Mysql()
+cursor = db.cursor()
 
 
 # select test
@@ -46,6 +46,28 @@ def select_city(cityid, cityname):
         result = False
         print('there is no user where userid="%s and password="%s"!!' % (cityid, cityname))
     return result
+
+
+#獲取所有某特定hashtag的貼文內容
+def select_hashtag(tag):
+    select_post_content = f"SELECT Content FROM post WHERE Content LIKE '%#{tag}%'"
+    cursor.execute(select_post_content)
+    
+    # 獲取結果
+    content_list = cursor.fetchall()
+    print(content_list)
+    # 列印結果
+    for content in content_list:
+        print(content[0])
+
+    return content_list
+    
+
+#獲取所有相關的hashtag集合
+def extract_hashtags(content):
+    hashtags = re.findall(r'#(\w+)', content)
+    return hashtags
+
 
 
 ############################## page ##############################
@@ -65,6 +87,10 @@ def Index():
 @app.route("/search", methods=['POST'])
 def search():
     post_item = [] 
+    hashtag_map = {}
+    hashtag_detail = []
+    key_list = []
+    value_list = []
     if request.method == 'POST':
         key = request.form['keyword']
         socialName = "https://www.facebook.com/hashtag/"
@@ -121,7 +147,6 @@ def search():
             else:
                 image1 = " "
 
-
             #發文者名稱
             name = post.find('a', {'class': 'x1i10hfl xjbqb8w x6umtig x1b1mbwd xaqea5y xav7gou x9f619 x1ypdohk xt0psk2 xe8uvvx xdj266r x11i5rnm xat24cr x1mh8g0r xexx8yu x4uap5 x18d9i69 xkhd6sd x16tdsg8 x1hl2dhg xggy1nq x1a2a7pz x1heor9g xt0b8zv xo1l8bm'})
             if name is not None:
@@ -142,17 +167,14 @@ def search():
             else:
                 continue
 
-
             #發文社團
             club = post.find('a', {'class': 'x1i10hfl xjbqb8w x6umtig x1b1mbwd xaqea5y xav7gou x9f619 x1ypdohk xt0psk2 xe8uvvx xdj266r x11i5rnm xat24cr x1mh8g0r xexx8yu x4uap5 x18d9i69 xkhd6sd x16tdsg8 x1hl2dhg xggy1nq x1a2a7pz xt0b8zv xzsf02u x1s688f'})
             if club is not None:
                 club1 = club.find('span')
             else:
                 club1 = " "
-            
             if club1 is not None:
                 club1 = club1.text
-
 
             #發文時間
             timme = post.find('span', {'class': 'x4k7w5x x1h91t0o x1h9r5lt x1jfb8zj xv2umb2 x1beo9mf xaigb6o x12ejxvf x3igimt xarpa2k xedcshv x1lytzrv x1t2pt76 x7ja8zs x1qrby5j'}).find('a')
@@ -160,7 +182,6 @@ def search():
                 timme1 = timme.find('span').text
             else:
                 timme1 = ""
-
 
             #發文內容
             text = post.find('div', {'class': 'xdj266r x11i5rnm xat24cr x1mh8g0r x1vvkbs x126k92a'}) 
@@ -176,7 +197,6 @@ def search():
                 text3 = text3
             else:
                 text3 = " "
-
 
             #發文內容圖片
             pictures = post.find_all('img', {'class': 'x1ey2m1c xds687c x5yr21d x10l6tqk x17qophe x13vifvy xh8yej3'})
@@ -202,7 +222,6 @@ def search():
             # else:
                 video4 = ""
 
-
             #發文hashtag
             hashtag = post.find('div', {'class': 'xdj266r x11i5rnm xat24cr x1mh8g0r x1vvkbs x126k92a'})
             post_hashtag_collect = []
@@ -218,13 +237,12 @@ def search():
             # else:
             #     post_hashtag_collect.append(" ")
             
-
             #貼文讚數
-            likes = post.find('span', {'class': 'xrbpyxo x6ikm8r x10wlt62 xlyipyv x1exxlbk'}).find('span')
-            if likes is not None:
-                likes1 = likes.find('span', {'class': 'xt0b8zv x1e558r4'}).text
+            # likes = post.find('span', {'class': 'xrbpyxo x6ikm8r x10wlt62 xlyipyv x1exxlbk'}).find('span')
+            # if likes is not None:
+            #     likes1 = likes.find('span', {'class': 'xt0b8zv x1e558r4'}).text
+            likes1 = ""
 
-            
             #貼文留言數
             comments = post.find('div', {'class': 'x9f619 x1n2onr6 x1ja2u2z x78zum5 xdt5ytf x2lah0s x193iq5w xeuugli xg83lxy x1h0ha7o x10b6aqq x1yrsyyn'})
             # print(comments)
@@ -232,7 +250,6 @@ def search():
                 comments1 = comments.find('span', {'class': 'x193iq5w xeuugli x13faqbe x1vvkbs x1xmvt09 x1lliihq x1s928wv xhkezso x1gmr53x x1cpjm7i x1fgarty x1943h6x xudqn12 x3x7a5m x6prxxf xvq8zen xo1l8bm xi81zsa'}).text
             else:
                 comments1 = "0"
-
 
             #每篇貼文的資訊
             post_detail = {}
@@ -249,13 +266,45 @@ def search():
                 "post_comments": comments1
             }
 
-
             #所有貼文的集合
             post_item.append(post_detail)
 
         edge.quit()
 
-    return jsonify(**{'data': post_item}) 
+
+        
+        content_list = select_hashtag(tagName)
+
+        for item in content_list:
+            content = item[0]
+            hashtags = extract_hashtags(content)
+            for hashtag_item in hashtags:  # 使用迴圈遍歷 hashtags 列表
+                if hashtag_item in hashtag_map:
+                    count = hashtag_map[hashtag_item]
+                    count += 1
+                    hashtag_map[hashtag_item] = count
+                    hashtag
+                else:
+                    hashtag_map[hashtag_item] = 1
+            
+        for key in hashtag_map:
+            value  = hashtag_map[key]
+            key_list.append(key)
+            value_list.append(value)
+        
+        hashtag_detail.append(key_list)
+        hashtag_detail.append(value_list)
+
+
+        print(hashtag_map)
+
+        data = {
+            'post_item': post_item,
+            'hashtag_detail': hashtag_detail
+        }
+            
+
+    return jsonify(**data) 
 
 #抓取FB貼文資訊
 @app.route("/info")
@@ -467,7 +516,7 @@ if __name__ == '__main__':
 
 
 # 程式結束時釋放資料庫資源
-# cursor.close()
-# db.close()  # 關閉連線
+cursor.close()
+db.close()  # 關閉連線
 
 

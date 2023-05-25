@@ -4,14 +4,15 @@ $(function(){
         AjaxRequest('/search',{'keyword': $("[data-input='keyword']")[0].value},
         function(data){
             // console.log(data);
-            console.log(data['data']);
+            console.log(data['post_item']);
+            console.log(data['hashtag_detail']);
 
             // 取得容器元素
             var container = $('[data-container="socialPost"]');
 
             // 迭代 post_item 陣列
-            for (var i = 0; i < data['data'].length; i++) {
-                var item = data['data'][i];
+            for (var i = 0; i < data['post_item'].length; i++) {
+                var item = data['post_item'][i];
                 
                 // 建立 post-card 元素
                 var postCard = $('<div>').addClass('post-card');

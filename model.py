@@ -5,7 +5,7 @@ config = {
     'port':3306,
     'user':'root',
     'passwd':'1234',
-    'db':'world',
+    'db':'tictagtoe',
     'charset':'utf8mb4',
     # 資料庫內容以字典格式輸出
     #'cursorclass':pymysql.cursors.DictCursor,
