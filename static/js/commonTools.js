@@ -4,7 +4,7 @@ function ReturnToIndex(){
     location.href = "/";
 }
 
-// todo call ajax
+// call ajax
 function AjaxRequest(url,params,successFunc,errorFunc) {
     url = url || '';
     params = params || {};
@@ -19,4 +19,9 @@ function AjaxRequest(url,params,successFunc,errorFunc) {
         success: successFunc,
         error: errorFunc
     });
+}
+
+// click tag start search
+function ClickTagStartSearch(tagName) {
+    location.href = '/?keyword=' + tagName;
 }
