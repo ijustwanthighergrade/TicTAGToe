@@ -55,10 +55,6 @@ def select_hashtag(tag):
     
     # 獲取結果
     content_list = cursor.fetchall()
-    print(content_list)
-    # 列印結果
-    for content in content_list:
-        print(content[0])
 
     return content_list
     
@@ -72,27 +68,81 @@ def extract_hashtags(content):
 
 ############################## page ##############################
 # 首頁
-@app.route("/")
+@app.route("/", methods=['POST', 'GET'])
 def Index():
-    # if request.method == 'GET':
-    #     CurrentData = request.args.getlist('')
-    
-    # if request.method == 'POST':
-    #     CurrentData = request.form.getlist('')
-
-    return render_template('index.html', RelTagName=['test1','test2','test3'])
-
-
-#搜尋頁面
-@app.route("/search", methods=['POST'])
-def search():
-    post_item = [] 
+    tagName = "水果"
     hashtag_map = {}
-    hashtag_detail = []
     key_list = []
     value_list = []
+
+    content_list = select_hashtag(tagName)
+    for item in content_list:
+        content = item[0]
+        hashtags = extract_hashtags(content)
+        for hashtag_item in hashtags:  # 使用迴圈遍歷 hashtags 列表
+            if hashtag_item in hashtag_map:
+                count = hashtag_map[hashtag_item]
+                count += 1
+                hashtag_map[hashtag_item] = count
+            else:
+                hashtag_map[hashtag_item] = 1
+            
+    
+    for key in hashtag_map:
+            value  = hashtag_map[key]
+            key_list.append(key)
+            value_list.append(value)
+    
+    print(key_list)
+
+    return render_template('index.html', RelTagName = key_list, RelTagCount = value_list)
+
+
+@app.route("/search_relationship", methods=['POST', 'GET'])
+def search_relationship():
+    if request.method == 'POST':
+        tagName = "水果"
+        hashtag_map = {}
+        key_list = []
+        value_list = []
+
+        content_list = select_hashtag(tagName)
+        for item in content_list:
+            content = item[0]
+            hashtags = extract_hashtags(content)
+            for hashtag_item in hashtags:  # 使用迴圈遍歷 hashtags 列表
+                if hashtag_item in hashtag_map:
+                    count = hashtag_map[hashtag_item]
+                    count += 1
+                    hashtag_map[hashtag_item] = count
+                else:
+                    hashtag_map[hashtag_item] = 1
+                
+        
+        for key in hashtag_map:
+                value  = hashtag_map[key]
+                key_list.append(key)
+                value_list.append(value)
+        
+        print(key_list)
+
+
+        data = {
+                
+        }
+            
+
+    return jsonify(**data) 
+
+
+#搜尋FB貼文頁面
+@app.route("/search_FB", methods=['POST'])
+def search_FB():
+    post_item = [] 
     if request.method == 'POST':
         key = request.form['keyword']
+        page = request.form.get('page') or 1
+        page = int(page)
         socialName = "https://www.facebook.com/hashtag/"
         tagName = str(key)
         url = socialName + tagName
@@ -114,24 +164,12 @@ def search():
         # edge.get(f"{url[socialName]}{tagName}")
         time.sleep(2)
         time1 = 0
-        for x in range(1, 3):
+        for x in range(page*3):
             edge.execute_script("window.scrollTo(0,document.body.scrollHeight)")
-
-            #影片目前抓取失敗
-            # video1 = edge.find('div', {'class': 'x1i10hfl x1qjc9v5 xjbqb8w xjqpnuy xa49m3k xqeqjp1 x2hbi6w x13fuv20 xu3j5b3 x1q0q8m5 x26u7qi x972fbf xcfux6l x1qhh985 xm0m39n x9f619 x1ypdohk xdl72j9 x2lah0s xe8uvvx xdj266r x11i5rnm xat24cr x1mh8g0r x2lwn1j xeuugli xexx8yu x4uap5 x18d9i69 xkhd6sd x1n2onr6 x16tdsg8 x1hl2dhg xggy1nq x1ja2u2z x1t137rt x1o1ewxj x3x9cwd x1e5q0jg x13rtm0m x1q0g3np x87ps6o x1lku1pv x78zum5 x1a2a7pz'})
-            # print(video1)
-            # if video1 is not None:
-            #     video1.click()
-            #     video2 = edge.find('div', {'class': 'x1i10hfl x1qjc9v5 xjbqb8w xjqpnuy xa49m3k xqeqjp1 x2hbi6w x13fuv20 xu3j5b3 x1q0q8m5 x26u7qi x972fbf xcfux6l x1qhh985 xm0m39n x9f619 x1ypdohk xdl72j9 x2lah0s xe8uvvx xdj266r x11i5rnm xat24cr x1mh8g0r x2lwn1j xeuugli xexx8yu x4uap5 x18d9i69 xkhd6sd x1n2onr6 x16tdsg8 x1hl2dhg xggy1nq x1ja2u2z x1t137rt x1q0g3np x87ps6o x1lku1pv x1a2a7pz x1lq5wgf xgqcy7u x30kzoy x9jhf4c x1lliihq'})
-            #     # print(video2)
-            #     if video2 is not None:
-            #         video2.click()
-            #     else:
-            #         video4 = ""
-            # else:
-            #     video4 = ""
-
-            time.sleep(4) 
+            if x < (page-1) * 3:
+                continue
+            else:
+                time.sleep(4) 
         
         soup = BeautifulSoup(edge.page_source, 'lxml')
 
@@ -273,34 +311,33 @@ def search():
 
 
         
-        content_list = select_hashtag(tagName)
+        # content_list = select_hashtag(tagName)
 
-        for item in content_list:
-            content = item[0]
-            hashtags = extract_hashtags(content)
-            for hashtag_item in hashtags:  # 使用迴圈遍歷 hashtags 列表
-                if hashtag_item in hashtag_map:
-                    count = hashtag_map[hashtag_item]
-                    count += 1
-                    hashtag_map[hashtag_item] = count
-                    hashtag
-                else:
-                    hashtag_map[hashtag_item] = 1
+        # for item in content_list:
+        #     content = item[0]
+        #     hashtags = extract_hashtags(content)
+        #     for hashtag_item in hashtags:  # 使用迴圈遍歷 hashtags 列表
+        #         if hashtag_item in hashtag_map:
+        #             count = hashtag_map[hashtag_item]
+        #             count += 1
+        #             hashtag_map[hashtag_item] = count
+        #         else:
+        #             hashtag_map[hashtag_item] = 1
             
-        for key in hashtag_map:
-            value  = hashtag_map[key]
-            key_list.append(key)
-            value_list.append(value)
+        # for key in hashtag_map:
+        #     value  = hashtag_map[key]
+        #     key_list.append(key)
+        #     value_list.append(value)
         
-        hashtag_detail.append(key_list)
-        hashtag_detail.append(value_list)
+        # hashtag_detail.append(key_list)
+        # hashtag_detail.append(value_list)
 
 
-        print(hashtag_map)
+        # print(hashtag_map)
 
         data = {
             'post_item': post_item,
-            'hashtag_detail': hashtag_detail
+            # 'hashtag_detail': hashtag_detail
         }
             
 

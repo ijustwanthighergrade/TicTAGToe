@@ -1,7 +1,7 @@
 $(function(){
     // ajax example
-    $("[data-btn='search']").on("click",function(){
-        AjaxRequest('/search',{'keyword': $("[data-input='keyword']")[0].value},
+    $("[data-social-btn='facebook']").on("click",function(){
+        AjaxRequest('/search_FB',{'keyword': $("[data-input='keyword']")[0].value},
         function(data){
             // console.log(data);
             console.log(data['post_item']);
