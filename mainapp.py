@@ -28,8 +28,8 @@ app = Flask(__name__,static_url_path ='/static/')
 tools_CommonTools = src.CommonTools.CommonTools()
 
 # 呼叫 Mysql() 函式以獲取 db 變數
-db, cursor = Mysql()
-cursor = db.cursor()
+# db, cursor = Mysql()
+# cursor = db.cursor()
 
 
 # select test
