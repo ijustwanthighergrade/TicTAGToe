@@ -70,69 +70,32 @@ def extract_hashtags(content):
 # 首頁
 @app.route("/", methods=['POST', 'GET'])
 def Index():
-    tagName = "水果"
-    hashtag_map = {}
+    # tagName = "水果"
+    # hashtag_map = {}
     key_list = []
     value_list = []
 
-    content_list = select_hashtag(tagName)
-    for item in content_list:
-        content = item[0]
-        hashtags = extract_hashtags(content)
-        for hashtag_item in hashtags:  # 使用迴圈遍歷 hashtags 列表
-            if hashtag_item in hashtag_map:
-                count = hashtag_map[hashtag_item]
-                count += 1
-                hashtag_map[hashtag_item] = count
-            else:
-                hashtag_map[hashtag_item] = 1
+    # content_list = select_hashtag(tagName)
+    # for item in content_list:
+    #     content = item[0]
+    #     hashtags = extract_hashtags(content)
+    #     for hashtag_item in hashtags:  # 使用迴圈遍歷 hashtags 列表
+    #         if hashtag_item in hashtag_map:
+    #             count = hashtag_map[hashtag_item]
+    #             count += 1
+    #             hashtag_map[hashtag_item] = count
+    #         else:
+    #             hashtag_map[hashtag_item] = 1
             
     
-    for key in hashtag_map:
-            value  = hashtag_map[key]
-            key_list.append(key)
-            value_list.append(value)
+    # for key in hashtag_map:
+    #         value  = hashtag_map[key]
+    #         key_list.append(key)
+    #         value_list.append(value)
     
-    print(key_list)
+    # print(key_list)
 
-    return render_template('index.html', RelTagName = key_list, RelTagCount = value_list)
-
-
-@app.route("/search_relationship", methods=['POST', 'GET'])
-def search_relationship():
-    if request.method == 'POST':
-        tagName = "水果"
-        hashtag_map = {}
-        key_list = []
-        value_list = []
-
-        content_list = select_hashtag(tagName)
-        for item in content_list:
-            content = item[0]
-            hashtags = extract_hashtags(content)
-            for hashtag_item in hashtags:  # 使用迴圈遍歷 hashtags 列表
-                if hashtag_item in hashtag_map:
-                    count = hashtag_map[hashtag_item]
-                    count += 1
-                    hashtag_map[hashtag_item] = count
-                else:
-                    hashtag_map[hashtag_item] = 1
-                
-        
-        for key in hashtag_map:
-                value  = hashtag_map[key]
-                key_list.append(key)
-                value_list.append(value)
-        
-        print(key_list)
-
-
-        data = {
-                
-        }
-            
-
-    return jsonify(**data) 
+    return render_template('knowledgeMapExample.html', RelTagName = key_list, RelTagCount = value_list)
 
 
 #搜尋FB貼文頁面

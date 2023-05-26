@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>GoJS Knowledge Map Example</title>
+    <meta charset="UTF-8">
+    <script src="https://unpkg.com/gojs/release/go.js"></script>
+</head>
+<body>
+    <div id="myDiagramDiv" style="width: 100%; height: 500px;"></div>
+
+    <script>
+        // 創建 Diagram
+        var $ = go.GraphObject.make;
+        var myDiagram = $(go.Diagram, "myDiagramDiv");
+
+        // 設置節點和連線的外觀
+        myDiagram.nodeTemplate =
+            $(go.Node, "Auto",
+                $(go.Shape,
+                    { figure: "RoundedRectangle", fill: "lightblue" }),
+                $(go.TextBlock,
+                    { margin: 8, font: "12px sans-serif" },
+                    new go.Binding("text", "text"))
+            );
+
+        // 設置第二種圖示的節點模板
+        myDiagram.nodeTemplateMap.add("icon",
+            $(go.Node, "Auto",
+                $(go.Panel, "Vertical",
+                    $(go.Shape, "Circle",
+                        { fill: "lightgreen", stroke: "black", strokeWidth: 1, width: 40, height: 40 }),
+                    $(go.Picture,
+                        { source: "icon.png", width: 30, height: 30 })
+                ),
+                $(go.TextBlock,
+                    { margin: 8, font: "12px sans-serif" },
+                    new go.Binding("text", "text"))
+            )
+        );
+
+        myDiagram.linkTemplate =
+            $(go.Link,
+                { routing: go.Link.Normal, curve: go.Link.Bezier },
+                $(go.Shape, { stroke: "black", strokeWidth: 1.5 })
+            );
+
+        // 定義知識地圖的節點和連線數據
+        var nodeDataArray = [
+            { key: 1, category: "", text: "Node 1" },
+            { key: 2, category: "", text: "Node 2" },
+            { key: 3, category: "icon", text: "Node 3" },
+            { key: 4, category: "icon", text: "Node 4" },
+            { key: 5, category: "", text: "Node 5" }
+        ];
+
+        var linkDataArray = [
+            { from: 1, to: 2 },
+            { from: 1, to: 3 },
+            { from: 1, to: 4 },
+            { from: 2, to: 4 },
+            { from: 2, to: 5 }
+        ];
+
+        // 將節點和連線數據設置到 Diagram 中
+        myDiagram.model = new go.GraphLinksModel(nodeDataArray, linkDataArray);
+
+        // 設置點擊事件處理程序
+        myDiagram.addDiagramListener("ObjectSingleClicked", function(e) {
+            var part = e.subject.part;
+            if (part instanceof go.Node) {
+                var node = part;
+                console.log("Node clicked: " + node.data.category);
+            }
+        });
+    </script>
+</body>
+</html>
