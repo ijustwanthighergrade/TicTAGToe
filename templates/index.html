@@ -18,72 +18,14 @@
     </script>
 {% endif %}
 
+<script src="https://unpkg.com/gojs/release/go.js"></script>
 <script type="text/javascript" src="../static/js/pageFunction/index.js"></script>
 <script type="text/javascript" src="../static/js/doc.ready/index.js"></script>
 
 <body>
     {% include '/frame/header.html' %}
     <main>
-        <!-- d3-cloud 文字雲 Start -->
-        <div id="tag" style="border: 1px solid #eee; height: 320px; width:525px;"></div>
-
-        <script>
-            //取得d3顏色
-            var fill = d3.scaleOrdinal(d3.schemeCategory10);
-            //文字雲/關鍵字，及字型大小（這邊只放三個）
-            var data = [];
-            for (let i = 0; i < relTagName.length; i++) {
-                data.push({text: relTagName[i], size:20});
-            }
-            //取得呈現處的寬、高
-            var w = parseInt(d3.select("#tag").style("width"), 10);
-            var h = parseInt(d3.select("#tag").style("height"), 10);
-        
-            d3.layout.cloud().size([w, h])
-                    .words(data)
-                    .padding(2)
-                    .rotate(function () {
-                        return ~~(Math.random() * 2) * 90;
-                    })
-                    .rotate(function () {
-                        return 0;
-                    })
-                    .fontSize(function (d) {
-                        return d.size;
-                    })
-                    .on("end", draw)
-                    .start();
-        
-            function draw(words) {
-                d3.select("#tag").append("svg")
-                        .attr("width", w)
-                        .attr("height", h)
-                        .append("g")
-                        .attr("transform", "translate(" + w / 2 + "," + h / 2 + ")")
-                        .selectAll("text")
-                        .data(words)
-                        .enter().append("text")
-                        .style("font-size", function (d) {
-                            return d.size + "px";
-                        })
-                        .style("font-family", "Microsoft JhengHei")
-                        .style("cursor", 'pointer')
-                        .style("fill", function (d, i) {
-                            return fill(i);
-                        })
-                        .attr("text-anchor", "middle")
-                        .attr("transform", function (d) {
-                            return "translate(" + [d.x, d.y] + ")rotate(" + d.rotate + ")";
-                        })
-                        .text(function (d) {
-                            return d.text;
-                        })
-                        .on("click", function (d) {
-                            window.open("https://www.google.com/search?q=" + d.text, '_blank');
-                        });
-            }
-        </script>
-        <!-- d3-cloud 文字雲 End -->
+        <div id="knowledgeMap" style="border: 1px solid #eee; height: 700px; width:700px;"></div>
 
         <!-- Social Media Button Start -->
         <div data-container="socialContainer">
@@ -126,34 +68,6 @@
     
 
     {% include '/frame/footer.html' %}
-
-    <!-- <script type="module">
-        // Import the functions you need from the SDKs you need
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-app.js";
-        import { getAnalytics } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-analytics.js";
-        // TODO: Add SDKs for Firebase products that you want to use
-        // https://firebase.google.com/docs/web/setup#available-libraries
-      
-        // Your web app's Firebase configuration
-        // For Firebase JS SDK v7.20.0 and later, measurementId is optional
-        const firebaseConfig = {
-          apiKey: "AIzaSyD97zcnmN1NA-cfki1DOxSp9wVrjexbPnA",
-          authDomain: "tictagtoe-2edc4.firebaseapp.com",
-          projectId: "tictagtoe-2edc4",
-          storageBucket: "tictagtoe-2edc4.appspot.com",
-          messagingSenderId: "222759135763",
-          appId: "1:222759135763:web:db862c5fdb4dbd6c59ade6",
-          measurementId: "G-PH3SG53GK9"
-        };
-      
-        // Initialize Firebase
-        const app = initializeApp(firebaseConfig);
-        const analytics = getAnalytics(app);
-
-    </script> -->
-
-    <script src="https://www.gstatic.com/firebasejs/7.0.0/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/7.0.0/firebase-firestore.js"></script>
 
 </body>
 </html>

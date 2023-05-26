@@ -95,7 +95,7 @@ def Index():
     
     # print(key_list)
 
-    return render_template('knowledgeMapExample.html', RelTagName = key_list, RelTagCount = value_list)
+    return render_template('index.html', RelTagName = key_list, RelTagCount = value_list)
 
 
 #搜尋FB貼文頁面
