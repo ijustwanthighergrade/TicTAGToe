@@ -2,22 +2,6 @@
 <html lang="en">
 {% include '/frame/head.html' %}
 
-{# Get關聯的Tag #}
-
-{% if RelTagName %}
-    <script type="text/javascript">
-        var relTagName = []
-        {% for item in RelTagName %}
-            relTagName.push('{{item}}');
-        {% endfor %}
-        
-    </script>
-{% else %}
-    <script type="text/javascript">
-        var relTagName = [];
-    </script>
-{% endif %}
-
 <script src="https://unpkg.com/gojs/release/go.js"></script>
 <script type="text/javascript" src="../static/js/pageFunction/index.js"></script>
 <script type="text/javascript" src="../static/js/doc.ready/index.js"></script>
@@ -88,27 +72,10 @@
         <!-- Social Media Button End -->
 
         <!-- Set Post Start-->
-
         <div data-container="socialPost"></div>
-
         <!-- Set Post End-->
-
-        <!-- Control page button Start-->
-        <div data-container="controlPage">
-            <div>
-                <!-- 上一頁 -->
-                <img src="" data-page-btn="previous" />
-            </div>
-            <div>
-                <!-- 下一頁 -->
-                <img src="" data-page-btn="next" />
-            </div>
-        </div>
-        <!-- Control page button End -->
-        
     </main>
     
-
     {% include '/frame/footer.html' %}
 
 </body>
