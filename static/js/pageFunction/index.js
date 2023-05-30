@@ -86,6 +86,11 @@ function RemoveAllSocialPost() {
 }
 
 // create knowledge map
+/*
+    * example 
+    * nodeData =[{ key: 1,category:"icon", text: "xxx",type:"tag" },{ key: 2, text: "xxx xxx" }...]
+    * linkData = [{ from: nodeData key, to: nodeData key,},{ from: nodeData key, to: nodeData key}...]
+*/
 function CreateKnowledgeMap(nodeData,linkData) {
     var $ = go.GraphObject.make;  // for conciseness in defining templates
     myDiagram =
@@ -123,21 +128,17 @@ function CreateKnowledgeMap(nodeData,linkData) {
     myDiagram.linkTemplate =
     $(go.Link,  // the whole link panel
     $(go.Shape, { stroke: "black" }),// the link shape
-    $(go.Shape,{ toArrow: "standard", stroke: null }), // the arrowhead
+    // $(go.Shape,{ toArrow: "standard", stroke: null }), // the arrowhead
     $(go.Panel, "Auto",
-    $(go.Shape,  // the label background, which becomes transparent around the edges
-        {fill: $(go.Brush, "Radial", { 0: "rgb(240, 240, 240)", 0.3: "rgb(240, 240, 240)", 1: "rgba(240, 240, 240, 0)" }),
-        stroke: null
-        }
-    ),
-   $(go.TextBlock,  // the label text
+    $(go.TextBlock,  // the label text
     {
         textAlign: "center",
         font: "10pt helvetica, arial, sans-serif",
         stroke: "#555555",
         margin: 4
     },
-     new go.Binding("text", "text"))
+    //  new go.Binding("text", "text"))
+     new go.Binding())
      )
    );
  // create the model for the concept map

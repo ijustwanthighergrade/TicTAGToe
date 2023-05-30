@@ -1,0 +1,23 @@
+
+@media only screen and (max-width:601px) { 
+    .knowledge-map-container {
+        border: 1px solid #000; 
+        height: 300px; 
+        width:95%;
+        margin-top: 3%;
+        margin-left: 2.5%;
+        margin-right: 2.5%;
+    }
+}
+@media screen and (max-width:1024px) and (min-width:602px) { 
+    
+}
+@media screen and (max-width:1180px) and (min-width:1025px) { 
+    
+}
+@media screen and (max-width:1920px) and (min-width:1181px) { 
+    
+}
+@media only screen and (min-width:1921px) { 
+
+}

@@ -5,6 +5,7 @@
 <script src="https://unpkg.com/gojs/release/go.js"></script>
 <script type="text/javascript" src="../static/js/pageFunction/index.js"></script>
 <script type="text/javascript" src="../static/js/doc.ready/index.js"></script>
+<link rel="stylesheet" type="text/css" href="../static/css/block.css">
 
 <body>
     {% include '/frame/header.html' %}
@@ -42,15 +43,21 @@
 
         </style>
         
-        <div class="block-ui">
+        <div class="block-ui" data-block-ui="knowledgeMap" style="display: none;">
             <div class="block-ui-overlay"></div>
             <div class="block-ui-content">
               <!-- 在此處放置您要阻止的內容 -->
-              <h1>Loading...</h1>
-              <p>Please wait while the content is loading.</p>
+              <!-- 關閉 -->
+                <div>
+                    <div><span data-close-block-ui="knowledgeMap">X</span></div>
+                </div>
+                <div>
+                    <h1>Loading...</h1>
+                    <p>Please wait while the content is loading.</p>
+                </div>
             </div>
         </div>
-        <div id="knowledgeMap" style="border: 1px solid #eee; height: 700px; width:700px;margin-top: 0px;"></div>
+        <div id="knowledgeMap"class='knowledge-map-container'></div>
 
         <!-- Social Media Button Start -->
         <div data-container="socialContainer">

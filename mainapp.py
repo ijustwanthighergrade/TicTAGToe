@@ -512,11 +512,11 @@ def TestAjax():
 
 
 if __name__ == '__main__':
-    app.run('0.0.0.0',port=8080,debug=True)
+    app.run('0.0.0.0',port=8082,debug=True)
 
 
 # 程式結束時釋放資料庫資源
-cursor.close()
-db.close()  # 關閉連線
+# cursor.close()
+# db.close()  # 關閉連線
 
 
