@@ -4,6 +4,17 @@ function ReturnToIndex(){
     location.href = "/";
 }
 
+// control menu
+function ControlMenu(){
+    $("[data-btn='menu']").on("click", function(){
+        if ($("[data-block='menu']")[0].style.display == "none"){
+            $("[data-block='menu']")[0].style.display = 'block';
+        } else {
+            $("[data-block='menu']")[0].style.display = 'none';
+        }
+    });
+}
+
 // call ajax
 function AjaxRequest(url,params,successFunc,errorFunc) {
     url = url || '';

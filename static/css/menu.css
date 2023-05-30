@@ -1,0 +1,39 @@
+
+@media only screen and (max-width:601px) { 
+    
+}
+@media screen and (max-width:1024px) and (min-width:602px) { 
+    .menu-title-div{
+        width: 100%;
+        display: none;
+    }
+
+    .menu-title-container {
+        width: 100%;
+        background-color: #97CBFF;
+        margin-top: 0;
+        padding: 0;
+        list-style-type: none;
+        text-align: center;
+    }
+
+    .menu-title {
+        margin-bottom: 1%
+    }
+
+    .menu-title a {
+        color: #FFF;
+        font-size: 24px;
+        text-decoration: none;
+    }
+
+}
+@media screen and (max-width:1180px) and (min-width:1025px) { 
+    
+}
+@media screen and (max-width:1920px) and (min-width:1181px) { 
+    
+}
+@media only screen and (min-width:1921px) { 
+
+}

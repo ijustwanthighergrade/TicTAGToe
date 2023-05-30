@@ -8,9 +8,54 @@
         margin-left: 2.5%;
         margin-right: 2.5%;
     }
+
+    .social-btn-container {
+        list-style-type: none;
+        padding: 0;
+    }
+
+    .social-btn-container li{
+        display: inline;
+    }
+
+    .social-btn {
+        width: 100px;
+        height: 100px;
+    }
 }
 @media screen and (max-width:1024px) and (min-width:602px) { 
-    
+    .knowledge-map-container {
+        border: 1px solid #000; 
+        height: 400px; 
+        width:95%;
+        margin-top: 3%;
+        margin-left: 2.5%;
+        margin-right: 2.5%;
+    }
+
+    .social-container {
+        width: 95%;
+        margin-top: 5%;
+        margin-left: 2.5%;
+        margin-right: 2.5%;
+        border-bottom: 5px solid #97CBFF;
+    }
+
+    .social-btn-container {
+        list-style-type: none;
+        width: 100%;
+        display: flex;
+        
+    }
+
+    .social-btn-container li{
+        width: 25%;
+    }
+
+    .social-btn-container li img{
+        height: 100px;
+    }
+
 }
 @media screen and (max-width:1180px) and (min-width:1025px) { 
     

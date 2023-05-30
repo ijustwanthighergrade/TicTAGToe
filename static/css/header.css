@@ -1,23 +1,69 @@
-.header{
-    height: 60px;
-    width: 100%;
-    background-color: #97CBFF;
-}
-
-.search-bar-container {
+.search-bar-block {
     text-align: center;
+    width: 100%;
+    display: flex;
 }
 
 @media only screen and (max-width:601px) { 
+    .header{
+        height: 60px;
+        width: 100%;
+        background-color: #97CBFF;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+    }
+
     .search-input {
-        width: 70%;
+        width: 90%;
         font-size: 14px;
+    }
+
+    .menu-container {
+        width: 10% ;
+        height: 30px;
+    }
+
+    .menu-icon {
+        max-width: 100%;
     }
 }
 @media screen and (max-width:1024px) and (min-width:602px) { 
+    .header{
+        height: 100px;
+        width: 100%;
+        background-color: #97CBFF;
+        margin-bottom: 0;
+    }
+
+    .search-bar {
+        width: 65%;
+        font-size: 28px;
+    }
+
     .search-input {
-        width: 70%;
-        font-size: 14px;
+        width: 100%;
+        font-size: 28px;
+    }
+
+    .search-btn{
+        background-color: aqua;
+        width: 15%;
+        font-size: 28px;
+        margin-left: 2.5%;
+        margin-right: 2.5%;
+    }
+
+    .menu-container {
+        width: 10%;
+        height: 50px;
+        margin-left: 2.5%;
+        margin-right: 2.5%;
+    }
+
+    .menu-icon {
+        max-width: 100%;
+        max-height: 100%;
     }
 }
 @media screen and (max-width:1180px) and (min-width:1025px) { 
