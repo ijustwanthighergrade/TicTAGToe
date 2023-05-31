@@ -114,7 +114,7 @@ $(function(){
             alert('請先在搜尋欄輸入想查詢的Hashtag！');
             return;
         } else {
-            AjaxRequest('/search',{'keyword': $("[data-input='keyword']")[0].value},
+            AjaxRequest('/search_FB',{'keyword': $("[data-input='keyword']")[0].value},
             function(data){
                 // remove original data
                 RemoveAllSocialPost();
