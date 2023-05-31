@@ -33,6 +33,13 @@ function AjaxRequest(url,params,successFunc,errorFunc) {
 }
 
 // click tag start search
-function ClickTagStartSearch(tagName) {
-    location.href = '/?keyword=' + tagName;
+function ClickTagStartSearch() {
+    $("[data-btn='search']").on("click", function() {
+        if ($("[data-input='keyword']")[0].value != "") {
+            location.href = '/searchres?keyword=' + $("[data-input='keyword']")[0].value;
+        } else {
+            return;
+        }
+    });
+    
 }
