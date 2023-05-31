@@ -118,7 +118,7 @@ function CreateKnowledgeMap(nodeData,linkData) {
         $(go.Node, "Auto",
             $(go.Panel, "Vertical",
                 $(go.Shape, "Circle",{ fill: "lightgreen", stroke: "black", strokeWidth: 1, width: 40, height: 40 }),
-                $(go.Picture,{ source: "icon.png", width: 30, height: 30 })
+                $(go.Picture,{ source: "../static/img/icon.png", width: 30, height: 30 })
             ),
             $(go.TextBlock,{ margin: 8, font: "12px sans-serif" },
                 new go.Binding("text", "text")
