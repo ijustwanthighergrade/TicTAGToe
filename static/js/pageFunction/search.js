@@ -1,4 +1,4 @@
-// todo create social post
+// create social post
 function CreateSocialPostItem(posterImgSrc,posterName,postClub,time,content,likeCount,CommentCount,hashtag=[],postImg=[]) {
     // create element
     let postContainer = document.createElement('div');
@@ -51,7 +51,7 @@ function CreateSocialPostItem(posterImgSrc,posterName,postClub,time,content,like
         var hashtagElement = document.createElement('a');
         hashtagElement.textContent = hashtag[i];
         hashtagElement.className = 'post-hashtag';
-        hashtagElement.href = '127.0.0.1:8080?keyword=' + hashtag[i];
+        hashtagElement.href = '127.0.0.1:8080/searchres?keyword=' + hashtag[i];
 
         postHashtagContainer.appendChild(hashtagElement);
     }
@@ -88,7 +88,7 @@ function RemoveAllSocialPost() {
 // create knowledge map
 /*
     * example 
-    * nodeData =[{ key: 1,category:"icon", text: "xxx",type:"tag" },{ key: 2, text: "xxx xxx" }...]
+    * nodeData =[{ key: 1,category:"tag", text: "xxx",type:"tag" },{ key: 2, text: "xxx xxx" }...]
     * linkData = [{ from: nodeData key, to: nodeData key,},{ from: nodeData key, to: nodeData key}...]
 */
 function CreateKnowledgeMap(nodeData,linkData) {
@@ -114,7 +114,7 @@ function CreateKnowledgeMap(nodeData,linkData) {
     new go.Binding("text", "text"))
    );
  // replace the default Link template in the linkTemplateMap
-    myDiagram.nodeTemplateMap.add("icon",
+    myDiagram.nodeTemplateMap.add("people",
         $(go.Node, "Auto",
             $(go.Panel, "Vertical",
                 // $(go.Shape, "Circle",{ fill: "lightgreen", stroke: "black", strokeWidth: 1, width: 40, height: 40 }),
@@ -199,6 +199,26 @@ function CreateKnowledgeMap(nodeData,linkData) {
     if (part instanceof go.Node) {
         var node = part;
         alert("Node clicked: " + node.data.type);
+        switch (node.data.type) {
+            case 'tag':
+                
+                break;
+
+            case 'people':
+            
+            break;
+
+            case 'place':
+                
+                break;
+
+            case 'obj':
+            
+                break;
+        
+            default:
+                break;
+        }
     }
  });
 }

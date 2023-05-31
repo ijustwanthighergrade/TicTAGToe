@@ -2,7 +2,7 @@ $(function(){
     ControlMenu();
     
     // ! create knowledge map example
-    CreateKnowledgeMap([{ key: 1,category:"icon", text: "xxx",type:"tag" },{ key: 2, text: "xxx xxx" }],[{ from: 1, to: 2}]);
+    CreateKnowledgeMap([{ key: 1,category:"people", text: "xxx",type:"tag" },{ key: 2, text: "xxx xxx" }],[{ from: 1, to: 2}]);
     // ajax example
     // $("[data-social-btn='facebook']").on("click",function(){
     //     AjaxRequest('/search_FB',{'keyword': $("[data-input='keyword']")[0].value},
