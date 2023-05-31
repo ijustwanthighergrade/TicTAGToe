@@ -56,7 +56,18 @@
         height: 100px;
     }
 
-    
+    .post-slide-show {
+        width: 100%; /* 輪播圖寬度 */
+        height: 300px; /* 輪播圖高度 */
+        overflow: hidden; /* 隱藏超出輪播圖範圍的內容 */
+    }
+
+    @keyframes post-slide-show {
+        0% { transform: translateX(0); } /* 初始位置 */
+        33.33% { transform: translateX(-100%); } /* 第一個項目滑出 */
+        66.66% { transform: translateX(-200%); } /* 第二個項目滑出 */
+        100% { transform: translateX(0); } /* 回到初始位置 */
+      }
 
 }
 @media screen and (max-width:1180px) and (min-width:1025px) { 

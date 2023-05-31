@@ -2,7 +2,7 @@ $(function(){
     ControlMenu();
     
     // ! create knowledge map example
-    CreateKnowledgeMap([{ key: 1,category:"people", text: "xxx",type:"tag" },{ key: 2, text: "xxx xxx" }],[{ from: 1, to: 2}]);
+    CreateKnowledgeMap([{ key: 1,category:"people", text: "xxx",type:"people" },{ key: 2,category:"tag", text: "xxx",type:"tag"}],[{ from: 1, to: 2}]);
     
     $("[data-close-block-ui]").on("click", function(){
         $("[data-block-ui='" + this.dataset.closeBlockUi + "']")[0].style.display = "none";
@@ -28,14 +28,29 @@ $(function(){
     });
 
     $("[data-social-btn='instagram']").on("click", function(){
-
+        if($("[data-input='keyword']")[0].value == ''){
+            alert('請先在搜尋欄輸入想查詢的Hashtag！');
+            return;
+        } else {
+            
+        }
     });
 
     $("[data-social-btn='twitter']").on("click", function(){
-
+        if($("[data-input='keyword']")[0].value == ''){
+            alert('請先在搜尋欄輸入想查詢的Hashtag！');
+            return;
+        } else {
+            
+        }
     });
 
     $("[data-social-btn='tictagtoe']").on("click", function(){
-
+        if($("[data-input='keyword']")[0].value == ''){
+            alert('請先在搜尋欄輸入想查詢的Hashtag！');
+            return;
+        } else {
+            
+        }
     });
 })

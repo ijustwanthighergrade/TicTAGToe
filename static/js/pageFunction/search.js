@@ -8,7 +8,7 @@ function CreateSocialPostItem(posterImgSrc,posterName,postClub,time,content,like
     let club = document.createElement('p');
     let postTIme = document.createElement('p');
     let postContent = document.createElement('p');
-    let postImgContainer = document.createElement('p');
+    let postImgContainer = document.createElement('div');
     let postHashtagContainer = document.createElement('p');
     let like = document.createElement('p');
     let comment = document.createElement('p');
@@ -37,12 +37,23 @@ function CreateSocialPostItem(posterImgSrc,posterName,postClub,time,content,like
     postContent.textContent = '發文內容：' + content;
 
     // post img
+    postImgContainer.className = 'post-slide-show ';
     for (let i = 0; i < postImg.length; i++) {
-        var postImgElement = document.createElement('img');
+        var postImgElement = document.createElement('div');
+        var img = document.createElement('img');
 
-        postImgElement.src = postImg[i];
+        // postImgElement.style.backgroundImage = postImg[i];
+        img.src = postImg[i];
+        img.alt = '圖片';
+        img.style.maxHeight = '100%';
+        img.style.maxWidth = '100%';
         postImgElement.className = '';
-        postImgElement.alt = '圖片';
+        postImgElement.style.width = '100%';
+        postImgElement.style.height = '100%';
+        postImgElement.style.backgroundSize = 'cover';
+        postImgElement.style.animation = 'slideshow 10s infinite';
+        
+        postImgElement.appendChild(img);
         postImgContainer.appendChild(postImgElement);
     }
 
@@ -51,7 +62,7 @@ function CreateSocialPostItem(posterImgSrc,posterName,postClub,time,content,like
         var hashtagElement = document.createElement('a');
         hashtagElement.textContent = hashtag[i];
         hashtagElement.className = 'post-hashtag';
-        hashtagElement.href = '127.0.0.1:8082/searchres?keyword=' + hashtag[i];
+        hashtagElement.href = '/searchres?keyword=' + hashtag[i];
 
         postHashtagContainer.appendChild(hashtagElement);
     }
@@ -161,24 +172,28 @@ function CreateKnowledgeMap(nodeData,linkData) {
     var part = e.subject.part;
     if (part instanceof go.Node) {
         var node = part;
-        alert("Node clicked: " + node.data.type);
+        // alert("Node clicked: " + node.data.type);
         switch (node.data.type) {
             case 'tag':
-                location.href = '127.0.0.1:8082/searchres?keyword=';
+                // search this tag
+                location.href = '/searchres?keyword=' + node.data.text;
                 break;
 
             case 'people':
-                location.href = '';
+                // todo 到個人頁面
+                location.href = '/...?a=';
                 break;
 
             case 'place':
                 // todo open block ui and show info
-                
+                $("[data-input='blockUiContent']")[0].textContent = '地點描述：' + node.data.text;
+                $("[data-block-ui='knowledgeMap']")[0].style.display = 'block';
                 break;
 
             case 'obj':
                 // todo open block ui and show info
-                
+                $("[data-input='blockUiContent']")[0].textContent = '物品描述：' + node.data.text;
+                $("[data-block-ui='knowledgeMap']")[0].style.display = 'block';
                 break;
         
             default:
