@@ -56,6 +56,14 @@ def SearchRes():
     return render_template('search.html')
 
 
+# 個人頁面
+@app.route("/individual", methods=['POST', 'GET'])
+def Individual():
+    # 利用session 取得會員Id
+
+    # 利用會員Id取得會員資料，並傳送至前端
+
+    return render_template('individual.html')
 ############################## page ##############################
 
 
