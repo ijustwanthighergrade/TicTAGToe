@@ -2,74 +2,27 @@
 <html lang="en">
 {% include '/frame/head.html' %}
 
-<script src="https://unpkg.com/gojs/release/go.js"></script>
 <script type="text/javascript" src="../static/js/pageFunction/index.js"></script>
 <script type="text/javascript" src="../static/js/doc.ready/index.js"></script>
 <link rel="stylesheet" type="text/css" href="../static/css/block.css">
-<style>
-    /* 設定貼文卡片的樣式 */
-    .post-card {
-        background-color: #f2f2f2;
-        padding: 10px;
-        margin-bottom: 20px;
-        border-radius: 5px;
-    }
 
-    /* 設定貼文標題的樣式 */
-    .post-title {
-        font-weight: bold;
-        font-size: 18px;
-        color: #333;
-    }
-
-    /* 設定貼文內容的樣式 */
-    .post-content {
-        font-size: 14px;
-        color: #666;
-    }
-
-    /* 設定貼文時間的樣式 */
-    .post-time {
-        font-size: 12px;
-        color: #999;
-        margin-top: 5px;
-    }
-
-    /* 設定貼文 hashtag 的樣式 */
-    .post-hashtags {
-        margin-top: 10px;
-    }
-
-    .post-hashtag {
-        display: inline-block;
-        background-color: #ddd;
-        padding: 5px;
-        margin-right: 5px;
-        border-radius: 3px;
-        font-size: 12px;
-        color: #333;
-    }
-
-    .circle-image {
-        width: 50px;
-        height: 50px;
-        border-radius: 50%;
-        overflow: hidden;
-    }
-
-    .circle-image img {
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-    }
-
-    .content_pic {
-        width: 150px;
-        height: 150px;
-    }
-</style>
 <body>
-    {% include '/frame/header.html' %}
+    <header class="header ">
+        <div >
+            <div>
+                <img src="" alt="" data-btn="index"/>
+            </div>
+            <div class="search-bar-block ">
+                <button class="menu-container" data-btn="menu">
+                    <img src="../static/img/menu_black.png" class="menu-icon"/>
+                </button>
+                <div class="search-bar">
+                    <!-- <input type="text" placeholder="請輸入關鍵字" id="key" class="search-input" data-input="keyword"/> -->
+                </div>
+                <!-- <button type="button" class="search-btn" data-btn="search">搜尋</button> -->
+            </div>
+        </div>
+    </header>
     <main>
         <style>
             .block-ui {
@@ -125,43 +78,9 @@
                 </li>
             </ul>
         </div>
-        <div class="block-ui" data-block-ui="knowledgeMap" style="display: none;">
-            <div class="block-ui-overlay"></div>
-            <div class="block-ui-content">
-              <!-- 在此處放置您要阻止的內容 -->
-              <!-- 關閉 -->
-                <div style="text-align: right;">
-                    <button data-close-block-ui="knowledgeMap" class="w3-hover-blue">X</button>
-                </div>
-                <div>
-                    <span>Info...</span>
-                </div>
-            </div>
-        </div>
-        <div id="knowledgeMap"class='knowledge-map-container'></div>
+        <div>
 
-        <!-- Social Media Button Start -->
-        <div class="social-container" data-container="socialContainer">
-            <ul class="social-btn-container">
-                <li>
-                    <img src="../static/img/facebook.png" data-social-btn="facebook"/>
-                </li>
-                <li>
-                    <img src="../static/img/instagram.png" data-social-btn="instagram"/>
-                </li>
-                <li>
-                    <img src="../static/img/twitter.png" data-social-btn="twitter"/>
-                </li>
-                <li>
-                    <img src="" data-social-btn="tictagtoe"/>
-                </li>
-            </ul>
         </div>
-        <!-- Social Media Button End -->
-
-        <!-- Set Post Start-->
-        <div data-container="socialPost"></div>
-        <!-- Set Post End-->
     </main>
     
     {% include '/frame/footer.html' %}
