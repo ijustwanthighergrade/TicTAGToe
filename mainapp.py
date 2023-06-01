@@ -28,8 +28,8 @@ app = Flask(__name__,static_url_path ='/static/')
 tools_CommonTools = src.CommonTools.CommonTools()
 
 # 呼叫 Mysql() 函式以獲取 db 變數
-# db, cursor = Mysql()
-# cursor = db.cursor()
+db, cursor = Mysql()
+cursor = db.cursor()
 
 
 ############################## function ##############################
@@ -50,10 +50,76 @@ def Index():
 @app.route("/searchres", methods=['POST', 'GET'])
 def SearchRes():
     # 取得傳回的參數，此參數需傳回至前端
-
     # 撈取知識地圖資料，並傳回前端
+    if request.method == 'POST':
+        key = request.form['keyword']
+        tagName = str(key)
+        twoMode = []
+        # tagName = "CYCU"
+        sql = 'select * from hashtag where TagName = "%s";' % (tagName)
+        cursor.execute(sql)
+        result = cursor.fetchone()
+        tagId = result[0]
+        category1 = result[2]
+        description1 = result[5]
 
-    return render_template('search.html')
+        sql = 'select * from hashtag_relationship where TagId = "%s";' % (tagId)
+        cursor.execute(sql)
+        results = cursor.fetchall()
+        for row in results:
+            objId = row[1]
+            relationshipType = row[2]
+            nodeData = []
+            if relationshipType == 1:
+                sql = 'select * from img_target where TargetId = "%s";' % (objId)
+                cursor.execute(sql)
+                result1 = cursor.fetchone()
+                targetName = result1[2]
+                category2 = result1[3]
+                description2 = result1[4]
+                node1 = {
+                    "key": tagId,
+                    "category": category1,
+                    "text": tagName,
+                    "description": description1,
+                    "type": category1
+                }
+                node2 = {
+                    "key": objId,
+                    "category": category2,
+                    "text": targetName,
+                    "description": description2,
+                    "type": category2
+                }
+                nodeData.append(node1)
+                nodeData.append(node2)
+                twoMode.append(nodeData)
+            else:
+                sql = 'select * from post where DataId = "%s";' % (objId)
+                cursor.execute(sql)
+                result1 = cursor.fetchone()
+                postType = result1[2]
+                node1 = {
+                    "key": tagId,
+                    "category": category1,
+                    "text": tagName,
+                    "description": description1,
+                    "type": category1
+                }
+                node2 = {
+                    "key": objId,
+                    "category": postType,
+                    "text": objId,
+                    "description": objId,
+                    "type": postType
+                }
+                nodeData.append(node1)
+                nodeData.append(node2)
+                twoMode.append(nodeData)
+
+        print(twoMode)
+
+        return render_template('search.html', twoMode = twoMode)
 
 
 # 個人頁面
@@ -253,7 +319,7 @@ if __name__ == '__main__':
 
 
 # 程式結束時釋放資料庫資源
-# cursor.close()
-# db.close()  # 關閉連線
+cursor.close()
+db.close()  # 關閉連線
 
 
