@@ -222,14 +222,12 @@ function CreateKnowledgeMap(nodeData,linkData) {
 
             case 'place':
                 // todo open block ui and show info
-                $("[data-input='blockUiContent']")[0].textContent = '地點描述：' + node.data.text;
-                $("[data-block-ui='knowledgeMap']")[0].style.display = 'block';
+                SetBlockUiContent('地點描述：' + node.data.text);
                 break;
 
             case 'obj':
                 // todo open block ui and show info
-                $("[data-input='blockUiContent']")[0].textContent = '物品描述：' + node.data.text;
-                $("[data-block-ui='knowledgeMap']")[0].style.display = 'block';
+                SetBlockUiContent('物品描述：' + node.data.text);
                 break;
         
             default:
@@ -239,4 +237,10 @@ function CreateKnowledgeMap(nodeData,linkData) {
         return;
     }
  });
+}
+
+
+function SetBlockUiContent(content) {
+    $("[data-input='blockUiContent']")[0].textContent = content;
+    $("[data-block-ui='knowledgeMap']")[0].style.display = '';
 }
