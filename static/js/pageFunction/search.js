@@ -14,6 +14,7 @@ function CreateSocialPostItem(posterImgSrc,posterName,postClub,time,content,like
     let comment = document.createElement('p');
 
     postContainer.dataset.post = '';
+    postContainer.className = '';
 
     // poster img
     posterImgContainer.className = 'circle-image';
@@ -37,7 +38,7 @@ function CreateSocialPostItem(posterImgSrc,posterName,postClub,time,content,like
     postContent.textContent = '發文內容：' + content;
 
     // post img
-    postImgContainer.className = 'post-slide-show ';
+    postImgContainer.className = 'slideshow ';
     for (let i = 0; i < postImg.length; i++) {
         var postImgElement = document.createElement('div');
         var img = document.createElement('img');
@@ -45,13 +46,7 @@ function CreateSocialPostItem(posterImgSrc,posterName,postClub,time,content,like
         // postImgElement.style.backgroundImage = postImg[i];
         img.src = postImg[i];
         img.alt = '圖片';
-        img.style.maxHeight = '100%';
-        img.style.maxWidth = '100%';
-        postImgElement.className = '';
-        postImgElement.style.width = '100%';
-        postImgElement.style.height = '100%';
-        postImgElement.style.backgroundSize = 'cover';
-        postImgElement.style.animation = 'slideshow 10s infinite';
+        postImgElement.className = 'slide';
         
         postImgElement.appendChild(img);
         postImgContainer.appendChild(postImgElement);
@@ -122,9 +117,21 @@ function CreateKnowledgeMap(nodeData,linkData) {
             { fill: $(go.Brush, "Linear", { 0: "rgb(254, 201, 0)", 1: "rgb(254, 162, 0)" }), stroke: "black" }),
         $(go.TextBlock,
             { font: "bold 10pt helvetica, bold arial, sans-serif", margin: 4 },
-    new go.Binding("text", "text"))
-   );
+        new go.Binding("text", "text"))
+        );
  // replace the default Link template in the linkTemplateMap
+    myDiagram.nodeTemplateMap.add("tag",
+        $(go.Node, "Auto",  // the whole node panel
+            { locationSpot: go.Spot.Center },
+            // define the node's outer shape, which will surround the TextBlock
+        $(go.Shape, "Rectangle",
+            { fill: $(go.Brush, "Linear", { 0: "rgb(25, 210, 0)", 1: "rgb(24, 162, 0)" }), stroke: "black" }),
+        $(go.TextBlock,
+            { font: "bold 10pt helvetica, bold arial, sans-serif", margin: 4 },
+        new go.Binding("text", "text"))
+        )
+    );
+
     myDiagram.nodeTemplateMap.add("people",
         $(go.Node, "Auto",
             $(go.Panel, "Vertical",
@@ -137,6 +144,34 @@ function CreateKnowledgeMap(nodeData,linkData) {
             // )
         )
     );
+
+    myDiagram.nodeTemplateMap.add("place",
+        $(go.Node, "Auto",
+            $(go.Panel, "Vertical",
+                // $(go.Shape, "Circle",{ fill: "lightgreen", stroke: "black", strokeWidth: 1, width: 40, height: 40 }),
+                $(go.Picture,{ source: "../static/img/address.png", width: 30, height: 30 })
+            )
+            //,
+            // $(go.TextBlock,{ margin: 8, font: "12px sans-serif" },
+            //     new go.Binding("text", "text")
+            // )
+        )
+    );
+
+    myDiagram.nodeTemplateMap.add("obj",
+        $(go.Node, "Auto",
+            $(go.Panel, "Vertical",
+                // $(go.Shape, "Circle",{ fill: "lightgreen", stroke: "black", strokeWidth: 1, width: 40, height: 40 }),
+                $(go.Picture,{ source: "../static/img/bookmark.png", width: 30, height: 30 })
+            )
+            //,
+            // $(go.TextBlock,{ margin: 8, font: "12px sans-serif" },
+            //     new go.Binding("text", "text")
+            // )
+        )
+    );
+
+
     myDiagram.linkTemplate =
     $(go.Link,  // the whole link panel
     $(go.Shape, { stroke: "black" }),// the link shape
@@ -181,7 +216,8 @@ function CreateKnowledgeMap(nodeData,linkData) {
 
             case 'people':
                 // todo 到個人頁面
-                location.href = '/...?a=';
+                // location.href = '/...?a=';
+                alert('該功能尚未開啟，未來將會導向至個人頁面');
                 break;
 
             case 'place':
@@ -199,6 +235,8 @@ function CreateKnowledgeMap(nodeData,linkData) {
             default:
                 break;
         }
+
+        return;
     }
  });
 }
