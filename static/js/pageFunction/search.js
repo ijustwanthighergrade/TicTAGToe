@@ -125,7 +125,7 @@ function CreateKnowledgeMap(nodeData,linkData) {
             { locationSpot: go.Spot.Center },
             // define the node's outer shape, which will surround the TextBlock
         $(go.Shape, "Rectangle",
-            { fill: $(go.Brush, "Linear", { 0: "rgb(25, 210, 0)", 1: "rgb(24, 162, 0)" }), stroke: "black" }),
+            { fill: $(go.Brush, "Linear", { 0: "#97CBFF", 1: "#97CBFF" }), stroke: "black" }),
         $(go.TextBlock,
             { font: "bold 10pt helvetica, bold arial, sans-serif", margin: 4 },
         new go.Binding("text", "text"))
