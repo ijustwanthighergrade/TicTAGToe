@@ -70,7 +70,7 @@ def SearchRes():
             objId = row[1]
             relationshipType = row[2]
             nodeData = []
-            if relationshipType == 1:
+            if relationshipType == "1":
                 sql = 'select * from img_target where TargetId = "%s";' % (objId)
                 cursor.execute(sql)
                 result1 = cursor.fetchone()
