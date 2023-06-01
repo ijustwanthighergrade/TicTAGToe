@@ -56,18 +56,96 @@
         height: 100px;
     }
 
-    .post-slide-show {
-        width: 100%; /* 輪播圖寬度 */
-        height: 300px; /* 輪播圖高度 */
-        overflow: hidden; /* 隱藏超出輪播圖範圍的內容 */
+    /* 設定貼文卡片的樣式 */
+    .post-card {
+        background-color: #f2f2f2;
+        padding: 10px;
+        margin-bottom: 20px;
+        border-radius: 5px;
     }
 
-    @keyframes post-slide-show {
-        0% { transform: translateX(0); } /* 初始位置 */
-        33.33% { transform: translateX(-100%); } /* 第一個項目滑出 */
-        66.66% { transform: translateX(-200%); } /* 第二個項目滑出 */
-        100% { transform: translateX(0); } /* 回到初始位置 */
+    /* 設定貼文標題的樣式 */
+    .post-title {
+        font-weight: bold;
+        font-size: 18px;
+        color: #333;
+    }
+
+    /* 設定貼文內容的樣式 */
+    .post-content {
+        font-size: 14px;
+        color: #666;
+    }
+
+    /* 設定貼文時間的樣式 */
+    .post-time {
+        font-size: 12px;
+        color: #999;
+        margin-top: 5px;
+    }
+
+    /* 設定貼文 hashtag 的樣式 */
+    .post-hashtags {
+        margin-top: 10px;
+    }
+
+    .post-hashtag {
+        display: inline-block;
+        background-color: #ddd;
+        padding: 5px;
+        margin-right: 5px;
+        border-radius: 3px;
+        font-size: 12px;
+        color: #333;
+    }
+
+    .circle-image {
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+        overflow: hidden;
+    }
+
+    .circle-image img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+
+    .content_pic {
+        width: 150px;
+        height: 150px;
+    }
+
+    .slideshow {
+        width: 400px; /* 輪播圖寬度 */
+        height: 300px; /* 輪播圖高度 */
+        overflow: hidden; /* 隱藏超出輪播圖範圍的內容 */
       }
+      
+      .slide {
+        width: 100%; /* 單個輪播項目寬度 */
+        height: 100%; /* 單個輪播項目高度 */
+        position: relative;
+        animation: slideshow 10s infinite; /* 輪播動畫設定 */
+      }
+      
+      .slide img {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+      
+      @keyframes slideshow {
+        0% { opacity: 1; } /* 初始位置 */
+        33.33% { opacity: 0; } /* 第一張圖片淡出 */
+        66.66% { opacity: 0; } /* 第二張圖片淡出 */
+        100% { opacity: 1; } /* 回到初始位置 */
+      }
+      
 
 }
 @media screen and (max-width:1180px) and (min-width:1025px) { 
