@@ -1,10 +1,12 @@
 import pymysql
 
 config = {
-    'host':'localhost',
+    'host':'140.135.113.162',
+    # 'host':'localhost',
     'port':3306,
     'user':'root',
-    'passwd':'1234',
+    # 'passwd':'1234',
+    'passwd':'tictagtoe',
     'db':'tictagtoe',
     'charset':'utf8mb4',
     # 資料庫內容以字典格式輸出
