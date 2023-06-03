@@ -132,11 +132,24 @@ function CreateKnowledgeMap(nodeData,linkData) {
         )
     );
 
+    myDiagram.nodeTemplateMap.add("post",
+    $(go.Node, "Auto",
+    $(go.Panel, "Vertical",
+        // $(go.Shape, "Circle",{ fill: "lightgreen", stroke: "black", strokeWidth: 1, width: 40, height: 40 }),
+        $(go.Picture,{ source: "../static/img/post.png", width: 30, height: 30 })
+    )
+    //,
+    // $(go.TextBlock,{ margin: 8, font: "12px sans-serif" },
+    //     new go.Binding("text", "text")
+    // )
+)
+    );
+
     myDiagram.nodeTemplateMap.add("people",
         $(go.Node, "Auto",
             $(go.Panel, "Vertical",
                 // $(go.Shape, "Circle",{ fill: "lightgreen", stroke: "black", strokeWidth: 1, width: 40, height: 40 }),
-                $(go.Picture,{ source: "../static/img/icon.png", width: 30, height: 30 })
+                $(go.Picture,{ source: "../static/img/people.png", width: 30, height: 30 })
             )
             //,
             // $(go.TextBlock,{ margin: 8, font: "12px sans-serif" },
@@ -162,7 +175,7 @@ function CreateKnowledgeMap(nodeData,linkData) {
         $(go.Node, "Auto",
             $(go.Panel, "Vertical",
                 // $(go.Shape, "Circle",{ fill: "lightgreen", stroke: "black", strokeWidth: 1, width: 40, height: 40 }),
-                $(go.Picture,{ source: "../static/img/bookmark.png", width: 30, height: 30 })
+                $(go.Picture,{ source: "../static/img/object.png", width: 30, height: 30 })
             )
             //,
             // $(go.TextBlock,{ margin: 8, font: "12px sans-serif" },
@@ -252,6 +265,6 @@ function AddImgInBlockUi() {
 
 function SetBlockUiContent(content,addNewEle=false) {
     $("[data-input='blockUiContent']")[0].textContent = content;
-    
+
     $("[data-block-ui='knowledgeMap']")[0].style.display = '';
 }

@@ -48,12 +48,30 @@
         
     }
 
-    .social-btn-container li{
+    .social-btn-container li, icon-explain li{
         width: 25%;
     }
 
     .social-btn-container li img{
         height: 100px;
+    }
+
+    .icon-explain-container {
+        width: 95%;
+        margin-top: 5%;
+        margin-left: 2.5%;
+        margin-right: 2.5%;
+    }
+
+    .icon-explain {
+        list-style-type: none;
+        width: 100%;
+        display: flex;
+        
+    }
+
+    .icon-explain li{
+        width: 25%;
     }
 
     /* 設定貼文卡片的樣式 */
