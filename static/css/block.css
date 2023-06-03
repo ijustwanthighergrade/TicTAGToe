@@ -74,6 +74,11 @@
         width: 25%;
     }
 
+    .icon-explain li img{
+        width: 30px;
+        height: 30px;
+    }
+
     /* 設定貼文卡片的樣式 */
     .post-card {
         background-color: #97CBFF;
