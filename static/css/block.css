@@ -58,9 +58,12 @@
 
     /* 設定貼文卡片的樣式 */
     .post-card {
-        background-color: #f2f2f2;
+        background-color: #97CBFF;
         padding: 10px;
-        margin-bottom: 20px;
+        margin-top: 3%;
+        margin-bottom: 5%;
+        margin-left: 2.5%;
+        margin-right: 2.5%;
         border-radius: 5px;
     }
 
@@ -127,7 +130,7 @@
         width: 100%; /* 單個輪播項目寬度 */
         height: 100%; /* 單個輪播項目高度 */
         position: relative;
-        animation: slideshow 10s infinite; /* 輪播動畫設定 */
+        /* animation: slideshow 10s infinite; 輪播動畫設定 */
       }
       
       .slide img {

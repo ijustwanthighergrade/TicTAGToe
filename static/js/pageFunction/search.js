@@ -14,7 +14,7 @@ function CreateSocialPostItem(posterImgSrc,posterName,postClub,time,content,like
     let comment = document.createElement('p');
 
     postContainer.dataset.post = '';
-    postContainer.className = '';
+    postContainer.className = 'post-card';
 
     // poster img
     posterImgContainer.className = 'circle-image';
@@ -220,6 +220,12 @@ function CreateKnowledgeMap(nodeData,linkData) {
                 alert('該功能尚未開啟，未來將會導向至個人頁面');
                 break;
 
+            case 'post':
+                // todo 到貼文頁面
+                // location.href = '/...?a=';
+                alert('該功能尚未開啟，未來將會導向至個人頁面');
+                break;
+
             case 'place':
                 // todo open block ui and show info
                 SetBlockUiContent('地點描述：' + node.data.text);
@@ -227,6 +233,7 @@ function CreateKnowledgeMap(nodeData,linkData) {
 
             case 'obj':
                 // todo open block ui and show info
+
                 SetBlockUiContent('物品描述：' + node.data.text);
                 break;
         
@@ -239,8 +246,12 @@ function CreateKnowledgeMap(nodeData,linkData) {
  });
 }
 
+function AddImgInBlockUi() {
+    
+}
 
-function SetBlockUiContent(content) {
+function SetBlockUiContent(content,addNewEle=false) {
     $("[data-input='blockUiContent']")[0].textContent = content;
+    
     $("[data-block-ui='knowledgeMap']")[0].style.display = '';
 }
