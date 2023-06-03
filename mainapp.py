@@ -47,76 +47,118 @@ def Index():
 
 
 # 搜尋結果頁面
-@app.route("/searchres", methods=['POST', 'GET'])
+@app.route("/searchres", methods=['GET'])
 def SearchRes():
     # 取得傳回的參數，此參數需傳回至前端
     # 撈取知識地圖資料，並傳回前端
-    # key = request.form['keyword']
-    # tagName = str(key)
+    key = request.args.get('keyword')
+    tagName = str(key)
     twoMode = []
     # tagName = "CYCU"
-    # sql = 'select * from hashtag where TagName = "%s";' % (tagName)
-    # cursor.execute(sql)
-    # result = cursor.fetchone()
-    # tagId = result[0]
-    # category1 = result[2]
-    # description1 = result[5]
+    sql = 'select * from hashtag where TagName = "%s";' % (tagName)
+    cursor.execute(sql)
+    result = cursor.fetchone()
+    if result is not None:
+        tagId = result[0]
+        category1 = result[2]
+        description1 = result[5]
+        category3 = ""
 
-    # sql = 'select * from hashtag_relationship where TagId = "%s";' % (tagId)
-    # cursor.execute(sql)
-    # results = cursor.fetchall()
-    # for row in results:
-    #     objId = row[1]
-    #     relationshipType = row[2]
-    #     nodeData = []
-    #     if relationshipType == "1":
-    #         sql = 'select * from img_target where TargetId = "%s";' % (objId)
-    #         cursor.execute(sql)
-    #         result1 = cursor.fetchone()
-    #         targetName = result1[2]
-    #         category2 = result1[3]
-    #         description2 = result1[4]
-    #         node1 = {
-    #             "key": tagId,
-    #             "category": category1,
-    #             "text": tagName,
-    #             "description": description1,
-    #             "type": category1
-    #         }
-    #         node2 = {
-    #             "key": objId,
-    #             "category": category2,
-    #             "text": targetName,
-    #             "description": description2,
-    #             "type": category2
-    #         }
-    #         nodeData.append(node1)
-    #         nodeData.append(node2)
-    #         twoMode.append(nodeData)
-    #     else:
-    #         sql = 'select * from post where DataId = "%s";' % (objId)
-    #         cursor.execute(sql)
-    #         result1 = cursor.fetchone()
-    #         postType = result1[2]
-    #         node1 = {
-    #             "key": tagId,
-    #             "category": category1,
-    #             "text": tagName,
-    #             "description": description1,
-    #             "type": category1
-    #         }
-    #         node2 = {
-    #             "key": objId,
-    #             "category": postType,
-    #             "text": objId,
-    #             "description": objId,
-    #             "type": postType
-    #         }
-    #         nodeData.append(node1)
-    #         nodeData.append(node2)
-    #         twoMode.append(nodeData)
+        if category1 == 1:
+            category3 = "people"
+        elif category1 == 2:
+            category3 = "place"
+        elif category1 == 3:
+            category3 = "obj"
+        elif category1 == 4:
+            category3 = "tag"
+        else:
+            category3 = "post"
 
-    # print(twoMode)
+        sql = 'select * from hashtag_relationship where TagId = "%s";' % (tagId)
+        cursor.execute(sql)
+        results = cursor.fetchall()
+        for row in results:
+            objId = row[1]
+            relationshipType = row[2]
+            nodeData = []
+            if relationshipType == 1:
+                sql = 'select * from img_target where TargetId = "%s";' % (objId)
+                cursor.execute(sql)
+                result1 = cursor.fetchone()
+                targetName = result1[2]
+                category2 = result1[3]
+                description2 = result1[4]
+                category4 = ""
+
+                if category2 == 1:
+                    category4 = "people"
+                elif category2 == 2:
+                    category4 = "place"
+                elif category2 == 3:
+                    category4 = "obj"
+                elif category2 == 4:
+                    category4 = "tag"
+                else:
+                    category4 = "post"
+
+                node1 = {
+                    "key": tagId,
+                    "category": category3,
+                    "text": tagName,
+                    "description": description1,
+                    "type": category3
+                }
+                node2 = {
+                    "key": objId,
+                    "category": category4,
+                    "text": targetName,
+                    "description": description2,
+                    "type": category4
+                }
+                nodeData.append(node1)
+                nodeData.append(node2)
+                twoMode.append(nodeData)
+            else:
+                sql = 'select * from post where DataId = "%s";' % (objId)
+                cursor.execute(sql)
+                result1 = cursor.fetchone()
+                postType = result1[2]
+                postType1 = ""
+
+                if postType == 1:
+                    postType1 = "people"
+                elif postType == 2:
+                    postType1 = "place"
+                elif postType == 3:
+                    postType1 = "obj"
+                elif postType == 4:
+                    postType1 = "tag"
+                else:
+                    postType1 = "post"
+
+                node1 = {
+                    "key": tagId,
+                    "category": category3,
+                    "text": tagName,
+                    "description": description1,
+                    "type": category3
+                }
+                node2 = {
+                    "key": objId,
+                    "category": postType1,
+                    "text": objId,
+                    "description": objId,
+                    "type": postType1
+                }
+                nodeData.append(node1)
+                nodeData.append(node2)
+                twoMode.append(nodeData)
+    else:
+        print(f"資料庫之中並沒有#{tagName}這個hashtag!!")
+
+    
+    print(twoMode)
 
     return render_template('search.html', twoMode = twoMode)
 
