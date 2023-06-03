@@ -51,7 +51,7 @@ def Index():
 def SearchRes():
     # 取得傳回的參數，此參數需傳回至前端
     # 撈取知識地圖資料，並傳回前端
-    key = request.args.get('keyword')
+    key = request.args.get('keyword') or ''
     tagName = str(key)
     nodeData = []
     linkData = []
@@ -84,14 +84,13 @@ def SearchRes():
             "type": category3
         }
         nodeData.append(node1)
-
+                
         sql = 'select * from hashtag_relationship where TagId = "%s";' % (tagId)
         cursor.execute(sql)
         results = cursor.fetchall()
         for row in results:
             objId = row[1]
             relationshipType = row[2]
-            imgPath = ""
             if relationshipType == 1:
                 sql = 'select * from img_target where TargetId = "%s";' % (objId)
                 cursor.execute(sql)
@@ -126,7 +125,6 @@ def SearchRes():
                     "to": objId
                 }
                 nodeData.append(node2)
-                linkData.append(link)
             else:
                 sql = 'select * from post where DataId = "%s";' % (objId)
                 cursor.execute(sql)
@@ -158,7 +156,7 @@ def SearchRes():
                 }
                 nodeData.append(node2)
                 linkData.append(link)
-        
+            
             sql = 'select * from hashtag_relationship where ObjId = "%s";' % (objId)
             cursor.execute(sql)
             result2 = cursor.fetchall()
