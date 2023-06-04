@@ -1,6 +1,8 @@
 $(function(){
     ControlMenu();
 
+    ClickTagStartSearch();
+
     // ! create knowledge map
     CreateKnowledgeMap(listNodeData,listLinkData);
     
