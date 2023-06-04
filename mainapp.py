@@ -28,8 +28,8 @@ app = Flask(__name__,static_url_path ='/static/')
 tools_CommonTools = src.CommonTools.CommonTools()
 
 # 呼叫 Mysql() 函式以獲取 db 變數
-db, cursor = Mysql()
-cursor = db.cursor()
+# db, cursor = Mysql()
+# cursor = db.cursor()
 
 
 ############################## function ##############################
@@ -53,154 +53,154 @@ def SearchRes():
     # 撈取知識地圖資料，並傳回前端
     key = request.args.get('keyword') or ''
     tagName = str(key)
-    nodeData = []
-    linkData = []
+    nodeData = [{ 'key': '1','category':"people", 'text': "xxx",type:"people" },{ 'key': '2','category':"tag", 'text': "xxx",'type':"tag"}]
+    linkData = [{ "from": '1', "to": '2'}]
     # tagName = "CYIM"
-    sql = 'select * from hashtag where TagName = "%s";' % (tagName)
-    cursor.execute(sql)
-    result = cursor.fetchone()
-    if result is not None:
-        tagId = result[0]
-        category1 = result[2]
-        description1 = result[5]
-        category3 = ""
+    # sql = 'select * from hashtag where TagName = "%s";' % (tagName)
+    # cursor.execute(sql)
+    # result = cursor.fetchone()
+    # if result is not None:
+    #     tagId = result[0]
+    #     category1 = result[2]
+    #     description1 = result[5]
+    #     category3 = ""
 
-        if category1 == 1:
-            category3 = "people"
-        elif category1 == 2:
-            category3 = "place"
-        elif category1 == 3:
-            category3 = "obj"
-        elif category1 == 4:
-            category3 = "tag"
-        else:
-            category3 = "post"
+    #     if category1 == 1:
+    #         category3 = "people"
+    #     elif category1 == 2:
+    #         category3 = "place"
+    #     elif category1 == 3:
+    #         category3 = "obj"
+    #     elif category1 == 4:
+    #         category3 = "tag"
+    #     else:
+    #         category3 = "post"
 
-        node1 = {
-            "key": tagId,
-            "category": category3,
-            "text": tagName,
-            "description": description1,
-            "type": category3
-        }
-        nodeData.append(node1)
+    #     node1 = {
+    #         "key": tagId,
+    #         "category": category3,
+    #         "text": tagName,
+    #         "description": description1,
+    #         "type": category3
+    #     }
+    #     nodeData.append(node1)
                 
-        sql = 'select * from hashtag_relationship where TagId = "%s";' % (tagId)
-        cursor.execute(sql)
-        results = cursor.fetchall()
-        for row in results:
-            objId = row[1]
-            relationshipType = row[2]
-            if relationshipType == 1:
-                sql = 'select * from img_target where TargetId = "%s";' % (objId)
-                cursor.execute(sql)
-                result1 = cursor.fetchone()
-                targetName = result1[2]
-                category2 = result1[3]
-                description2 = result1[4]
-                imgPath = result1[6]
-                category4 = ""
+    #     sql = 'select * from hashtag_relationship where TagId = "%s";' % (tagId)
+    #     cursor.execute(sql)
+    #     results = cursor.fetchall()
+    #     for row in results:
+    #         objId = row[1]
+    #         relationshipType = row[2]
+    #         if relationshipType == 1:
+    #             sql = 'select * from img_target where TargetId = "%s";' % (objId)
+    #             cursor.execute(sql)
+    #             result1 = cursor.fetchone()
+    #             targetName = result1[2]
+    #             category2 = result1[3]
+    #             description2 = result1[4]
+    #             imgPath = result1[6]
+    #             category4 = ""
 
-                if category2 == 1:
-                    category4 = "people"
-                elif category2 == 2:
-                    category4 = "place"
-                elif category2 == 3:
-                    category4 = "obj"
-                elif category2 == 4:
-                    category4 = "tag"
-                else:
-                    category4 = "post"
+    #             if category2 == 1:
+    #                 category4 = "people"
+    #             elif category2 == 2:
+    #                 category4 = "place"
+    #             elif category2 == 3:
+    #                 category4 = "obj"
+    #             elif category2 == 4:
+    #                 category4 = "tag"
+    #             else:
+    #                 category4 = "post"
 
-                node2 = {
-                    "key": objId,
-                    "category": category4,
-                    "text": targetName,
-                    "description": description2,
-                    "type": category4,
-                    "imgPath": imgPath
-                }
-                link = {
-                    "from": tagId,
-                    "to": objId
-                }
-                nodeData.append(node2)
-            else:
-                sql = 'select * from post where DataId = "%s";' % (objId)
-                cursor.execute(sql)
-                result1 = cursor.fetchone()
-                postType = result1[2]
-                postType1 = ""
+    #             node2 = {
+    #                 "key": objId,
+    #                 "category": category4,
+    #                 "text": targetName,
+    #                 "description": description2,
+    #                 "type": category4,
+    #                 "imgPath": imgPath
+    #             }
+    #             link = {
+    #                 "from": tagId,
+    #                 "to": objId
+    #             }
+    #             nodeData.append(node2)
+    #         else:
+    #             sql = 'select * from post where DataId = "%s";' % (objId)
+    #             cursor.execute(sql)
+    #             result1 = cursor.fetchone()
+    #             postType = result1[2]
+    #             postType1 = ""
 
-                if postType == 1:
-                    postType1 = "people"
-                elif postType == 2:
-                    postType1 = "place"
-                elif postType == 3:
-                    postType1 = "obj"
-                elif postType == 4:
-                    postType1 = "tag"
-                else:
-                    postType1 = "post"
+    #             if postType == 1:
+    #                 postType1 = "people"
+    #             elif postType == 2:
+    #                 postType1 = "place"
+    #             elif postType == 3:
+    #                 postType1 = "obj"
+    #             elif postType == 4:
+    #                 postType1 = "tag"
+    #             else:
+    #                 postType1 = "post"
 
-                node2 = {
-                    "key": objId,
-                    "category": postType1,
-                    "text": objId,
-                    "description": objId,
-                    "type": postType1
-                }
-                link = {
-                    "from": tagId,
-                    "to": objId
-                }
-                nodeData.append(node2)
-                linkData.append(link)
+    #             node2 = {
+    #                 "key": objId,
+    #                 "category": postType1,
+    #                 "text": objId,
+    #                 "description": objId,
+    #                 "type": postType1
+    #             }
+    #             link = {
+    #                 "from": tagId,
+    #                 "to": objId
+    #             }
+    #             nodeData.append(node2)
+    #             linkData.append(link)
             
-            sql = 'select * from hashtag_relationship where ObjId = "%s";' % (objId)
-            cursor.execute(sql)
-            result2 = cursor.fetchall()
-            for row1 in result2:
-                tagId1 = row1[0]
-                sql = 'select * from hashtag where TagId = "%s";' % (tagId1)
-                cursor.execute(sql)
-                result3 = cursor.fetchone()
-                tagName1 = result3[1]
-                category5 = result3[2]
-                description3 = result3[5]
+    #         sql = 'select * from hashtag_relationship where ObjId = "%s";' % (objId)
+    #         cursor.execute(sql)
+    #         result2 = cursor.fetchall()
+    #         for row1 in result2:
+    #             tagId1 = row1[0]
+    #             sql = 'select * from hashtag where TagId = "%s";' % (tagId1)
+    #             cursor.execute(sql)
+    #             result3 = cursor.fetchone()
+    #             tagName1 = result3[1]
+    #             category5 = result3[2]
+    #             description3 = result3[5]
 
-                if category5 == 1:
-                    category6 = "people"
-                elif category5 == 2:
-                    category6 = "place"
-                elif category5 == 3:
-                    category6 = "obj"
-                elif category5 == 4:
-                    category6 = "tag"
-                else:
-                    category6 = "post"
+    #             if category5 == 1:
+    #                 category6 = "people"
+    #             elif category5 == 2:
+    #                 category6 = "place"
+    #             elif category5 == 3:
+    #                 category6 = "obj"
+    #             elif category5 == 4:
+    #                 category6 = "tag"
+    #             else:
+    #                 category6 = "post"
 
-                node3 = {
-                    "key": tagId1,
-                    "category": category6,
-                    "text": tagName1,
-                    "description": description3,
-                    "type": category6
-                }
-                link1 = {
-                    "from": objId,
-                    "to": tagId1
-                }
-                nodeData.append(node3)
-                linkData.append(link1)
+    #             node3 = {
+    #                 "key": tagId1,
+    #                 "category": category6,
+    #                 "text": tagName1,
+    #                 "description": description3,
+    #                 "type": category6
+    #             }
+    #             link1 = {
+    #                 "from": objId,
+    #                 "to": tagId1
+    #             }
+    #             nodeData.append(node3)
+    #             linkData.append(link1)
 
-        nodeData = [x for i, x in enumerate(nodeData) if x not in nodeData[:i]]
-        linkData = [x for i, x in enumerate(linkData) if x not in linkData[:i]]
+    #     nodeData = [x for i, x in enumerate(nodeData) if x not in nodeData[:i]]
+    #     linkData = [x for i, x in enumerate(linkData) if x not in linkData[:i]]
 
-        print(nodeData)
-        print(linkData)
-    else:
-        print(f"資料庫之中並沒有#{tagName}這個hashtag!!")
+    #     print(nodeData)
+    #     print(linkData)
+    # else:
+    #     print(f"資料庫之中並沒有#{tagName}這個hashtag!!")
 
     return render_template('search.html', nodeData = nodeData, linkData = linkData)
 

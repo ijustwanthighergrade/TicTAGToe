@@ -1,6 +1,20 @@
 <!DOCTYPE html>
 <html lang="en">
 {% include '/frame/head.html' %}
+<script>
+    var listNodeData = [];
+    var listLinkData = [];
+
+    {% for item in nodeData %}
+        listNodeData.push({ key: '{{ item["key"] }}', category: '{{ item["category"] }}', text: '{{ item["text"] }}', description: '{{ item["description"] }}', type: '{{ item["type"] }}', imgPath: '{{ item["imgPath"] }}' });
+    {% endfor %}
+
+    {% for link in linkData %}
+            listLinkData.push({ from: '{{ link["from"] }}', to: '{{ link["to"] }}' });
+    {% endfor %}
+
+</script>
+
 
 <script src="https://unpkg.com/gojs/release/go.js"></script>
  <!-- 引入 Swiper  -->
