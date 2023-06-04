@@ -247,7 +247,7 @@ function CreateKnowledgeMap(nodeData,linkData) {
             case 'obj':
                 // todo open block ui and show info
 
-                SetBlockUiContent('物品描述：' + node.data.text);
+                SetBlockUiContent('物品描述：' + node.data.text,node.data.imgPath);
                 break;
         
             default:
@@ -259,12 +259,12 @@ function CreateKnowledgeMap(nodeData,linkData) {
  });
 }
 
-function AddImgInBlockUi() {
-    
-}
-
-function SetBlockUiContent(content,addNewEle=false) {
+function SetBlockUiContent(content,imgSrc='') {
     $("[data-input='blockUiContent']")[0].textContent = content;
 
+    if (imgSrc) {
+        $("[data-block-ui-img]")[0].src = imgSrc;
+    }
+    
     $("[data-block-ui='knowledgeMap']")[0].style.display = '';
 }
