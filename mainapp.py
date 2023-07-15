@@ -10,6 +10,7 @@ from selenium.webdriver.chrome.options import Options
 import time
 from selenium.webdriver.common.by import By
 import re
+from selenium.webdriver.edge.service import Service
 
 from model import Mysql
 import src,model
@@ -31,6 +32,7 @@ tools_CommonTools = src.CommonTools.CommonTools()
 db, cursor = Mysql()
 cursor = db.cursor()
 
+tagName = ""
 
 ############################## function ##############################
 #獲取爬蟲抓下的貼文內，所有相關的hashtag集合
@@ -202,7 +204,7 @@ def SearchRes():
     else:
         print(f"資料庫之中並沒有#{tagName}這個hashtag!!")
 
-    return render_template('search.html', nodeData = nodeData, linkData = linkData)
+    return render_template('search.html', nodeData = nodeData, linkData = linkData,Keyword=key)
 
 
 # 個人頁面
@@ -244,7 +246,11 @@ def search_FB():
 
         options = Options()
         options.add_argument("--disable-notifications")
-        edge = webdriver.Edge('./mesdgedriver', options=options)
+        # edge = webdriver.Edge('./mesdgedriver', options=options)
+        # 創建Edge服務物件，指定驅動程式的路徑
+        service = Service('./mesdgedriver')
+        # 創建Edge瀏覽器物件，傳入選項和服務物件
+        edge = webdriver.Edge(service=service, options=options)
         edge.get("https://www.facebook.com/")
     
         email = edge.find_element(By.ID, "email")
@@ -254,10 +260,10 @@ def search_FB():
         password.send_keys('zxcvb12345')
         password.submit()
 
-        time.sleep(2)
+        time.sleep(4)
         edge.get(url)
         # edge.get(f"{url[socialName]}{tagName}")
-        time.sleep(2)
+        time.sleep(4)
         time1 = 0
         for x in range(page*3):
             edge.execute_script("window.scrollTo(0,document.body.scrollHeight)")
@@ -282,8 +288,9 @@ def search_FB():
 
             #發文者名稱
             name = post.find('a', {'class': 'x1i10hfl xjbqb8w x6umtig x1b1mbwd xaqea5y xav7gou x9f619 x1ypdohk xt0psk2 xe8uvvx xdj266r x11i5rnm xat24cr x1mh8g0r xexx8yu x4uap5 x18d9i69 xkhd6sd x16tdsg8 x1hl2dhg xggy1nq x1a2a7pz x1heor9g xt0b8zv xo1l8bm'})
-            if name is not None:
-                name1 = name.find('b')
+            print(name)
+            if name:
+                name1 = name.find('span')
             else:
                 name = post.find('a', {'class':'x1i10hfl xjbqb8w x6umtig x1b1mbwd xaqea5y xav7gou x9f619 x1ypdohk xt0psk2 xe8uvvx xdj266r x11i5rnm xat24cr x1mh8g0r xexx8yu x4uap5 x18d9i69 xkhd6sd x16tdsg8 x1hl2dhg xggy1nq x1a2a7pz xt0b8zv xzsf02u x1s688f'})
                 if name is not None:
@@ -295,10 +302,14 @@ def search_FB():
                     else:
                         name1 = " "
             
+            print(name1)
+
             if name1 is not None:
                 name1 = name1.text
             else:
                 continue
+
+            
 
             #發文社團
             club = post.find('a', {'class': 'x1i10hfl xjbqb8w x6umtig x1b1mbwd xaqea5y xav7gou x9f619 x1ypdohk xt0psk2 xe8uvvx xdj266r x11i5rnm xat24cr x1mh8g0r xexx8yu x4uap5 x18d9i69 xkhd6sd x16tdsg8 x1hl2dhg xggy1nq x1a2a7pz xt0b8zv xzsf02u x1s688f'})
@@ -392,6 +403,7 @@ def search_FB():
         data = {
             'post_item': post_item
         }
+
 
     return jsonify(**data) 
 ############################## ajax ##############################
