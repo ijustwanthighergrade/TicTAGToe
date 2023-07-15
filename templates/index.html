@@ -82,83 +82,87 @@
 
         <img src="../static/img/logo.jpg" class="w-100 mb-5" alt="tictagtoe">
 
-        <div class="container mb-5">
+        <div class="container-fluid mb-5">
             <form>
                 <div class="row">
                     <div class="d-grid">
-                        <button type="button" class="btn btn-outline-secondary rounded-pill" data-bs-toggle="offcanvas" data-bs-target="#offcanvasBottom" aria-controls="offcanvasBottom">全站熱門: #friend #friend #friend</button>
+                        <button type="button" class="btn btn-outline-secondary rounded-pill btn-lg fs-1" data-bs-toggle="offcanvas" data-bs-target="#offcanvasBottom" aria-controls="offcanvasBottom">全站熱門: #friend #friend #friend</button>
                     </div>
                 </div>
             </form>
             <div class="offcanvas offcanvas-bottom" style="height: 90%;" tabindex="-1" id="offcanvasBottom" aria-labelledby="offcanvasBottomLabel">
                 <div class="offcanvas-header">
-                  <h5 class="offcanvas-title" id="offcanvasBottomLabel">全站熱門</h5>
+                  <h5 class="offcanvas-title fs-1" id="offcanvasBottomLabel">熱門hashtag</h5>
                   <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
                 </div>
                 <div class="offcanvas-body small">
                     <div class="row mb-5">
-                        <div class="col">
-                            <input class="form-control me-2 rounded-pill" type="search" placeholder="請輸入關鍵字" aria-label="Search">
-                        </div>
-                        <div class="col-auto">
-                            <button class="btn btn-outline-secondary border-0" type="submit">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
-                                    <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"/>
-                                </svg>
-                            </button>
+                        <div class="input-group">
+                            <div class="col">
+                                <input class="form-control form-control-lg me-2 rounded-pill fs-2" style="height: 60px;" type="search" placeholder="請輸入關鍵字" aria-label="Search">
+                            </div>
+                            <div class="col-auto">
+                                <form>
+                                    <button class="btn btn-outline-secondary border-0" type="submit">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="45" height="45" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
+                                            <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"/>
+                                        </svg>
+                                    </button>
+                                </form>
+                            </div>
                         </div>
                     </div>
                     <div class="row">
                         <ul class="nav nav-tabs justify-content-center">
                             <li class="nav-item">
-                              <a class="nav-link active" id="全站熱門-tab" data-bs-toggle="tab" href="#全站熱門" role="tab" aria-controls="全站熱門" aria-selected="true">全站熱門</a>
+                              <a class="nav-link active fs-2" id="全站熱門-tab" data-bs-toggle="tab" href="#全站熱門" role="tab" aria-controls="全站熱門" aria-selected="true">全站熱門</a>
                             </li>
                             <li class="nav-item">
-                              <a class="nav-link" id="好友熱門-tab" data-bs-toggle="tab" href="#好友熱門" role="tab" aria-controls="好友熱門" aria-selected="false">好友熱門</a>
+                              <a class="nav-link fs-2" id="好友熱門-tab" data-bs-toggle="tab" href="#好友熱門" role="tab" aria-controls="好友熱門" aria-selected="false">好友熱門</a>
                             </li>
                         </ul>
                           
                         <div class="tab-content">
-                            <div class="tab-pane fade show active text-center pt-5" id="全站熱門" role="tabpanel" aria-labelledby="全站熱門-tab">
+                            <div class="tab-pane fade show active text-center pt-5 fs-2" id="全站熱門" role="tabpanel" aria-labelledby="全站熱門-tab">
                             <!-- 全站熱門的內容 -->
                             <p>
-                                <a href="#" class="btn btn-link">1. #cute</a>
+                                <a href="#" class="btn btn-link fs-2">1. #cute</a>
                             </p>
                             <p>
-                                <a href="#" class="btn btn-link">2. #dog</a>
+                                <a href="#" class="btn btn-link fs-2">2. #dog</a>
                             </p>
                             <p>
-                                <a href="#" class="btn btn-link">3. #photo</a>
+                                <a href="#" class="btn btn-link fs-2">3. #photo</a>
                             </p>
                             <p>
-                                <a href="#" class="btn btn-link">4. #cloudy</a>
+                                <a href="#" class="btn btn-link fs-2">4. #cloudy</a>
                             </p>
                             <p>
-                                <a href="#" class="btn btn-link">5. #couple</a>
+                                <a href="#" class="btn btn-link fs-2">5. #couple</a>
                             </p>
                             <p>
-                                <a href="#" class="btn btn-link">6. #cup</a>
+                                <a href="#" class="btn btn-link fs-2">6. #cup</a>
                             </p>
                             </div>
                             <div class="tab-pane fade text-center pt-5" id="好友熱門" role="tabpanel" aria-labelledby="好友熱門-tab">
                             <!-- 好友熱門的內容 -->
                             <p>
-                                <a href="#" class="btn btn-link">1. #friend</a>
+                                <a href="#" class="btn btn-link fs-2">1. #friend</a>
                             </p>
                             <p>
-                                <a href="#" class="btn btn-link">2. #sad</a>
+                                <a href="#" class="btn btn-link fs-2">2. #sad</a>
                             </p>
                             <p>
-                                <a href="#" class="btn btn-link">3. #bad</a>
+                                <a href="#" class="btn btn-link fs-2">3. #bad</a>
                             </p>
                             <p>
-                                <a href="#" class="btn btn-link">4. #feeling</a>
+                                <a href="#" class="btn btn-link fs-2">4. #feeling</a>
                             </p>
                             <p>
-                                <a href="#" class="btn btn-link">5. #fish</a>
+                                <a href="#" class="btn btn-link fs-2">5. #fish</a>
                             </p>
                             <p>
-                                <a href="#" class="btn btn-link">6. #food</a>
+                                <a href="#" class="btn btn-link fs-2">6. #food</a>
                             </p>
                             </div>
                         </div>                          
@@ -167,29 +171,29 @@
             </div>
         </div>
 
-        <div class="container mb-5">
+        <div class="container-fluid mb-5">
             <div class="card text-center">
-                <div class="card-header">
+                <div class="card-header fs-2">
                     猜你喜歡
                 </div>
                 <div class="card-body">
                     <p>
-                        <a href="#" class="btn btn-link">1. #cute</a>
+                        <a href="#" class="btn btn-link fs-1">1. #cute</a>
                     </p>
                     <p>
-                        <a href="#" class="btn btn-link">2. #dog</a>
+                        <a href="#" class="btn btn-link fs-1">2. #dog</a>
                     </p>
                     <p>
-                        <a href="#" class="btn btn-link">3. #photo</a>
+                        <a href="#" class="btn btn-link fs-1">3. #photo</a>
                     </p>
                     <p>
-                        <a href="#" class="btn btn-link">4. #cloudy</a>
+                        <a href="#" class="btn btn-link fs-1">4. #cloudy</a>
                     </p>
                     <p>
-                        <a href="#" class="btn btn-link">5. #couple</a>
+                        <a href="#" class="btn btn-link fs-1">5. #couple</a>
                     </p>
                     <p>
-                        <a href="#" class="btn btn-link">6. #cup</a>
+                        <a href="#" class="btn btn-link fs-1">6. #cup</a>
                     </p>
                 </div>
             </div>
