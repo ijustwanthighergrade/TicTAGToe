@@ -12,9 +12,10 @@ function CreateSocialPostItem(posterImgSrc,posterName,postClub,time,content,like
     let postHashtagContainer = document.createElement('p');
     let like = document.createElement('p');
     let comment = document.createElement('p');
+    
 
     postContainer.dataset.post = '';
-    postContainer.className = 'post-card';
+    postContainer.className = 'container-fluid border border-secondary rounded mt-5 shadow';
 
     // poster img
     posterImgContainer.className = 'circle-image';
@@ -22,19 +23,19 @@ function CreateSocialPostItem(posterImgSrc,posterName,postClub,time,content,like
     posterImgContainer.appendChild(posterImg);
 
     // post's poster
-    poster.className = 'post-title';
+    poster.className = 'post-title fs-2';
     poster.textContent = '發文者：' + posterName;
 
     // post club
-    club.className = 'post-title';
+    club.className = 'post-title fs-2';
     club.textContent = '社團：' + postClub;
 
     // post time
-    postTIme.className = 'post-time';
+    postTIme.className = 'post-time fs-2';
     postTIme.textContent = '發文時間：' + time;
 
     // postContent
-    postContent.className = 'post-content';
+    postContent.className = 'post-content fs-2';
     postContent.textContent = '發文內容：' + content;
 
     // post img
@@ -56,18 +57,18 @@ function CreateSocialPostItem(posterImgSrc,posterName,postClub,time,content,like
     for (let i = 0; i < hashtag.length; i++) {
         var hashtagElement = document.createElement('a');
         hashtagElement.textContent = hashtag[i];
-        hashtagElement.className = 'post-hashtag';
+        hashtagElement.className = 'post-hashtag fs-2';
         hashtagElement.href = '/searchres?keyword=' + hashtag[i];
 
         postHashtagContainer.appendChild(hashtagElement);
     }
 
     // like count
-    like.className = 'post-time';
+    like.className = 'post-time fs-2';
     like.textContent = '讚：' + likeCount;
 
     // comment count
-    comment.className = 'post-time';
+    comment.className = 'post-time fs-2';
     comment.textContent = '留言：' + CommentCount;
 
     postContainer.appendChild(posterImgContainer);
