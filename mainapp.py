@@ -215,6 +215,19 @@ def Individual():
     # 利用會員Id取得會員資料，並傳送至前端
 
     return render_template('individual.html')
+
+# 他人頁面
+@app.route("/otherpeople", methods=['POST', 'GET'])
+def Otherpeople():
+    # 利用會員Id取得會員資料，並傳送至前端
+
+    return render_template('other_people.html')
+
+# 修改個人資訊頁面
+@app.route("/infomodify", methods=['POST', 'GET'])
+def Infomodify():
+
+    return render_template('info_modify.html')
 ############################## page ##############################
 
 

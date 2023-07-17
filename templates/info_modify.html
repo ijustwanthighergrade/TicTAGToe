@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="en">
+{% include '/frame/head.html' %}
+
+<script type="text/javascript" src="../static/js/pageFunction/index.js"></script>
+<script type="text/javascript" src="../static/js/doc.ready/index.js"></script>
+<link rel="stylesheet" type="text/css" href="../static/css/block.css">
+
+<body>
+    {% include '/frame/header.html' %}
+    <!-- <header class="header ">
+        <div>
+            <div>
+                <img src="" alt="" data-btn="index"/>
+            </div>
+            <div class="search-bar-block ">
+                <button class="menu-container" data-btn="menu">
+                    <img src="../static/img/menu_black.png" class="menu-icon"/>
+                </button>
+                <div class="search-bar"> -->
+                    <!-- <input type="text" placeholder="請輸入關鍵字" id="key" class="search-input" data-input="keyword"/> -->
+                <!-- </div> -->
+                <!-- <button type="button" class="search-btn" data-btn="search">搜尋</button> -->
+            <!-- </div>
+        </div>
+    </header> -->
+    <main>
+        <style>
+            .block-ui {
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                z-index: 9999;
+            }
+
+            .block-ui-overlay {
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background-color: rgba(0, 0, 0, 0.5);
+                z-index: 9999;
+            }
+
+            .block-ui-content {
+                background-color: white;
+                padding: 20px;
+                border-radius: 5px;
+                text-align: center;
+                z-index: 10000;
+            }
+
+        </style>
+        <!-- <div class="menu-title-div" data-block="menu">
+            <ul class="menu-title-container" >
+                <li class="menu-title">
+                    <a href="#" title="會員資料">會員資料</a>
+                </li>
+                <li class="menu-title">
+                    <a href="#" title="個人筆記">個人筆記</a>
+                </li>
+                <li class="menu-title">
+                    <a href="#" title="好有管理">好友管理</a>
+                </li>
+                <li class="menu-title">
+                    <a href="#" title="Hashtag管理">Hashtag管理</a>
+                </li>
+                <li class="menu-title">
+                    <a href="#" title="客服中心">客服中心</a>
+                </li>
+                <li class="menu-title">
+                    <a href="#" title="關於我們">關於我們</a>
+                </li>
+            </ul>
+        </div> -->
+
+        <div class="container-fluid fs-1 mt-5">
+            <div class="row text-center">
+                <div class="col">
+                    <h1>會員修改</h1>
+                </div>
+            </div>
+        </div>
+
+        <div class="container-fluid mt-3 mb-5">
+            <hr style="height: 10px; background-color: #97CBFF;">
+        </div>
+
+        <div class="container-fluid mt-5">
+            <div class="row">
+                <div class="col-1"></div>
+                <div class="col-11 fs-2" style="color: #97CBFF;">
+                    <h1>個人資料管理</h1>
+                </div>
+            </div>
+        </div>
+
+        <div class="container-fluid mt-5">
+            <div class="row">
+                <div class="col-1"></div>
+                <div class="col-4 text-center fs-1">
+                    <div class="mb-3 row">
+                        <label for="staticEmail" class="col-sm-2 col-form-label">Name</label>
+                    </div>
+                </div>
+                <div class="col-7 text-center fs-1">
+                    <input type="text" readonly class="form-control-plaintext" id="staticEmail1" value="冠貓">
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-1"></div>
+                <div class="col-4 text-center fs-1">
+                    <div class="mb-3 row">
+                        <label for="staticEmail" class="col-sm-2 col-form-label">ID</label>
+                    </div>
+                </div>
+                <div class="col-7 text-center fs-1">
+                    <input type="text" readonly class="form-control-plaintext" id="staticEmail2" value="@guanmao">
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-1"></div>
+                <div class="col-4 text-center fs-1">
+                    <div class="mb-3 row">
+                        <label for="staticEmail" class="col-sm-2 col-form-label">Phone</label>
+                    </div>
+                </div>
+                <div class="col-7 text-center fs-1">
+                    <input type="text" readonly class="form-control-plaintext" id="staticEmail3" value="0912345678">
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-1"></div>
+                <div class="col-4 text-center fs-1">
+                    <div class="mb-3 row">
+                        <label for="staticEmail" class="col-sm-2 col-form-label">Email</label>
+                    </div>
+                </div>
+                <div class="col-7 text-center fs-1">
+                    <input type="text" readonly class="form-control-plaintext" id="staticEmail4" value="guanmao@example.com">
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">
+                    <hr style="height: 5px; background-color: #97CBFF;">
+                </div>
+            </div>
+        </div>
+
+        <div class="container-fluid mt-5">
+            <div class="row">
+                <div class="col-1"></div>
+                <div class="col-11 fs-2" style="color: #97CBFF;">
+                    <h1>個人Hashtag管理</h1>
+                </div>
+            </div>
+        </div>
+
+        <div class="container-fluid mt-5">
+            <div class="row">
+                <div class="col-1"></div>
+                <div class="col-7 text-center fs-1">
+                    <input type="text" readonly class="form-control-plaintext" id="staticEmail5" value="#可愛">
+                </div>
+                <div class="col-4 text-center fs-1">
+                    <button class="btn btn-light border-0 bg-transparent">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="50" height="50" fill="#97CBFF" class="bi bi-x-square-fill" viewBox="0 0 16 16">
+                            <path d="M2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2zm3.354 4.646L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 1 1 .708-.708z"/>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div class="container-fluid mt-5">
+            <div class="row">
+                <div class="col-1"></div>
+                <div class="col-7 text-center fs-1">
+                    <input type="text" readonly class="form-control-plaintext" id="staticEmail6" value="#可愛">
+                </div>
+                <div class="col-4 text-center fs-1">
+                    <button class="btn btn-light border-0 bg-transparent">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="50" height="50" fill="#97CBFF" class="bi bi-x-square-fill" viewBox="0 0 16 16">
+                            <path d="M2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2zm3.354 4.646L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 1 1 .708-.708z"/>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div class="container-fluid mt-5">
+            <div class="row">
+                <div class="col-1"></div>
+                <div class="col-7 text-center fs-1">
+                    <input type="text" readonly class="form-control-plaintext" id="staticEmail7" value="#可愛">
+                </div>
+                <div class="col-4 text-center fs-1">
+                    <button class="btn btn-light border-0 bg-transparent">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="50" height="50" fill="#97CBFF" class="bi bi-x-square-fill" viewBox="0 0 16 16">
+                            <path d="M2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2zm3.354 4.646L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 1 1 .708-.708z"/>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div class="container-fluid mt-5">
+            <div class="row">
+                <div class="col-1"></div>
+                <div class="col-7 text-center fs-1">
+                    <input class="form-control-plaintext" type="text" placeholder="請輸入hashtag" aria-label="default input example">
+                </div>
+                <div class="col-4 text-center fs-1">
+                    <button class="btn btn-light border-0 bg-transparent">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="50" height="50" fill="#f5aad3" class="bi bi-plus-square-fill" viewBox="0 0 16 16">
+                            <path d="M2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2zm6.5 4.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3a.5.5 0 0 1 1 0z"/>
+                          </svg>
+                    </button>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">
+                    <hr style="height: 5px; background-color: #97CBFF;">
+                </div>
+            </div>
+        </div>
+
+        <div class="container-fluid mt-5">
+            <div class="row">
+                <div class="col-1"></div>
+                <div class="col-11 fs-2" style="color: #97CBFF;">
+                    <h1>其他社群連結管理</h1>
+                </div>
+            </div>
+        </div>
+
+        <div class="container-fluid mt-5">
+            <div class="row">
+                <div class="col-1"></div>
+                <div class="col-7 text-center fs-1">
+                    <input type="text" readonly class="form-control-plaintext" id="staticEmail8" value="Facebook">
+                </div>
+                <div class="col-4 text-center fs-1">
+                    <button class="btn btn-light border-0 bg-transparent">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="50" height="50" fill="#97CBFF" class="bi bi-x-square-fill" viewBox="0 0 16 16">
+                            <path d="M2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2zm3.354 4.646L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 1 1 .708-.708z"/>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div class="container-fluid mt-5">
+            <div class="row">
+                <div class="col-1"></div>
+                <div class="col-7 text-center fs-1">
+                    <input type="text" readonly class="form-control-plaintext" id="staticEmail9" value="Instagram">
+                </div>
+                <div class="col-4 text-center fs-1">
+                    <button class="btn btn-light border-0 bg-transparent">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="50" height="50" fill="#97CBFF" class="bi bi-x-square-fill" viewBox="0 0 16 16">
+                            <path d="M2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2zm3.354 4.646L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 1 1 .708-.708z"/>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div class="container-fluid mt-5">
+            <div class="row">
+                <div class="col-1"></div>
+                <div class="col-7 text-center fs-1">
+                    <input type="text" readonly class="form-control-plaintext" id="staticEmail10" value="Twitter">
+                </div>
+                <div class="col-4 text-center fs-1">
+                    <button class="btn btn-light border-0 bg-transparent">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="50" height="50" fill="#97CBFF" class="bi bi-x-square-fill" viewBox="0 0 16 16">
+                            <path d="M2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2zm3.354 4.646L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 1 1 .708-.708z"/>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div class="container-fluid mt-5">
+            <div class="row">
+                <div class="col-1"></div>
+                <div class="col-7 text-center fs-1">
+                    <input class="form-control-plaintext" type="text" placeholder="請輸入社群連結" aria-label="default input example">
+                </div>
+                <div class="col-4 text-center fs-1">
+                    <button class="btn btn-light border-0 bg-transparent">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="50" height="50" fill="#f5aad3" class="bi bi-plus-square-fill" viewBox="0 0 16 16">
+                            <path d="M2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2zm6.5 4.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3a.5.5 0 0 1 1 0z"/>
+                          </svg>
+                    </button>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">
+                    <hr style="height: 5px; background-color: #97CBFF;">
+                </div>
+            </div>
+        </div>
+
+        <div class="container-fluid mt-5 mb-5">
+            <div class="row">
+                <div class="col-6 text-center">
+                    <button class="btn border-0 text-light btn-lg fs-1" style="background-color: #97CBFF; cursor: pointer;">
+                        <span>取消</span>
+                    </button>
+                </div>
+                <div class="col-6 text-center">
+                    <button class="btn border-0 text-light btn-lg fs-1" style="background-color: #f5aad3; cursor: pointer;">
+                        <span>保存變更</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div class="container-fluid mt-5 mb-5">
+            <div class="row"></div>
+        </div>
+
+    </main>
+    
+    {% include '/frame/footer.html' %}
+
+</body>
+</html>
