@@ -228,6 +228,30 @@ def Otherpeople():
 def Infomodify():
 
     return render_template('info_modify.html')
+
+# 個人記事頁面
+@app.route("/personalnotes", methods=['POST', 'GET'])
+def Personalnotes():
+
+    return render_template('personal_notes.html')
+
+# 編輯記事頁面
+@app.route("/editnote", methods=['POST', 'GET'])
+def Editnote():
+
+    return render_template('edit_note.html')
+
+# 新增記事頁面
+@app.route("/newnote", methods=['POST', 'GET'])
+def Newnote():
+
+    return render_template('new_note.html')
+
+# 有關hashtag記事頁面
+@app.route("/listnoteshashtag", methods=['POST', 'GET'])
+def Listnoteshashtag():
+
+    return render_template('list_notes_hashtag.html')
 ############################## page ##############################
 
 

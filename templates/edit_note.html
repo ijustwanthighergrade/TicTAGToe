@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+{% include '/frame/head.html' %}
+
+<script type="text/javascript" src="../static/js/pageFunction/index.js"></script>
+<script type="text/javascript" src="../static/js/doc.ready/index.js"></script>
+<link rel="stylesheet" type="text/css" href="../static/css/block.css">
+
+<body>
+    {% include '/frame/header.html' %}
+    <!-- <header class="header ">
+        <div>
+            <div>
+                <img src="" alt="" data-btn="index"/>
+            </div>
+            <div class="search-bar-block ">
+                <button class="menu-container" data-btn="menu">
+                    <img src="../static/img/menu_black.png" class="menu-icon"/>
+                </button>
+                <div class="search-bar"> -->
+                    <!-- <input type="text" placeholder="請輸入關鍵字" id="key" class="search-input" data-input="keyword"/> -->
+                <!-- </div> -->
+                <!-- <button type="button" class="search-btn" data-btn="search">搜尋</button> -->
+            <!-- </div>
+        </div>
+    </header> -->
+    <main>
+        <style>
+            .block-ui {
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                z-index: 9999;
+            }
+
+            .block-ui-overlay {
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background-color: rgba(0, 0, 0, 0.5);
+                z-index: 9999;
+            }
+
+            .block-ui-content {
+                background-color: white;
+                padding: 20px;
+                border-radius: 5px;
+                text-align: center;
+                z-index: 10000;
+            }
+
+        </style>
+        <!-- <div class="menu-title-div" data-block="menu">
+            <ul class="menu-title-container" >
+                <li class="menu-title">
+                    <a href="#" title="會員資料">會員資料</a>
+                </li>
+                <li class="menu-title">
+                    <a href="#" title="個人筆記">個人筆記</a>
+                </li>
+                <li class="menu-title">
+                    <a href="#" title="好有管理">好友管理</a>
+                </li>
+                <li class="menu-title">
+                    <a href="#" title="Hashtag管理">Hashtag管理</a>
+                </li>
+                <li class="menu-title">
+                    <a href="#" title="客服中心">客服中心</a>
+                </li>
+                <li class="menu-title">
+                    <a href="#" title="關於我們">關於我們</a>
+                </li>
+            </ul>
+        </div> -->
+
+        <div class="container-fluid fs-1 mt-5">
+            <div class="row text-center">
+                <div class="col">
+                    <h1>編輯個人記事</h1>
+                </div>
+            </div>
+        </div>
+
+        <div class="container-fluid mt-3 mb-5">
+            <hr style="height: 10px; background-color: #97CBFF;">
+        </div>
+
+        <div class="container fs-1 mt-5">
+            <div class="row align-items-center mb-3">
+                <div class="col text-center">
+                    <label for="exampleFormControlInput1" class="form-label">標題</label>
+                </div>
+            </div>
+            <div class="row align-items-center">
+                <div class="col text-center">
+                    <input type="email" class="form-control form-control-lg" style="height: 100px; font-size: 40px;" id="exampleFormControlInput1" placeholder="請輸入標題" value="2/11 心情">
+                </div>
+            </div>
+        </div>
+
+        <div class="container fs-1 mt-5">
+            <div class="row align-items-center mb-3">
+                <div class="col text-center">
+                    <label for="exampleFormControlInput1" class="form-label">地點</label>
+                </div>
+            </div>
+            <div class="row align-items-center">
+                <div class="col text-center">
+                    <input type="email" class="form-control form-control-lg" style="height: 100px; font-size: 40px;" id="exampleFormControlInput2" placeholder="請輸入地點" value="Asia, Taiwan, Taipei, J, J">
+                </div>
+            </div>
+        </div>
+
+        <div class="container fs-1 mt-5">
+            <div class="row align-items-center mb-3">
+                <div class="col text-center">
+                    <label for="exampleFormControlInput1" class="form-label">時間</label>
+                </div>
+            </div>
+            <div class="row align-items-center">
+                <div class="col text-center">
+                    <input type="email" class="form-control form-control-lg" style="height: 100px; font-size: 40px;" id="exampleFormControlInput3" placeholder="請輸入時間" value="2023/07/19 12:51">
+                </div>
+            </div>
+        </div>
+
+        <div class="container fs-1 mt-5">
+            <div class="row align-items-center mb-3">
+                <div class="col text-center">
+                    <label for="exampleFormControlInput1" class="form-label">hashtag</label>
+                </div>
+            </div>
+            <div class="row align-items-center">
+                <div class="col text-center">
+                    <input type="email" class="form-control form-control-lg" style="height: 100px; font-size: 40px;" id="exampleFormControlInput4" placeholder="請輸入hashtag" value="#feeling #memo #sad">
+                </div>
+            </div>
+        </div>
+
+        <div class="container fs-1 mt-5">
+            <div class="row align-items-center mb-3">
+                <div class="col text-center">
+                    <label for="exampleFormControlInput1" class="form-label">內容</label>
+                </div>
+            </div>
+            <div class="row align-items-center">
+                <div class="col text-center">
+                    <textarea class="form-control" style="font-size: 40px;" id="exampleFormControlTextarea1" rows="6" placeholder="請輸入內容">Lorem ipsum dolor sit amet consectetur adipisicing elit. Vero optio molestias, aspernatur cupiditate alias praesentium, iusto eveniet quisquam corporis repudiandae, voluptatem voluptatum? Beatae adipisci laboriosam aspernatur repudiandae ratione rem. Exercitationem.</textarea>
+                </div>
+            </div>
+        </div>
+
+        <div class="container-fluid fs-1 mt-5">
+            <div class="row"></div>
+        </div>
+
+        <div class="container-fluid fs-1 mt-5">
+            <div class="row align-items-center">
+                <div class="col text-center">
+                    <a href="#" class="btn border-0 text-light btn-lg fs-1" style="background-color: #97CBFF; cursor: pointer;">
+                        <span>確定變更</span>
+                    </a>
+                </div>
+                <div class="col text-center">
+                    <a href="/personalnotes" class="btn border-0 text-light btn-lg fs-1" style="background-color: #f5aad3; cursor: pointer;">
+                        <span>取消變更</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+    </main>
+    
+    {% include '/frame/footer.html' %}
+
+</body>
+</html>
