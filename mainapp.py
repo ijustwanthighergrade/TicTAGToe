@@ -252,6 +252,18 @@ def Newnote():
 def Listnoteshashtag():
 
     return render_template('list_notes_hashtag.html')
+
+# 好友列表頁面
+@app.route("/friendlist", methods=['POST', 'GET'])
+def Friendlist():
+
+    return render_template('friend_list.html')
+
+# 歷史查詢頁面
+@app.route("/history", methods=['POST', 'GET'])
+def History():
+
+    return render_template('history.html')
 ############################## page ##############################
 
 

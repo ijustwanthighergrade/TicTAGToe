@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="en">
+{% include '/frame/head.html' %}
+
+<script type="text/javascript" src="../static/js/pageFunction/index.js"></script>
+<script type="text/javascript" src="../static/js/doc.ready/index.js"></script>
+<link rel="stylesheet" type="text/css" href="../static/css/block.css">
+
+<body>
+    {% include '/frame/header.html' %}
+    <!-- <header class="header ">
+        <div>
+            <div>
+                <img src="" alt="" data-btn="index"/>
+            </div>
+            <div class="search-bar-block ">
+                <button class="menu-container" data-btn="menu">
+                    <img src="../static/img/menu_black.png" class="menu-icon"/>
+                </button>
+                <div class="search-bar"> -->
+                    <!-- <input type="text" placeholder="請輸入關鍵字" id="key" class="search-input" data-input="keyword"/> -->
+                <!-- </div> -->
+                <!-- <button type="button" class="search-btn" data-btn="search">搜尋</button> -->
+            <!-- </div>
+        </div>
+    </header> -->
+    <main>
+        <style>
+            .block-ui {
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                z-index: 9999;
+            }
+
+            .block-ui-overlay {
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background-color: rgba(0, 0, 0, 0.5);
+                z-index: 9999;
+            }
+
+            .block-ui-content {
+                background-color: white;
+                padding: 20px;
+                border-radius: 5px;
+                text-align: center;
+                z-index: 10000;
+            }
+
+        </style>
+        <!-- <div class="menu-title-div" data-block="menu">
+            <ul class="menu-title-container" >
+                <li class="menu-title">
+                    <a href="#" title="會員資料">會員資料</a>
+                </li>
+                <li class="menu-title">
+                    <a href="#" title="個人筆記">個人筆記</a>
+                </li>
+                <li class="menu-title">
+                    <a href="#" title="好有管理">好友管理</a>
+                </li>
+                <li class="menu-title">
+                    <a href="#" title="Hashtag管理">Hashtag管理</a>
+                </li>
+                <li class="menu-title">
+                    <a href="#" title="客服中心">客服中心</a>
+                </li>
+                <li class="menu-title">
+                    <a href="#" title="關於我們">關於我們</a>
+                </li>
+            </ul>
+        </div> -->
+
+        <div class="container-fluid fs-1 mt-5">
+            <div class="row text-center">
+                <div class="col">
+                    <h1>歷史查詢</h1>
+                </div>
+            </div>
+        </div>
+
+        <div class="container-fluid mt-3 mb-5">
+            <hr style="height: 10px; background-color: #97CBFF;">
+        </div>
+
+        <div class="container-fluid fs-1 mt-5">
+            <form>
+                <div class="row">
+                    <div class="d-grid">
+                        <button type="button" class="btn btn-outline-primary rounded-pill btn-lg fs-1" style="color: #97CBFF;" data-bs-toggle="offcanvas" data-bs-target="#offcanvasBottom" aria-controls="offcanvasBottom">全站熱門: #friend #friend #friend</button>
+                    </div>
+                </div>
+            </form>
+            <div class="offcanvas offcanvas-bottom" style="height: 90%; opacity: 0.9; background-color: #a0a0a0; color: white;" tabindex="-1" id="offcanvasBottom" aria-labelledby="offcanvasBottomLabel">
+                <div class="offcanvas-header">
+                  <h5 class="offcanvas-title fs-1" id="offcanvasBottomLabel">熱門hashtag</h5>
+                  <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+                </div>
+                <div class="offcanvas-body small">
+                    <div class="row mb-5">
+                        <div class="input-group">
+                            <div class="col">
+                                <input class="form-control form-control-lg me-2 rounded-pill fs-2" style="height: 60px;" type="search" placeholder="請輸入關鍵字" aria-label="Search">
+                            </div>
+                            <div class="col-auto">
+                                <form>
+                                    <button class="btn btn-outline-secondary border-0" type="submit">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="45" height="45" fill="white" class="bi bi-search" viewBox="0 0 16 16">
+                                            <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"/>
+                                        </svg>
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <ul class="nav nav-tabs justify-content-center">
+                            <li class="nav-item">
+                              <a class="nav-link active fs-2" id="全站熱門-tab" data-bs-toggle="tab" href="#全站熱門" role="tab" aria-controls="全站熱門" aria-selected="true">全站熱門</a>
+                            </li>
+                            <li class="nav-item">
+                              <a class="nav-link fs-2" id="好友熱門-tab" data-bs-toggle="tab" href="#好友熱門" role="tab" aria-controls="好友熱門" aria-selected="false">好友熱門</a>
+                            </li>
+                        </ul>
+                          
+                        <div class="tab-content">
+                            <div class="tab-pane fade show active text-center pt-5 fs-2" id="全站熱門" role="tabpanel" aria-labelledby="全站熱門-tab">
+                            <!-- 全站熱門的內容 -->
+                            <p class="mb-5">
+                                <a href="#" class="btn btn-link fs-1 link-light" style="text-decoration: none;">#cute</a>
+                            </p>
+                            <p class="mb-5">
+                                <a href="#" class="btn btn-link fs-1 link-light" style="text-decoration: none;">#dog</a>
+                            </p>
+                            <p class="mb-5">
+                                <a href="#" class="btn btn-link fs-1 link-light" style="text-decoration: none;">#photo</a>
+                            </p>
+                            <p class="mb-5">
+                                <a href="#" class="btn btn-link fs-1 link-light" style="text-decoration: none;">#cloudy</a>
+                            </p>
+                            <p class="mb-5">
+                                <a href="#" class="btn btn-link fs-1 link-light" style="text-decoration: none;">#couple</a>
+                            </p>
+                            <p class="mb-5">
+                                <a href="#" class="btn btn-link fs-1 link-light" style="text-decoration: none;">#cup</a>
+                            </p>
+                            </div>
+                            <div class="tab-pane fade text-center pt-5" id="好友熱門" role="tabpanel" aria-labelledby="好友熱門-tab">
+                            <!-- 好友熱門的內容 -->
+                            <p class="mb-5">
+                                <a href="#" class="btn btn-link fs-1 link-light" style="text-decoration: none;">#friend</a>
+                            </p>
+                            <p class="mb-5">
+                                <a href="#" class="btn btn-link fs-1 link-light" style="text-decoration: none;">#sad</a>
+                            </p>
+                            <p class="mb-5">
+                                <a href="#" class="btn btn-link fs-1 link-light" style="text-decoration: none;">#bad</a>
+                            </p>
+                            <p class="mb-5">
+                                <a href="#" class="btn btn-link fs-1 link-light" style="text-decoration: none;">#feeling</a>
+                            </p>
+                            <p class="mb-5">
+                                <a href="#" class="btn btn-link fs-1 link-light" style="text-decoration: none;">#fish</a>
+                            </p>
+                            <p class="mb-5">
+                                <a href="#" class="btn btn-link fs-1 link-light" style="text-decoration: none;">#food</a>
+                            </p>
+                            </div>
+                        </div>                          
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="container-fluid mt-5">
+            <div class="row"></div>
+        </div>
+
+        <div class="container-fluid fs-1 mt-5">
+            <div class="row">
+                <div class="col-2"></div>
+                <div class="col-10 fs-1">
+                    <h1>最近查詢:</h1>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-2"></div>
+                <div class="col-10">
+                    <span>1. #cute #animal</span>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-2"></div>
+                <div class="col-10">
+                    <span>2. #photo #sunny</span>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-2"></div>
+                <div class="col-10">
+                    <span>3. #love #couple</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="container-fluid mt-5">
+            <div class="row"></div>
+        </div>
+
+        <div class="container-fluid mt-3 mb-5">
+            <hr style="height: 5px; background-color: #97CBFF;">
+        </div>
+
+        <div class="container-fluid mt-5">
+            <div class="row"></div>
+        </div>
+
+        <div class="container-fluid fs-1 mt-5" style="font-size: 50px;">
+            <div class="row">
+                <div class="col-2"></div>
+                <div class="col-10 fs-1">
+                    <h1>猜你喜歡:</h1>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-2"></div>
+                <div class="col-10">
+                    <span>1. #cute #dog</span>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-2"></div>
+                <div class="col-10">
+                    <span>2. #photo #cloudy</span>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-2"></div>
+                <div class="col-10">
+                    <span>3. #couple #cup</span>
+                </div>
+            </div>
+        </div>
+
+    </main>
+    
+    {% include '/frame/footer.html' %}
+
+</body>
+</html>
