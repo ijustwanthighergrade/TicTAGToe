@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+{% include '/frame/head.html' %}
+
+<script type="text/javascript" src="../static/js/pageFunction/index.js"></script>
+<script type="text/javascript" src="../static/js/doc.ready/index.js"></script>
+<link rel="stylesheet" type="text/css" href="../static/css/block.css">
+
+<body>
+    {% include '/frame/header.html' %}
+    <!-- <header class="header ">
+        <div>
+            <div>
+                <img src="" alt="" data-btn="index"/>
+            </div>
+            <div class="search-bar-block ">
+                <button class="menu-container" data-btn="menu">
+                    <img src="../static/img/menu_black.png" class="menu-icon"/>
+                </button>
+                <div class="search-bar"> -->
+                    <!-- <input type="text" placeholder="請輸入關鍵字" id="key" class="search-input" data-input="keyword"/> -->
+                <!-- </div> -->
+                <!-- <button type="button" class="search-btn" data-btn="search">搜尋</button> -->
+            <!-- </div>
+        </div>
+    </header> -->
+    <main>
+        <style>
+            .block-ui {
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                z-index: 9999;
+            }
+
+            .block-ui-overlay {
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background-color: rgba(0, 0, 0, 0.5);
+                z-index: 9999;
+            }
+
+            .block-ui-content {
+                background-color: white;
+                padding: 20px;
+                border-radius: 5px;
+                text-align: center;
+                z-index: 10000;
+            }
+
+        </style>
+        <!-- <div class="menu-title-div" data-block="menu">
+            <ul class="menu-title-container" >
+                <li class="menu-title">
+                    <a href="#" title="會員資料">會員資料</a>
+                </li>
+                <li class="menu-title">
+                    <a href="#" title="個人筆記">個人筆記</a>
+                </li>
+                <li class="menu-title">
+                    <a href="#" title="好有管理">好友管理</a>
+                </li>
+                <li class="menu-title">
+                    <a href="#" title="Hashtag管理">Hashtag管理</a>
+                </li>
+                <li class="menu-title">
+                    <a href="#" title="客服中心">客服中心</a>
+                </li>
+                <li class="menu-title">
+                    <a href="#" title="關於我們">關於我們</a>
+                </li>
+            </ul>
+        </div> -->
+
+        
+
+    </main>
+    
+    {% include '/frame/footer.html' %}
+
+</body>
+</html>
