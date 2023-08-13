@@ -216,6 +216,7 @@ def Individual():
 
     return render_template('individual.html')
 
+
 # 他人頁面
 @app.route("/otherpeople", methods=['POST', 'GET'])
 def Otherpeople():
@@ -223,11 +224,13 @@ def Otherpeople():
 
     return render_template('other_people.html')
 
+
 # 修改個人資訊頁面
 @app.route("/infomodify", methods=['POST', 'GET'])
 def Infomodify():
 
     return render_template('info_modify.html')
+
 
 # 個人記事頁面
 @app.route("/personalnotes", methods=['POST', 'GET'])
@@ -235,11 +238,13 @@ def Personalnotes():
 
     return render_template('personal_notes.html')
 
+
 # 編輯記事頁面
 @app.route("/editnote", methods=['POST', 'GET'])
 def Editnote():
 
     return render_template('edit_note.html')
+
 
 # 新增記事頁面
 @app.route("/newnote", methods=['POST', 'GET'])
@@ -247,11 +252,13 @@ def Newnote():
 
     return render_template('new_note.html')
 
+
 # 有關hashtag記事頁面
 @app.route("/listnoteshashtag", methods=['POST', 'GET'])
 def Listnoteshashtag():
 
     return render_template('list_notes_hashtag.html')
+
 
 # 好友列表頁面
 @app.route("/friendlist", methods=['POST', 'GET'])
@@ -259,11 +266,33 @@ def Friendlist():
 
     return render_template('friend_list.html')
 
+
 # 歷史查詢頁面
 @app.route("/history", methods=['POST', 'GET'])
 def History():
 
     return render_template('history.html')
+
+
+# 客服中心頁面
+@app.route("/customerservice", methods=['POST', 'GET'])
+def Customerservice():
+
+    return render_template('customer_service.html')
+
+
+# 客服諮詢紀錄頁面
+@app.route("/consultationrecord", methods=['POST', 'GET'])
+def Consultationrecord():
+
+    return render_template('consultation_record.html')
+
+
+# 關於我們頁面
+@app.route("/aboutus", methods=['POST', 'GET'])
+def Aboutus():
+
+    return render_template('about_us.html')
 ############################## page ##############################
 
 
