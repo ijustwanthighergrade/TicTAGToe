@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+{% include '/frame/head.html' %}
+
+<script type="text/javascript" src="../static/js/pageFunction/index.js"></script>
+<script type="text/javascript" src="../static/js/doc.ready/index.js"></script>
+<link rel="stylesheet" type="text/css" href="../static/css/block.css">
+
+<body>
+    {% include '/frame/header.html' %}
+    <!-- <header class="header ">
+        <div>
+            <div>
+                <img src="" alt="" data-btn="index"/>
+            </div>
+            <div class="search-bar-block ">
+                <button class="menu-container" data-btn="menu">
+                    <img src="../static/img/menu_black.png" class="menu-icon"/>
+                </button>
+                <div class="search-bar"> -->
+                    <!-- <input type="text" placeholder="請輸入關鍵字" id="key" class="search-input" data-input="keyword"/> -->
+                <!-- </div> -->
+                <!-- <button type="button" class="search-btn" data-btn="search">搜尋</button> -->
+            <!-- </div>
+        </div>
+    </header> -->
+    <main>
+        <style>
+            .block-ui {
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                z-index: 9999;
+            }
+
+            .block-ui-overlay {
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background-color: rgba(0, 0, 0, 0.5);
+                z-index: 9999;
+            }
+
+            .block-ui-content {
+                background-color: white;
+                padding: 20px;
+                border-radius: 5px;
+                text-align: center;
+                z-index: 10000;
+            }
+
+        </style>
+        <!-- <div class="menu-title-div" data-block="menu">
+            <ul class="menu-title-container" >
+                <li class="menu-title">
+                    <a href="#" title="會員資料">會員資料</a>
+                </li>
+                <li class="menu-title">
+                    <a href="#" title="個人筆記">個人筆記</a>
+                </li>
+                <li class="menu-title">
+                    <a href="#" title="好有管理">好友管理</a>
+                </li>
+                <li class="menu-title">
+                    <a href="#" title="Hashtag管理">Hashtag管理</a>
+                </li>
+                <li class="menu-title">
+                    <a href="#" title="客服中心">客服中心</a>
+                </li>
+                <li class="menu-title">
+                    <a href="#" title="關於我們">關於我們</a>
+                </li>
+            </ul>
+        </div> -->
+
+        <div class="container-fluid fs-1 mt-5">
+            <div class="row text-center">
+                <div class="col">
+                    <h1>客服中心</h1>
+                </div>
+            </div>
+        </div>
+
+        <div class="container-fluid mt-3 mb-5">
+            <hr style="height: 10px; background-color: #97CBFF;">
+        </div>
+
+        <div class="container-fluid mt-5">
+            <div class="row align-items-center">
+                <div class="col text-center">
+                    <button type="button" class="btn btn-light btn-lg fs-1" style="width: 90%; height: 100px;" data-bs-toggle="offcanvas" data-bs-target="#offcanvasBottom" aria-controls="offcanvasBottom">問題回報問題單</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="offcanvas offcanvas-bottom" tabindex="-1" id="offcanvasBottom" aria-labelledby="offcanvasBottomLabel" style="height: 90%; opacity: 0.9; background-color: #a0a0a0; color: white;">
+            <div class="offcanvas-header">
+                <h5 class="offcanvas-title fs-1 text-center" id="offcanvasBottomLabel">問題回報單</h5>
+                <button type="button" class="btn-close text-reset btn-lg" data-bs-dismiss="offcanvas" aria-label="Close" style="font-size: 30px;"></button>
+            </div>
+            <div class="offcanvas-body">
+                <div class="row align-items-center mb-3">
+                    <div class="col text-center">
+                        <label for="exampleFormControlInput1" class="form-label" style="font-size: 40px;">回報標題</label>
+                    </div>
+                </div>
+                <div class="row align-items-center">
+                    <div class="col text-center">
+                        <input type="text" class="form-control form-control-lg" style="height: 80px; font-size: 40px;" id="exampleFormControlInput1" placeholder="請輸入回報標題">
+                    </div>
+                </div>
+                <div class="row align-items-center mb-3 mt-5">
+                    <div class="col text-center">
+                        <label for="exampleFormControlInput1" class="form-label" style="font-size: 40px;">類型</label>
+                    </div>
+                </div>
+                <div class="row align-items-center">
+                    <div class="col text-center">
+                        <select class="form-select mb-3" style="height: 80px; font-size: 30px;" aria-label="example">
+                            <option selected>請選擇問題類型</option>
+                            <option value="1">One</option>
+                            <option value="2">Two</option>
+                            <option value="3">Three</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="row align-items-center mb-3">
+                    <div class="col text-center">
+                        <label for="exampleFormControlInput1" class="form-label" style="font-size: 40px;">問題描述</label>
+                    </div>
+                </div>
+                <div class="row align-items-center">
+                    <div class="col text-center">
+                        <textarea class="form-control" style="font-size: 40px;" id="exampleFormControlTextarea1" rows="6" placeholder="請輸入問題描述"></textarea>
+                    </div>
+                </div>
+                <div class="row align-items-center mt-5">
+                    <div class="col text-center">
+                        <a href="#" class="btn border-0 text-light btn-lg fs-1" style="background-color: #97CBFF; cursor: pointer;">
+                            <span>送出</span>
+                        </a>
+                    </div>
+                    <div class="col text-center">
+                        <a href="#" class="btn border-0 text-light btn-lg fs-1" style="background-color: #f5aad3; cursor: pointer;">
+                            <span>清除</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="container-fluid mt-5">
+            <div class="row">
+                <div class="col-1"></div>
+                <div class="col-11 fs-1" style="color: #97CBFF;">
+                    <h1 style="font-size: 60px;">FAQ</h1>
+                </div>
+            </div>
+        </div>
+
+        <div class="container-fluid mt-5">
+            <div class="row align-items-center">
+                <div class="col text-center">
+                    <button type="button" class="btn btn-light btn-lg fs-1" style="width: 90%; height: 100px;">使用教學</button>
+                </div>
+            </div>
+        </div>
+        <div class="container-fluid mt-5">
+            <div class="row align-items-center">
+                <div class="col text-center">
+                    <button type="button" class="btn btn-light btn-lg fs-1" style="width: 90%; height: 100px;">公開TAG與私人TAG</button>
+                </div>
+            </div>
+        </div>
+        <div class="container-fluid mt-5">
+            <div class="row align-items-center">
+                <div class="col text-center">
+                    <button type="button" class="btn btn-light btn-lg fs-1" style="width: 90%; height: 100px;">歷史紀錄</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="container-fluid mt-5">
+            <div class="row">
+                <div class="col-1"></div>
+                <div class="col-11 fs-1" style="color: #97CBFF;">
+                    <h1 style="font-size: 50px;">過往諮詢紀錄</h1>
+                </div>
+            </div>
+        </div>
+
+        <div class="container-fluid mt-5">
+            <div class="row align-items-center">
+                <div class="col text-center">
+                    <a href="/consultationrecord" class="btn btn-light btn-lg fs-1" style="width: 90%;">11/21 系統問題</a>
+                </div>
+            </div>
+        </div>
+        <div class="container-fluid mt-5">
+            <div class="row align-items-center">
+                <div class="col text-center">
+                    <a href="/consultationrecord" class="btn btn-light btn-lg fs-1" style="width: 90%;">12/21 TAG新增問題</a>
+                </div>
+            </div>
+        </div>
+        <div class="container-fluid mt-5">
+            <div class="row align-items-center">
+                <div class="col text-center">
+                    <a href="/consultationrecord" class="btn btn-light btn-lg fs-1" style="width: 90%;">12/30 好友管理問題</a>
+                </div>
+            </div>
+        </div>
+
+
+    </main>
+    
+    {% include '/frame/footer.html' %}
+
+</body>
+</html>
