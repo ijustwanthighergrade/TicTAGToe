@@ -293,6 +293,13 @@ def Consultationrecord():
 def Aboutus():
 
     return render_template('about_us.html')
+
+# 客服中心頁面
+@app.route("/hashtag_manage", methods=['POST', 'GET'])
+def Hashtagmanage():
+
+    return render_template('hashtag_manage.html')
+
 ############################## page ##############################
 
 
