@@ -211,8 +211,14 @@ def SearchRes():
 @app.route("/individual", methods=['POST', 'GET'])
 def Individual():
     # 利用session 取得會員Id
-
     # 利用會員Id取得會員資料，並傳送至前端
+    memId = "M1685006880"
+    sql = 'select * from member where MemId = "%s";' % (memId)
+    cursor.execute(sql)
+    result = cursor.fetchone()
+    memName = result[1]
+
+
 
     return render_template('individual.html')
 
