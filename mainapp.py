@@ -217,10 +217,40 @@ def Individual():
     cursor.execute(sql)
     result = cursor.fetchone()
     memName = result[1]
+    memImg = result[5]
+    sql = 'select * from hashtag where Owner = "%s" AND TagType = 6;' % (memId)
+    cursor.execute(sql)
+    results = cursor.fetchall()
+    tags = []
+    for result in results:
+        tags.append(result[1])
+    sql = 'select * from member_social_link where MemId = "%s";' % (memId)
+    cursor.execute(sql)
+    results = cursor.fetchall()
+    links = []
+    for result in results:
+        links.append(result[1])
+    sql = 'select * from post where Owner = "%s"' % (memId)
+    cursor.execute(sql)
+    results = cursor.fetchall()
+    posts = []
+    for result in results:
+        postItem = {
+            "title": result[1],
+            "time": result[6]
+        }
+        posts.append(postItem)
+    
+    user = {
+        "name": memName,
+        "image": memImg,
+        "tags": tags,
+        "links": links,
+        "posts": posts
+    }
 
 
-
-    return render_template('individual.html')
+    return render_template('individual.html', user=user)
 
 
 # 他人頁面
