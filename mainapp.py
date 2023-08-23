@@ -45,7 +45,31 @@ def extract_hashtags(content):
 # 首頁
 @app.route("/", methods=['POST', 'GET'])
 def Index():
-    return render_template('index.html')
+        # 根據資料表出現的Hashtag次數羅列全站熱門
+        sql = """
+            SELECT h.TagName, COUNT(hr.TagId) as Count
+            FROM hashtag_relationship hr
+            JOIN hashtag h ON hr.TagId = h.TagId
+            GROUP BY hr.TagId, h.TagName
+            ORDER BY Count DESC
+            LIMIT 10
+        """
+        # 根據資料表出現的Hashtag次數搜尋列顯示前三名
+        sqlsearch = """
+            SELECT h.TagName, COUNT(hr.TagId) as Count
+            FROM hashtag_relationship hr
+            JOIN hashtag h ON hr.TagId = h.TagId
+            GROUP BY hr.TagId, h.TagName
+            ORDER BY Count DESC
+            LIMIT 3
+        """
+
+        cursor.execute(sql)
+        hot_tags = cursor.fetchall()
+        cursor.execute(sqlsearch)
+        hot_3tags = cursor.fetchall()
+
+        return render_template('index.html', hot_tags=hot_tags, hot_3tags=hot_3tags)
 
 
 # 搜尋結果頁面
@@ -57,6 +81,11 @@ def SearchRes():
     tagName = str(key)
     nodeData = []
     linkData = []
+
+    # sqlname = 'SELECT Owner FROM hashtag WHERE TagName = "%s";' % (tagName)
+    # cursor.execute(sqlname)
+    # result = cursor.fetchone()
+
     # tagName = "CYIM"
     sql = 'select * from hashtag where TagName = "%s";' % (tagName)
     cursor.execute(sql)
@@ -330,7 +359,7 @@ def Aboutus():
 
     return render_template('about_us.html')
 
-# 客服中心頁面
+# Hashtag管理頁面
 @app.route("/hashtag_manage", methods=['POST', 'GET'])
 def Hashtagmanage():
 

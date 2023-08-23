@@ -232,6 +232,7 @@ function CreateKnowledgeMap(nodeData,linkData) {
                 // todo 到個人頁面
                 // location.href = '/...?a=';
                 alert('該功能尚未開啟，未來將會導向至個人頁面');
+                //SetBlockUiContent('個人描述：' + ownerName+ '你好');
                 break;
 
             case 'post':

@@ -86,7 +86,11 @@
             <form>
                 <div class="row">
                     <div class="d-grid">
-                        <button type="button" class="btn btn-outline-secondary rounded-pill btn-lg fs-1" data-bs-toggle="offcanvas" data-bs-target="#offcanvasBottom" aria-controls="offcanvasBottom">全站熱門: #friend #friend #friend</button>
+                        <button type="button" class="btn btn-outline-secondary rounded-pill btn-lg fs-1" data-bs-toggle="offcanvas" data-bs-target="#offcanvasBottom" aria-controls="offcanvasBottom">全站熱門: 
+                            {% for tag in hot_3tags %}
+                            #{{ tag[0] }}
+                            {% endfor %}
+                        </button>
                     </div>
                 </div>
             </form>
@@ -125,24 +129,11 @@
                         <div class="tab-content">
                             <div class="tab-pane fade show active text-center pt-5 fs-2" id="全站熱門" role="tabpanel" aria-labelledby="全站熱門-tab">
                             <!-- 全站熱門的內容 -->
+                            {% for tag in hot_tags %}
                             <p class="mb-5">
-                                <a href="#" class="btn btn-link fs-1 link-light" style="text-decoration: none;">#cute</a>
+                                <a href="/searchres?keyword={{ tag[0] }}" class="btn btn-link fs-1 link-light" style="text-decoration: none;">#{{ tag[0] }}</a>
                             </p>
-                            <p class="mb-5">
-                                <a href="#" class="btn btn-link fs-1 link-light" style="text-decoration: none;">#dog</a>
-                            </p>
-                            <p class="mb-5">
-                                <a href="#" class="btn btn-link fs-1 link-light" style="text-decoration: none;">#photo</a>
-                            </p>
-                            <p class="mb-5">
-                                <a href="#" class="btn btn-link fs-1 link-light" style="text-decoration: none;">#cloudy</a>
-                            </p>
-                            <p class="mb-5">
-                                <a href="#" class="btn btn-link fs-1 link-light" style="text-decoration: none;">#couple</a>
-                            </p>
-                            <p class="mb-5">
-                                <a href="#" class="btn btn-link fs-1 link-light" style="text-decoration: none;">#cup</a>
-                            </p>
+                            {% endfor %}
                             </div>
                             <div class="tab-pane fade text-center pt-5" id="好友熱門" role="tabpanel" aria-labelledby="好友熱門-tab">
                             <!-- 好友熱門的內容 -->
