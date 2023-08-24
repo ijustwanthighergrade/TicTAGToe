@@ -335,8 +335,31 @@ def Friendlist():
 # 歷史查詢頁面
 @app.route("/history", methods=['POST', 'GET'])
 def History():
+ # 根據資料表出現的Hashtag次數羅列全站熱門
+        sql = """
+            SELECT h.TagName, COUNT(hr.TagId) as Count
+            FROM hashtag_relationship hr
+            JOIN hashtag h ON hr.TagId = h.TagId
+            GROUP BY hr.TagId, h.TagName
+            ORDER BY Count DESC
+            LIMIT 10
+        """
+        # 根據資料表出現的Hashtag次數搜尋列顯示前三名
+        sqlsearch = """
+            SELECT h.TagName, COUNT(hr.TagId) as Count
+            FROM hashtag_relationship hr
+            JOIN hashtag h ON hr.TagId = h.TagId
+            GROUP BY hr.TagId, h.TagName
+            ORDER BY Count DESC
+            LIMIT 3
+        """
 
-    return render_template('history.html')
+        cursor.execute(sql)
+        hot_tags = cursor.fetchall()
+        cursor.execute(sqlsearch)
+        hot_3tags = cursor.fetchall()
+
+        return render_template('history.html', hot_tags=hot_tags, hot_3tags=hot_3tags)
 
 
 # 客服中心頁面
@@ -364,6 +387,12 @@ def Aboutus():
 def Hashtagmanage():
 
     return render_template('hashtag_manage.html')
+
+# Hashtag管理頁面
+@app.route("/hashtag_manage_new", methods=['POST', 'GET'])
+def Hashtagmanagenew():
+
+    return render_template('hashtag_manage_new.html')
 
 ############################## page ##############################
 
