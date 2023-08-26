@@ -248,6 +248,7 @@ def Individual():
     result = cursor.fetchone()
     memName = result[1]
     memImg = result[5]
+    memAtId = result[6]
     sql = 'select * from hashtag where Owner = "%s" AND TagType = 6;' % (memId)
     cursor.execute(sql)
     results = cursor.fetchall()
@@ -291,6 +292,7 @@ def Individual():
     
     user = {
         "name": memName,
+        "atid": memAtId,
         "image": memImg,
         "tags": tags,
         "links": links,
@@ -311,8 +313,41 @@ def Otherpeople():
 # 修改個人資訊頁面
 @app.route("/infomodify", methods=['POST', 'GET'])
 def Infomodify():
+    memId = "M1685006880" #目前寫死
+    sql = f"select * from member where MemId = '{memId}';"
+    cursor.execute(sql)
+    result = cursor.fetchone()
+    name = result[1]
+    memAtId = result[6]
+    email = result[2]
+    sql = f"select * from hashtag where Owner = '{memId}' and TagType = 6;"
+    cursor.execute(sql)
+    results = cursor.fetchall()
+    tags = []
+    for result in results:
+        tags.append(result[1])
+    sql = f"select * from member_social_link where Memid = '{memId}';"
+    cursor.execute(sql)
+    results = cursor.fetchall()
+    links = []
+    for result in results:
+        # if "twitter" in result[1]:
+        #     linkName = "Twitter"
+        # elif "facebook" in result[1]:
+        #     linkName = "Facebook"
+        # elif "instagram" in result[1]:
+        #     linkName = "Instagram"
+        links.append(result[1])
+    
+    user = {
+        "name": name,
+        "atId": memAtId,
+        "email": email,
+        "tags": tags,
+        "links": links
+    }
 
-    return render_template('info_modify.html')
+    return render_template('info_modify.html', user = user)
 
 
 # 個人記事頁面
@@ -616,6 +651,75 @@ def search_FB():
 
     return jsonify(**data) 
 ############################## ajax ##############################
+
+
+############################## fetch ##############################
+
+@app.route("/add_tag", methods=['POST'])
+def add_tag():
+    data = request.get_json()
+    tag = str(data.get('tag', None))
+    print(tag)
+    memId = "M1685006880" #目前寫死
+    time = str(datetime.now().strftime('%Y-%m-%d-%H:%M:%S'))
+    timestamp = int(datetime.now().timestamp())
+    tagId = str("H%s" % (timestamp))
+    print(tagId)
+    try:
+        sql = f"insert into hashtag values ('{tagId}', '{tag}', 6, '{memId}', 1, '{tag}', '{time}');"
+        result = cursor.execute(sql)
+        db.commit()
+        return jsonify({"result": "Add successful"}), 200
+    except:
+        db.rollback()
+        return jsonify({"result": "Add failed"}), 400
+
+@app.route("/delete_tag", methods=['POST'])
+def delete_tag():
+    data = request.get_json()
+    tag = str(data.get('tag', None))
+    memId = "M1685006880" #目前寫死
+    try:
+        sql = f"delete from hashtag where Owner = '{memId}' and TagName = '{tag}' and TagType = 6;"
+        result = cursor.execute(sql)
+        db.commit()
+        return jsonify({"result": "Delete successful"}), 200
+    except:
+        db.rollback()
+        return jsonify({"result": "Delete failed"}), 400
+
+@app.route("/add_link", methods=['POST'])
+def add_link():
+    data = request.get_json()
+    link = str(data.get('link', None))
+    memId = "M1685006880" #目前寫死
+    time = str(datetime.now().strftime('%Y-%m-%d-%H:%M:%S'))
+    try:
+        sql = f"insert into member_social_link values ('{memId}', '{link}', '{time}');"
+        print(sql)
+        result = cursor.execute(sql)
+        print(result)
+        db.commit()
+        return jsonify({"result": "Add successful"}), 200
+    except:
+        db.rollback()
+        return jsonify({"result": "Add failed"}), 400
+
+@app.route("/delete_link", methods=['POST'])
+def delete_link():
+    data = request.get_json()
+    link = str(data.get('link', None))
+    memId = "M1685006880" #目前寫死
+    try:
+        sql = f"delete from member_social_link where MemId = '{memId}' and SocialLink = '{link}';"
+        result = cursor.execute(sql)
+        db.commit()
+        return jsonify({"result": "Delete successful"}), 200
+    except:
+        db.rollback()
+        return jsonify({"result": "Delete failed"}), 400
+
+############################## fetch ##############################
 
 
 if __name__ == '__main__':
