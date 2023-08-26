@@ -718,6 +718,38 @@ def delete_link():
     except:
         db.rollback()
         return jsonify({"result": "Delete failed"}), 400
+    
+@app.route("/update_info", methods=['POST'])
+def update_info():
+    data = request.get_json()
+    name = str(data.get('name', None))
+    memAtId = str(data.get('id', None))
+    email = str(data.get('email', None))
+    memId = "M1685006880" #目前寫死
+    try:
+        sql = f"update member set MemName = '{name}', Email = '{email}', MemAtId = '{memAtId}' where MemId = '{memId}';"
+        cursor.execute(sql)
+        db.commit()
+        return jsonify({"result": "Update successful"}), 200
+    except:
+        db.rollback()
+        return jsonify({"result": "Update failed"}), 400
+    
+@app.route("/update_cancel", methods=['GET'])
+def update_cancel():
+    memId = "M1685006880" #目前寫死
+    sql = f"select * from member where MemId = '{memId}';"
+    cursor.execute(sql)
+    result = cursor.fetchone()
+    name = result[1]
+    memAtId = result[6]
+    email = result[2]
+    user = {
+        "name": name,
+        "id": memAtId,
+        "email": email
+    }
+    return jsonify(**user), 200
 
 ############################## fetch ##############################
 

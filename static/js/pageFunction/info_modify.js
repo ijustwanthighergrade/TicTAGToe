@@ -1,3 +1,60 @@
+// Save changes
+function saveChanges() {
+    var name = document.getElementById('name').value;
+    var id = document.getElementById('id').value;
+    var email = document.getElementById('email').value;
+
+    if (name === "" || id === "" || email === "") {
+        window.alert("欄位請勿為空!!");
+    }
+    else {
+        let url = `/update_info`;
+        let headers = {
+            "Content-Type": "application/json"
+        };
+        let body = {
+            "name": name,
+            "id": id,
+            "email": email
+        };
+
+        fetch(url, {method: 'POST', headers: headers, body: JSON.stringify(body)})
+        .then(function(res) {
+            return res.json();
+        })
+        .then(function(result) {
+            var result = result.result;
+            window.alert(result);
+        })
+        .catch(function(err) {
+            console.log(err);
+        });
+    }
+}
+
+// Cancel changes
+function cancelChanges() {
+    let url = `/update_cancel`;
+    let headers = {
+        "Content-Type": "application/json"
+    };
+    fetch(url, {method: 'GET', headers: headers})
+    .then(function(res) {
+        return res.json();
+    })
+    .then(function(result) {
+        var name = document.getElementById('name');
+        var id = document.getElementById('id');
+        var email = document.getElementById('email');
+        name.value = result.name;
+        id.value = result.id;
+        email.value = result.email;
+    })
+    .catch(function(err) {
+        console.log(err);
+    });
+}
+
 // Add hashtag
 function addContainer1() {
     var tagContainer = document.getElementById('addTag');

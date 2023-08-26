@@ -106,33 +106,33 @@
                 <div class="col-1"></div>
                 <div class="col-4 text-center fs-1">
                     <div class="mb-3 row">
-                        <label for="staticEmail" class="col-sm-2 col-form-label">Name</label>
+                        <label for="name" class="col-sm-2 col-form-label">Name</label>
                     </div>
                 </div>
                 <div class="col-7 text-center fs-1">
-                    <input type="text" readonly class="form-control-plaintext" id="staticEmail1" value="{{ user.name }}">
+                    <input type="text" class="form-control-plaintext" id="name" value="{{ user.name }}">
                 </div>
             </div>
             <div class="row">
                 <div class="col-1"></div>
                 <div class="col-4 text-center fs-1">
                     <div class="mb-3 row">
-                        <label for="staticEmail" class="col-sm-2 col-form-label">Id</label>
+                        <label for="id" class="col-sm-2 col-form-label">Id</label>
                     </div>
                 </div>
                 <div class="col-7 text-center fs-1">
-                    <input type="text" readonly class="form-control-plaintext" id="staticEmail2" value="{{ user.atId }}">
+                    <input type="text" class="form-control-plaintext" id="id" value="{{ user.atId }}">
                 </div>
             </div>
             <div class="row">
                 <div class="col-1"></div>
                 <div class="col-4 text-center fs-1">
                     <div class="mb-3 row">
-                        <label for="staticEmail" class="col-sm-2 col-form-label">Email</label>
+                        <label for="email" class="col-sm-2 col-form-label">Email</label>
                     </div>
                 </div>
                 <div class="col-7 text-center fs-1">
-                    <input type="text" readonly class="form-control-plaintext" id="staticEmail3" value="{{ user.email }}">
+                    <input type="text" class="form-control-plaintext" id="email" value="{{ user.email }}">
                 </div>
             </div>
             <div class="row">
@@ -145,12 +145,12 @@
         <div class="container-fluid mt-5 mb-5">
             <div class="row">
                 <div class="col-6 text-center">
-                    <button class="btn border-0 text-light btn-lg fs-1" style="background-color: #97CBFF; cursor: pointer;">
+                    <button id="cancel" class="btn border-0 text-light btn-lg fs-1" style="background-color: #97CBFF; cursor: pointer;" onclick="cancelChanges()">
                         <span>取消變更</span>
                     </button>
                 </div>
                 <div class="col-6 text-center">
-                    <button class="btn border-0 text-light btn-lg fs-1" style="background-color: #f5aad3; cursor: pointer;">
+                    <button id="save" class="btn border-0 text-light btn-lg fs-1" style="background-color: #f5aad3; cursor: pointer;" onclick="saveChanges()">
                         <span>保存變更</span>
                     </button>
                 </div>
