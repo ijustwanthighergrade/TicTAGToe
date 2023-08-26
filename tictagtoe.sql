@@ -68,7 +68,7 @@ CREATE TABLE `hashtag` (
 
 LOCK TABLES `hashtag` WRITE;
 /*!40000 ALTER TABLE `hashtag` DISABLE KEYS */;
-INSERT INTO `hashtag` VALUES ('H1685088000','CYCU',4,'M1685006880',1,'中原大學的英文縮寫','2023-05-26-16:00'),('H1685088060','CYIM',4,'M1685006880',1,'中原大學資管系的英文縮寫','2023-05-26-16:01'),('H1685088120','112專題',4,'M1685006880',1,'112年的畢業專題','2023-05-26-16:02'),('H1685088180','專題研究',4,'M1685006880',1,'專題競賽研究新創','2023-05-26-16:03'),('H1685088240','創意專題',4,'M1685006880',1,'具有相當創意的專題','2023-05-26-16:04');
+INSERT INTO `hashtag` VALUES ('H1685088000','CYCU',4,'M1685006880',1,'中原大學的英文縮寫','2023-05-26-16:00'),('H1685088060','CYIM',4,'M1685006880',1,'中原大學資管系的英文縮寫','2023-05-26-16:01'),('H1685088120','112專題',4,'M1685006880',1,'112年的畢業專題','2023-05-26-16:02'),('H1685088180','專題研究',4,'M1685006880',1,'專題競賽研究新創','2023-05-26-16:03'),('H1685088240','創意專題',4,'M1685006880',1,'具有相當創意的專題','2023-05-26-16:04'),('H1692541200','冷靜',6,'M1685006880',1,'冷靜','2023-08-20-22:20'),('H1693012456','沉著',6,'M1685006880',1,'沉著','2023-08-26-09:14:16');
 /*!40000 ALTER TABLE `hashtag` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -141,6 +141,8 @@ CREATE TABLE `member` (
   `Email` varchar(45) NOT NULL,
   `Status` int NOT NULL,
   `CreateTime` varchar(45) NOT NULL,
+  `ImagePath` varchar(100) NOT NULL,
+  `MemAtId` varchar(45) NOT NULL,
   PRIMARY KEY (`MemId`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -151,7 +153,7 @@ CREATE TABLE `member` (
 
 LOCK TABLES `member` WRITE;
 /*!40000 ALTER TABLE `member` DISABLE KEYS */;
-INSERT INTO `member` VALUES ('M1685006880','zhisen','a123@gmail.com',1,'2023-05-25');
+INSERT INTO `member` VALUES ('M1685006880','zhisen','a123@gmail.com',1,'2023-05-25','../static/img/cat.jpg','@zhisen');
 /*!40000 ALTER TABLE `member` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -214,8 +216,9 @@ DROP TABLE IF EXISTS `member_social_link`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `member_social_link` (
   `MemId` varchar(45) NOT NULL,
-  `SocailLink` varchar(100) NOT NULL,
-  `CreateTime` datetime NOT NULL
+  `SocialLink` varchar(100) NOT NULL,
+  `CreateTime` datetime NOT NULL,
+  PRIMARY KEY (`MemId`,`SocialLink`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -225,6 +228,7 @@ CREATE TABLE `member_social_link` (
 
 LOCK TABLES `member_social_link` WRITE;
 /*!40000 ALTER TABLE `member_social_link` DISABLE KEYS */;
+INSERT INTO `member_social_link` VALUES ('M1685006880','https://twitter.com/','2023-08-20 00:41:00'),('M1685006880','https://www.facebook.com/','2023-08-20 00:37:00'),('M1685006880','https://www.instagram.com/','2023-08-26 09:05:11');
 /*!40000 ALTER TABLE `member_social_link` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -237,11 +241,14 @@ DROP TABLE IF EXISTS `post`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `post` (
   `DataId` varchar(45) NOT NULL,
+  `Title` varchar(45) NOT NULL,
   `Content` varchar(500) NOT NULL,
   `PostType` int NOT NULL,
   `Owner` varchar(45) NOT NULL,
   `Status` int NOT NULL,
   `CreateTime` varchar(45) NOT NULL,
+  `Hashtag` varchar(100) NOT NULL,
+  `Location` varchar(100) DEFAULT NULL,
   PRIMARY KEY (`DataId`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -252,7 +259,7 @@ CREATE TABLE `post` (
 
 LOCK TABLES `post` WRITE;
 /*!40000 ALTER TABLE `post` DISABLE KEYS */;
-INSERT INTO `post` VALUES ('P1685088420','#CYCU #CYIM #112專題 我們的專題將帶你進入無限可能的世界！我們的團隊充滿熱情和創意，致力於解決實際問題和創新科技。無論是與人工智慧或者數位行銷相關，我們將為你帶來前所未有的啟發與驚喜。跟隨我們的腳步，一起探索未知的領域吧！?',5,'M1685006880',1,'2023-05-26-16:07'),('P1685088540','#專題研究 #創意專題 這次我們的研究充滿了無限的想像力和創造力。我們將挑戰傳統，探索新領域，為世界帶來全新的視野和驚喜。準備好迎接我們帶來的創新嗎？一起開啟這場奇幻之旅吧！✨',5,'M1685006880',1,'2023-05-26-16:09');
+INSERT INTO `post` VALUES ('P1685088420','資管專題1','專題 我們的專題將帶你進入無限可能的世界！我們的團隊充滿熱情和創意，致力於解決實際問題和創新科技。無論是與人工智慧或者數位行銷相關，我們將為你帶來前所未有的啟發與驚喜。跟隨我們的腳步，一起探索未知的領域吧！?',5,'M1685006880',1,'2023-05-26-16:07:20','#CYCU #CYIM #112','桃園中壢'),('P1685088540','資管專題2','這次我們的研究充滿了無限的想像力和創造力。我們將挑戰傳統，探索新領域，為世界帶來全新的視野和驚喜。準備好迎接我們帶來的創新嗎？一起開啟這場奇幻之旅吧！✨',5,'M1685006880',1,'2023-05-26-16:09:30','#專題研究 #創意專題','台北信義');
 /*!40000 ALTER TABLE `post` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -317,4 +324,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2023-08-11 13:43:13
+-- Dump completed on 2023-08-26  9:24:26
