@@ -655,22 +655,63 @@ def search_FB():
 #新增好友
 @app.route("/addfriend", methods=['POST'])
 def AddFriend():
+    # 取得MemId
+    selfMemId = ''
+    newFriendId = request.values.get('memId')
 
+    try:
+        sql = f'INSERT INTO member_relationship VALUE ({selfMemId}, {newFriendId})'
+        cursor.execute(sql)
+        db.commit()
 
-    return
+        return jsonify(**{'res':'success'})
+
+    except:
+        db.rollback()
+        return jsonify(**{'res':'fail'})
 
 
 #刪除好友
 @app.route("/deletefriend", methods=['POST'])
 def DeleteFriend():
+    # 取得MemId
+    selfMemId = ''
+    friendId = request.values.get('memId')
+
+    try:
+        sql = f'Delete FROM member_relationship WHERE MemId=\'{selfMemId}\' AND ObjId=\'{friendId}\';'
+        cursor.execute(sql)
+        db.commit()
+        return jsonify(**{'res':'success'})
+
+    except:
+        db.rollback()
+        return jsonify(**{'res':'fail'})
 
 
-    return
+#查詢好友列表
+@app.route("/getfriendlist", methods=['POST'])
+def GetFriendList():
+    # 取得MemId
+    selfMemId = ''
+    try:
+        sql = f'Select FROM member_relationship WHERE MemId=\'{selfMemId}\';'
+        cursor.execute(sql)
+        db.commit()
+        return jsonify(**{'res':'success'})
+
+    except:
+        db.rollback()
+        return jsonify(**{'res':'fail'})
 
 
-#搜尋好友
-@app.route("/Getfriend", methods=['POST'])
-def GetFriend():
+#變更好友間狀態
+@app.route("/changefriendstatus", methods=['POST'])
+def ChangeFriendStatus():
+    # 取得MemId
+    selfMemId = ''
+    friendId = request.values.get('memId')
+
 
 
     return
