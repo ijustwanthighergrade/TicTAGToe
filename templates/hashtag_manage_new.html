@@ -4,6 +4,7 @@
 
 <script type="text/javascript" src="../static/js/pageFunction/index.js"></script>
 <script type="text/javascript" src="../static/js/doc.ready/index.js"></script>
+
 <link rel="stylesheet" type="text/css" href="../static/css/block.css">
 
 <body>
@@ -91,51 +92,40 @@
         <div class="container-fluid mt-3 mb-5">
             <hr style="height: 10px; background-color: #97CBFF;">
         </div>
-
+        
+        <form id="hashtagForm" action="#" method="POST" enctype="multipart/form-data">
         <div class="container-fluid mt-5">
             <div class="row align-items-center">
                 <div class="col">
-                    <img src="../static/img/cat.jpg" class="mx-auto d-block" style="width: 500px; height: 500px; border: 5px solid #97CBFF; border-radius: 25%;" alt="">
+                    <img id="uploadedImage" src="../static/img/placeholder.jpg" class="mx-auto d-block" style="width: 500px; height: 480px; border: 5px solid #97CBFF; border-radius: 25%;" alt="Uploaded Image">
+                    <input name="Picfile" type="file" id="uploadButton" style="position: absolute; left: -9999px;" accept="image/*" required>
                 </div>
+            </div>
+        </div>
+        
+        
+        <div class="container fs-1 mt-5">
+            <div class="row align-items-center mb-3">
+                名稱：
+                    <input type="text" name="TargetName" class="form-control form-control-lg" style="height: 80px; font-size: 40px; width: 80%; float: right;" placeholder="請輸入名稱" required>
             </div>
         </div>
 
         <div class="container fs-1 mt-5">
             <div class="row align-items-center mb-3">
-                <div class="col text-center">
-                    <label for="exampleFormControlInput1" class="form-label">名稱</label>
-                </div>
-            </div>
-            <div class="row align-items-center">
-                <div class="col text-center">
-                    <input type="text" class="form-control form-control-lg" style="height: 100px; font-size: 40px;" id="exampleFormControlInput1" placeholder="請輸入標題">
-                </div>
+                圖片寬度：
+                    <input type="text" class="form-control form-control-lg" style="height: 80px; font-size: 40px; width: 70%; float: right;" placeholder="請輸入數值" required>
             </div>
         </div>
 
         <div class="container fs-1 mt-5">
             <div class="row align-items-center mb-3">
-                <div class="col text-center">
-                    <label for="exampleFormControlInput1" class="form-label">圖片寬度</label>
-                </div>
-            </div>
-            <div class="row align-items-center">
-                <div class="col text-center">
-                    <input type="text" class="form-control form-control-lg" style="height: 100px; font-size: 40px;" id="exampleFormControlInput2" placeholder="請輸入地點">
-                </div>
-            </div>
-        </div>
-
-        <div class="container fs-1 mt-5">
-            <div class="row align-items-center mb-3">
-                <div class="col text-center">
-                    <label for="exampleFormControlInput1" class="form-label">種類</label>
-                </div>
-            </div>
-            <div class="row align-items-center">
-                <div class="col text-center">
-                    <input type="text" class="form-control form-control-lg" style="height: 100px; font-size: 40px;" id="exampleFormControlInput3" placeholder="請輸入時間">
-                </div>
+                種類：
+                <select id="hashtag_type" style="width: 80%; height: 50px;" name="Type" required>
+                    <option value="1">人物 People</option>
+                    <option value="2">地點 Places</option>
+                    <option value="3">事物 Things</option>
+                  </select>
             </div>
         </div>
 
@@ -147,12 +137,67 @@
             </div>
             <div class="row align-items-center">
                 <div class="col text-center">
-                    <textarea class="form-control form-control-lg" rows="5" style="font-size: 40px; width:100%" id="exampleFormControlInput4" placeholder="請輸入hashtag"></textarea>
+                    <textarea name="Description" class="form-control form-control-lg" rows="5" style="font-size: 40px; width:100%" id="exampleFormControlInput4" placeholder="請為此圖片提供一份簡單的介紹！" required></textarea>
                 </div>
             </div>
         </div>
-     
+        <br>
+        <div class="col text-center">
+            <a href="/hashtag_manage" class="btn border-0 text-light btn-lg fs-1" style="background-color: #97CBFF; cursor: pointer; margin-right: 50px;">取消</a>
+            <input type="submit" value="確認新增" class="btn border-0 text-light btn-lg fs-1" style="background-color: #f5aad3; cursor: pointer;">
+        </div>
+
+        </form>
+    <!-- 測試用
+        {% for content in user_TargetName %}
+            {{ content }}
+        {% endfor %}
+        {% for content in user_ObjName %}
+            {{ content }}
+        {% endfor %}
+        {% for content in user_Type %}
+            {{ content }}
+        {% endfor %}
+        {% for content in user_Des %}
+            {{ content }}
+        {% endfor %}
+        {% for content in user_Targetid %}
+            {{ content }}
+        {% endfor %}
+        {% for content in user_nf %}
+            {{ content }}
+        {% endfor %}
+        {% for content in user_n %}
+            {{ content }}
+        {% endfor %}
+    -->
     </main>
     {% include '/frame/footer.html' %}
 </body>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+      const uploadButton = document.getElementById('uploadButton');
+      const uploadedImage = document.getElementById('uploadedImage');
+  
+      uploadedImage.addEventListener('click', () => {
+        uploadButton.click();
+      });
+  
+      uploadButton.addEventListener('change', (event) => {
+        const file = event.target.files[0];
+        if (file) {
+          const reader = new FileReader();
+          reader.onload = (e) => {
+            uploadedImage.src = e.target.result;
+          };
+          reader.readAsDataURL(file);
+        } else {
+          uploadedImage.src = '../static/img/placeholder.jpg';
+        }
+      });
+    });
+  </script>
+
+
 </html>

@@ -12,6 +12,7 @@ from selenium.webdriver.common.by import By
 import re
 from selenium.webdriver.edge.service import Service
 from datetime import datetime
+from PIL import Image
 
 from model import Mysql
 import src,model
@@ -34,6 +35,9 @@ db, cursor = Mysql()
 cursor = db.cursor()
 
 tagName = ""
+
+#上傳照片
+app.config['UPLOAD_FOLDER'] = 'static/img/uploads/'
 
 ############################## function ##############################
 #獲取爬蟲抓下的貼文內，所有相關的hashtag集合
@@ -452,12 +456,66 @@ def Aboutus():
 def Hashtagmanage():
 
     return render_template('hashtag_manage.html')
+        
+##############新增物件頁面測試用############
+#user_TargetName=[];
+#user_ObjName=[];
+#user_Type=[];
+#user_Des=[];
+#user_Targetid=[];
+#user_nf=[];
+#user_n=[];
 
-# Hashtag管理頁面
-@app.route("/hashtag_manage_new", methods=['POST', 'GET'])
+# Hashtag管理_新增物件頁面
+@app.route("/hashtag_manage_new", methods=['GET', 'POST'])
 def Hashtagmanagenew():
+    if request.method == 'POST':
+        if 'Picfile' in request.files:
+            image = request.files['Picfile']
+            TargetName = request.form['TargetName'],
+            ObjName = request.form['TargetName'],
+            Type = request.form['Type'],
+            Description = request.form['Description'], 
+            if image.filename != '':    
+
+        #user_TargetName.append(TargetName)
+        #user_ObjName.append(TargetName)
+        #user_Type.append(Type)
+        #user_Des.append(Description)
+        #user_i.append(image)
+
+                # Convert to JPEG format and Save image
+                target_id = "T" + str(int(time.time()))
+                new_filename = target_id+'.jpg'
+                now = datetime.now()
+                create_time = now.strftime('%Y-%m-%d %H:%M')
+                save_path = os.path.join(app.config['UPLOAD_FOLDER'], new_filename)
+                image.save(save_path)
+                image_path = "../static/img/uploads/" + new_filename
+        #user_Targetid.append(target_id)
+        #user_nf.append(new_filename)
+        #user_n.append(image_path)
+               
+                sql = 'INSERT INTO img_target (TargetId, TargetName, ObjName, Type, Description, CreateTime, ImagePath) VALUES (%s, %s, %s, %s, %s, %s, %s)'
+                data = (target_id, TargetName, ObjName, Type, Description, create_time, image_path)
+            
+            #target_id_to_delete = "T1693142334";  刪除測試用
+
+            try:
+                cursor.execute(sql, data)
+                #delete_sql = 'DELETE FROM img_target WHERE TargetId = %s' 刪除測試用
+                #cursor.execute(delete_sql, (target_id_to_delete,)) 刪除測試用
+                #db.commit() 刪除測試用
+                db.commit()
+                #print("Insertion successful")
+                return redirect(url_for('Hashtagmanage'))
+
+            except Exception as e:
+                db.rollback()
+                #print("Insertion failed:", str(e))
 
     return render_template('hashtag_manage_new.html')
+    #測試用：user_TargetName=user_TargetName,user_n=user_n, user_ObjName=user_ObjName, user_Type= user_Type, user_Des=user_Des, user_Targetid=user_Targetid, user_nf=user_nf, user_n=user_n
 
 ############################## page ##############################
 
