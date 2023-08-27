@@ -650,6 +650,30 @@ def search_FB():
 
 
     return jsonify(**data) 
+
+
+#新增好友
+@app.route("/addfriend", methods=['POST'])
+def AddFriend():
+
+
+    return
+
+
+#刪除好友
+@app.route("/deletefriend", methods=['POST'])
+def DeleteFriend():
+
+
+    return
+
+
+#搜尋好友
+@app.route("/Getfriend", methods=['POST'])
+def GetFriend():
+
+
+    return
 ############################## ajax ##############################
 
 
