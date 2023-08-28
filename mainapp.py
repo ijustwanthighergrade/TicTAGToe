@@ -755,7 +755,8 @@ def GetFriendList():
     try:
         sql = f'Select FROM member_relationship WHERE MemId=\'{selfMemId}\';'
         cursor.execute(sql)
-        db.commit()
+        res = cursor.fetchall()
+        print(res)
         return jsonify(**{'res':'success'})
 
     except:
@@ -769,10 +770,18 @@ def ChangeFriendStatus():
     # 取得MemId
     selfMemId = ''
     friendId = request.values.get('memId')
+    status = request.values.get('status')
 
+    # ! 目前資料表沒有Status這個欄位，需要討論是否新增該欄位
+    try:
+        sql = f'UPDATE member_relationship SET Status={status} WHERE MemId=\'{selfMemId}\' AND ObjId=\'{friendId}\';'
+        cursor.execute(sql)
+        db.commit()
+        return jsonify(**{'res':'success'})
 
-
-    return
+    except:
+        db.rollback()
+        return jsonify(**{'res':'fail'})
 ############################## ajax ##############################
 
 
