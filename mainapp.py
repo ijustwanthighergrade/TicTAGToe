@@ -517,6 +517,12 @@ def Hashtagmanagenew():
     return render_template('hashtag_manage_new.html')
     #測試用：user_TargetName=user_TargetName,user_n=user_n, user_ObjName=user_ObjName, user_Type= user_Type, user_Des=user_Des, user_Targetid=user_Targetid, user_nf=user_nf, user_n=user_n
 
+# Hashtag編輯頁面
+@app.route("/hashtag_manage_edit", methods=['POST', 'GET'])
+def Hashtagmanageedit():
+
+    return render_template('hashtag_manage_edit.html')
+
 ############################## page ##############################
 
 

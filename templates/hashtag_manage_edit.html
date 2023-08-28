@@ -84,120 +84,100 @@
         <div class="container-fluid fs-1 mt-5">
             <div class="row text-center">
                 <div class="col">
-                    <h1>新增物件</h1>
+                    <h1 style="font-size: 40px;">編輯公開Hashtag</h1>
                 </div>
             </div>
         </div>
 
         <div class="container-fluid mt-3 mb-5">
-            <hr style="height: 10px; background-color: #97CBFF;">
+            <hr style="height: 10px; background-color: #f5aad3;">
         </div>
         
         <form id="hashtagForm" action="#" method="POST" enctype="multipart/form-data">
         <div class="container-fluid mt-5">
             <div class="row align-items-center">
                 <div class="col">
-                    <img id="uploadedImage" src="../static/img/placeholder.jpg" class="mx-auto d-block" style="width: 500px; height: 480px; border: 5px solid #97CBFF; border-radius: 25%;" alt="Uploaded Image">
-                    <input name="Picfile" type="file" id="uploadButton" style="position: absolute; left: -9999px;" accept="image/*" required>
+                    <img id="uploadedImage" src="../static/img/uploads/T1693143235.jpg" class="mx-auto d-block" style="width: 700px; height: 680px; border: 5px solid #97CBFF; border-radius: 25%;" alt="Uploaded Image">
                 </div>
             </div>
         </div>
         
         
         <div class="container fs-1 mt-5">
-            <div class="row align-items-center mb-3">
-                名稱：
-                    <input type="text" name="TargetName" class="form-control form-control-lg" style="height: 80px; font-size: 40px; width: 80%; float: right;" placeholder="請輸入名稱" required>
+            <div class="row align-items-center mb-3" style="height:50px; font-size: 50px; margin-bottom:0px ;">
+                尖叫女人
+            </div>
+        </div>
+
+        <div class="container fs-1 mt-5">
+            <div class="row align-items-center mb-3" style=" height:130px; font-size: 35px; ">
+                敘述：我的心靈狀態我的心靈狀態我的心靈狀態我的心靈狀態我的心靈狀態我的心靈狀態我的心靈狀態我的心靈狀態大概50字長度
             </div>
         </div>
 
         <div class="container fs-1 mt-5">
             <div class="row align-items-center mb-3">
-                圖片寬度：
-                    <input type="text" class="form-control form-control-lg" style="height: 80px; font-size: 40px; width: 70%; float: right;" placeholder="請輸入數值" required>
-            </div>
-        </div>
-
-        <div class="container fs-1 mt-5">
-            <div class="row align-items-center mb-3">
-                種類：
-                <select id="hashtag_type" style="width: 80%; height: 50px;" name="Type" required>
-                    <option value="1">人物 People</option>
-                    <option value="2">地點 Places</option>
-                    <option value="3">事物 Things</option>
-                  </select>
-            </div>
-        </div>
-
-        <div class="container fs-1 mt-5">
-            <div class="row align-items-center mb-3">
-                <div class="col text-center">
-                    <label for="exampleFormControlInput1" class="form-label">敘述</label>
-                </div>
             </div>
             <div class="row align-items-center">
-                <div class="col text-center">
-                    <textarea name="Description" maxlength="50" class="form-control form-control-lg" rows="5" style="font-size: 40px; width:100%" id="exampleFormControlInput4" placeholder="請為此圖片提供一份50字的簡單介紹！" required></textarea>
+                <div class="form-control form-control-lg" style="overflow: auto; height:500px; border-radius:30px; background-color: #f5aad3; font-size: 40px; width:100%">
+                    <input type="text" style="border-radius: 35px;" id="inputText" placeholder=" 請輸入Hashtag標籤">
+                    <button id="submitButton">確認新增</button>
+                    <ul id="displayList" style="list-style-type:none;"></ul>
                 </div>
             </div>
         </div>
         <br>
+        
         <div class="col text-center">
             <a href="/hashtag_manage" class="btn border-0 text-light btn-lg fs-1" style="background-color: #97CBFF; cursor: pointer; margin-right: 50px;">取消</a>
-            <input type="submit" value="確認新增" class="btn border-0 text-light btn-lg fs-1" style="background-color: #f5aad3; cursor: pointer;">
+            <input type="submit" value="儲存變更" class="btn border-0 text-light btn-lg fs-1" style="background-color: #f5aad3; cursor: pointer;">
         </div>
 
         </form>
-    <!-- 測試用
-        {% for content in user_TargetName %}
-            {{ content }}
-        {% endfor %}
-        {% for content in user_ObjName %}
-            {{ content }}
-        {% endfor %}
-        {% for content in user_Type %}
-            {{ content }}
-        {% endfor %}
-        {% for content in user_Des %}
-            {{ content }}
-        {% endfor %}
-        {% for content in user_Targetid %}
-            {{ content }}
-        {% endfor %}
-        {% for content in user_nf %}
-            {{ content }}
-        {% endfor %}
-        {% for content in user_n %}
-            {{ content }}
-        {% endfor %}
-    -->
     </main>
     {% include '/frame/footer.html' %}
 </body>
 
 <script>
     document.addEventListener('DOMContentLoaded', function() {
-      const uploadButton = document.getElementById('uploadButton');
-      const uploadedImage = document.getElementById('uploadedImage');
-  
-      uploadedImage.addEventListener('click', () => {
-        uploadButton.click();
-      });
-  
-      uploadButton.addEventListener('change', (event) => {
-        const file = event.target.files[0];
-        if (file) {
-          const reader = new FileReader();
-          reader.onload = (e) => {
-            uploadedImage.src = e.target.result;
-          };
-          reader.readAsDataURL(file);
-        } else {
-          uploadedImage.src = '../static/img/placeholder.jpg';
+    const inputText = document.getElementById('inputText');
+    const submitButton = document.getElementById('submitButton');
+    const displayList = document.getElementById('displayList');
+    const words = [];  // 用于保存词汇的数组
+
+    submitButton.addEventListener('click', function(event) {
+        event.preventDefault();  // 阻止默认的表单提交行为
+
+        const inputValue = inputText.value;
+        if (inputValue.trim() !== '') {
+            words.push(inputValue);  // 将词汇添加到数组
+            updateDisplay();
+            inputText.value = '';  // 清空输入框
         }
-      });
     });
-  </script>
+
+    // 更新显示区域的内容
+    function updateDisplay() {
+        displayList.innerHTML = '';  // 清空显示区域
+        for (let i = 0; i < words.length; i++) {
+            const li = document.createElement('li');
+            li.textContent = "#"+words[i];
+            
+            const deleteButton = document.createElement('img');
+            deleteButton.src = '../static/img/delete-forever.png';
+            deleteButton.alt = '删除';
+            deleteButton.addEventListener('click', function() {
+                words.splice(i, 1);  // 从数组中删除词汇
+                updateDisplay();
+            });
+
+            li.appendChild(deleteButton);
+
+            displayList.appendChild(li);
+        }
+    }
+});
+</script>
 
 
 </html>
