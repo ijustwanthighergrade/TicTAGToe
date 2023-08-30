@@ -770,7 +770,7 @@ def GetFriendList():
         return jsonify(**{'res':'fail'})
 
 
-#變更好友間狀態
+#變更好友間狀態、關係
 @app.route("/changefriendstatus", methods=['POST'])
 def ChangeFriendStatus():
     # 取得MemId
@@ -779,6 +779,11 @@ def ChangeFriendStatus():
     status = request.values.get('status')
 
     # ! 目前資料表沒有Status這個欄位，需要討論是否新增該欄位
+    try:
+        status = int(status)
+    except:
+      status = 1
+
     try:
         sql = f'UPDATE member_relationship SET Status={status} WHERE MemId=\'{selfMemId}\' AND ObjId=\'{friendId}\';'
         cursor.execute(sql)
