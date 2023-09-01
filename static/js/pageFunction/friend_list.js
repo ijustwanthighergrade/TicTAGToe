@@ -21,11 +21,7 @@ function ChangeFriendRelationship(friend, status) {
         AjaxRequest('/changefriendstatus',{'memId':friend,'status':status},
         function(data){
 
-            if (data['res'] == 'fail') {
-                alert(data['msg']);
-            } else {
-                alert(friendStatus[status])
-            }
+            data['res'] == 'fail' ? alert(data['msg']) : alert(friendStatus[status]);
 
         });
 
