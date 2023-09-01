@@ -193,6 +193,7 @@ DROP TABLE IF EXISTS `member_relationship`;
 CREATE TABLE `member_relationship` (
   `MemId` varchar(45) NOT NULL,
   `ObjId` varchar(45) NOT NULL,
+  `Status` int NOT NULL,
   `CreateTime` varchar(45) NOT NULL,
   PRIMARY KEY (`MemId`,`ObjId`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
@@ -324,4 +325,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2023-08-26  9:24:26
+-- Dump completed on 2023-09-01 15:17:07
