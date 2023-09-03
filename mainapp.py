@@ -782,7 +782,7 @@ def ChangeFriendStatus():
     try:
         status = int(status)
     except:
-      status = 1
+        status = 1
 
     try:
         sql = f'UPDATE member_relationship SET Status={status} WHERE MemId=\'{selfMemId}\' AND ObjId=\'{friendId}\';'
