@@ -290,7 +290,8 @@ def Individual():
         formatted_date = datetime_obj.strftime("%Y/%m/%d")
         postItem = {
             "title": result[1],
-            "time": formatted_date
+            "time": formatted_date,
+            "postId": result[0]
         }
         posts.append(postItem)
     
@@ -357,8 +358,24 @@ def Infomodify():
 # 個人記事頁面
 @app.route("/personalnotes", methods=['POST', 'GET'])
 def Personalnotes():
+    memId = "M1685006880" #目前寫死
+    postId = request.values.get('postId')
+    sql = f"select * from post where DataId = '{postId}';"
+    cursor.execute(sql)
+    result = cursor.fetchone()
+    # tag = result[7]
+    # tagList = tag.split(" ")
 
-    return render_template('personal_notes.html')
+    postItem = {
+        "location": result[8],
+        "time": result[6],
+        "tags": result[7],
+        "title": result[1],
+        "content": result[2],
+        "id": result[0]
+    }
+
+    return render_template('personal_notes.html', postItem=postItem)
 
 
 # 編輯記事頁面
@@ -893,6 +910,35 @@ def update_cancel():
         "email": email
     }
     return jsonify(**user), 200
+
+@app.route("/update/note", methods=['POST'])
+def update_note():
+    data = request.get_json()
+    postId = data.get('postId', None)
+    location = data.get('location', None)
+    tags = data.get('tags', None)
+    content = data.get('content', None)
+    try:
+        sql = f"update post set Content = '{content}', Hashtag = '{tags}', Location = '{location}' where DataId = '{postId}';"
+        cursor.execute(sql)
+        db.commit()
+        return jsonify({"result": "Update successful"}), 200
+    except:
+        db.rollback()
+        return jsonify({"result": "Update failed"}), 400
+
+@app.route("/delete/note", methods=['POST'])
+def delete_note():
+    data = request.get_json()
+    postId = data.get('postId', None)
+    try:
+        sql = f"delete from post where DataId = '{postId}';"
+        cursor.execute(sql)
+        db.commit()
+        return jsonify({"result": "Delete successful"}), 200
+    except:
+        db.rollback()
+        return jsonify({"result": "Delete failed"}), 400
 
 ############################## fetch ##############################
 

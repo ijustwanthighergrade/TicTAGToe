@@ -83,7 +83,7 @@
         <div class="container-fluid fs-1 mt-5">
             <div class="row text-center">
                 <div class="col">
-                    <h1>2/11 心情</h1>
+                    <h1>{{ postItem.title }}</h1>
                 </div>
             </div>
         </div>
@@ -95,34 +95,18 @@
         <div class="container-fluid fs-1 mt-5">
             <div class="row align-items-center">
                 <div class="col-4 text-center">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="80" height="80" fill="#97CBFF" class="bi bi-geo-alt-fill" viewBox="0 0 16 16">
-                        <path d="M8 16s6-5.686 6-10A6 6 0 0 0 2 6c0 4.314 6 10 6 10zm0-7a3 3 0 1 1 0-6 3 3 0 0 1 0 6z"/>
-                    </svg>
-                </div>
-                <div class="col-8">
-                    <span>Asia, Taiwan, Taipei, J, J</span>
-                </div>
-            </div>
-        </div>
-
-        <div class="container-fluid fs-1 mt-5">
-            <div class="row"></div>
-        </div>
-
-        <div class="container-fluid fs-1 mt-5">
-            <div class="row align-items-center">
-                <div class="col-4 text-center">
                     <svg xmlns="http://www.w3.org/2000/svg" width="80" height="80" fill="#97CBFF" class="bi bi-clock-fill" viewBox="0 0 16 16">
                         <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM8 3.5a.5.5 0 0 0-1 0V9a.5.5 0 0 0 .252.434l3.5 2a.5.5 0 0 0 .496-.868L8 8.71V3.5z"/>
                     </svg>
                 </div>
                 <div class="col-8">
-                    <span>2023/07/19 12:51</span>
+                    <input type="text" class="form-control-plaintext" id="time" value="{{ postItem.time }}" readonly>
+                    <!-- <span>{{ postItem.time }}</span> -->
                 </div>
             </div>
         </div>
 
-        <div class="container-fluid fs-1 mt-5">
+        <!-- <div class="container-fluid fs-1 mt-5">
             <div class="row"></div>
         </div>
 
@@ -135,6 +119,24 @@
                 </div>
                 <div class="col-8">
                     <span>@guanmao</span>
+                </div>
+            </div>
+        </div> -->
+
+        <div class="container-fluid fs-1 mt-5">
+            <div class="row"></div>
+        </div>
+
+        <div class="container-fluid fs-1 mt-5">
+            <div class="row align-items-center">
+                <div class="col-4 text-center">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="80" height="80" fill="#97CBFF" class="bi bi-geo-alt-fill" viewBox="0 0 16 16">
+                        <path d="M8 16s6-5.686 6-10A6 6 0 0 0 2 6c0 4.314 6 10 6 10zm0-7a3 3 0 1 1 0-6 3 3 0 0 1 0 6z"/>
+                    </svg>
+                </div>
+                <div class="col-8">
+                    <input type="text" class="form-control-plaintext" id="location" value="{{ postItem.location }}">
+                    <!-- <span>{{ postItem.location }}</span> -->
                 </div>
             </div>
         </div>
@@ -151,9 +153,8 @@
                     </svg>
                 </div>
                 <div class="col-8">
-                    <a href="/listnoteshashtag" class="link-dark" style="text-decoration: none;">#feeling</a>
-                    <a href="/listnoteshashtag" class="link-dark" style="text-decoration: none;">#memo</a>
-                    <a href="/listnoteshashtag" class="link-dark" style="text-decoration: none;">#sad</a>
+                    <input type="text" class="form-control-plaintext" id="tags" value="{{ postItem.tags }}">
+                    <!-- <a href="/listnoteshashtag" class="link-dark" style="text-decoration: none;">{{ tag }}</a> -->
                 </div>
             </div>
         </div>
@@ -170,12 +171,15 @@
                     </svg>
                 </div>
                 <div class="col-8">
-                    <span>
-                        Lorem ipsum dolor, sit amet consectetur adipisicing elit. Aliquid asperiores perspiciatis nulla cum laboriosam minus perferendis ducimus modi, reprehenderit a. Fuga, molestiae corporis vitae impedit incidunt officia error odit possimus?
-                    </span>
+                    <textarea name="content" class="form-control-plaintext" id="content" cols="30" rows="10">{{ postItem.content }}</textarea>
+                    <!-- <span>
+                        {{ postItem.content }}
+                    </span> -->
                 </div>
             </div>
         </div>
+
+        <input type="hidden" id="postId" name="postId" value="{{ postItem.id }}">
 
         <div class="container-fluid fs-1 mt-5">
             <div class="row"></div>
@@ -190,14 +194,20 @@
         <div class="container-fluid fs-1 mt-5">
             <div class="row align-items-center">
                 <div class="col text-center">
-                    <a href="/editnote" class="btn border-0 text-light btn-lg fs-1" style="background-color: #97CBFF; cursor: pointer;">
+                    <button onclick="saveChanges()" class="btn border-0 text-light btn-lg fs-1" style="background-color: #97CBFF; cursor: pointer;">
+                        儲存筆記
+                    </button>
+                    <!-- <a href="/editnote" class="btn border-0 text-light btn-lg fs-1" style="background-color: #97CBFF; cursor: pointer;">
                         <span>編輯筆記</span>
-                    </a>
+                    </a> -->
                 </div>
                 <div class="col text-center">
-                    <a href="#" class="btn border-0 text-light btn-lg fs-1" style="background-color: #f5aad3; cursor: pointer;">
+                    <button onclick="deletePost()" class="btn border-0 text-light btn-lg fs-1" style="background-color: #f5aad3; cursor: pointer;">
+                        刪除筆記
+                    </button>
+                    <!-- <a href="#" class="btn border-0 text-light btn-lg fs-1" style="background-color: #f5aad3; cursor: pointer;">
                         <span>刪除筆記</span>
-                    </a>
+                    </a> -->
                 </div>
             </div>
         </div>
@@ -205,6 +215,6 @@
     </main>
     
     {% include '/frame/footer.html' %}
-
+    <script src="../static/js/pageFunction/personal_notes.js"></script>
 </body>
 </html>
