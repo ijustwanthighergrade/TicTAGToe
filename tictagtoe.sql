@@ -139,11 +139,11 @@ CREATE TABLE `member` (
   `MemId` varchar(45) NOT NULL,
   `MemName` varchar(45) NOT NULL,
   `Email` varchar(45) NOT NULL,
-  `Password` varchar(45) NOT NULL,
   `Status` int NOT NULL,
   `CreateTime` varchar(45) NOT NULL,
   `ImagePath` varchar(100) NOT NULL,
   `MemAtId` varchar(45) NOT NULL,
+  `Password` varchar(45) NOT NULL,
   PRIMARY KEY (`MemId`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -154,7 +154,7 @@ CREATE TABLE `member` (
 
 LOCK TABLES `member` WRITE;
 /*!40000 ALTER TABLE `member` DISABLE KEYS */;
-INSERT INTO `member` VALUES ('M1685006880','zhisen123','a123@gmail.com','a123',1,'2023-05-25','../static/img/cat.jpg','@zhisen');
+INSERT INTO `member` VALUES ('M1685006880','zhisen123','a123@gmail.com',1,'2023-05-25','../static/img/cat.jpg','@zhisen','a123');
 /*!40000 ALTER TABLE `member` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -340,6 +340,7 @@ CREATE TABLE `sys_admin` (
 
 LOCK TABLES `sys_admin` WRITE;
 /*!40000 ALTER TABLE `sys_admin` DISABLE KEYS */;
+INSERT INTO `sys_admin` VALUES ('M1685006123','admin@gmail.com','admin','admin','admin','2023-05-25');
 /*!40000 ALTER TABLE `sys_admin` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -352,4 +353,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2023-09-08 16:33:05
+-- Dump completed on 2023-09-08 16:54:26
