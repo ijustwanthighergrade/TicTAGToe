@@ -471,8 +471,20 @@ def Aboutus():
 # Hashtag管理頁面
 @app.route("/hashtag_manage", methods=['POST', 'GET'])
 def Hashtagmanage():
+    sqlsearch = """
+            SELECT TargetName
+            FROM img_target
+            WHERE TargetId IN (
+            SELECT TargetId
+            FROM member_img_target 
+            WHERE MemId = 'M1685006880'
+            );
+        """
 
-    return render_template('hashtag_manage.html')
+    cursor.execute(sqlsearch)
+    hashtag_manage = cursor.fetchall()
+
+    return render_template('hashtag_manage.html', hashtag_manage=hashtag_manage)
         
 ##############新增物件頁面測試用############
 #user_TargetName=[];
@@ -512,9 +524,13 @@ def Hashtagmanagenew():
         #user_Targetid.append(target_id)
         #user_nf.append(new_filename)
         #user_n.append(image_path)
-               
+                status="1"
+                MemId="M1685006880" #先寫死
+
                 sql = 'INSERT INTO img_target (TargetId, TargetName, ObjName, Type, Description, CreateTime, ImagePath) VALUES (%s, %s, %s, %s, %s, %s, %s)'
                 data = (target_id, TargetName, ObjName, Type, Description, create_time, image_path)
+                sql_2 = 'INSERT INTO member_img_target (TargetId, MemId, RelationshipType, status, CreateTime) VALUES (%s, %s, %s, %s, %s)'
+                data_2 = (target_id, MemId, Type, status, create_time)
             
             #target_id_to_delete = "T1693142334";  刪除測試用
 
@@ -524,7 +540,8 @@ def Hashtagmanagenew():
                 #cursor.execute(delete_sql, (target_id_to_delete,)) 刪除測試用
                 #db.commit() 刪除測試用
                 db.commit()
-                #print("Insertion successful")
+                cursor.execute(sql_2, data_2)
+                db.commit()
                 return redirect(url_for('Hashtagmanage'))
 
             except Exception as e:
