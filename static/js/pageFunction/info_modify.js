@@ -1,5 +1,5 @@
 // Save changes
-function saveChanges() {
+function saveChanges1() {
     var name = document.getElementById('name').value;
     var id = document.getElementById('id').value;
     var email = document.getElementById('email').value;
@@ -25,11 +25,17 @@ function saveChanges() {
         .then(function(result) {
             var result = result.result;
             window.alert(result);
+            window.location.href = "/individual";
         })
         .catch(function(err) {
             console.log(err);
         });
     }
+}
+
+function saveChanges2() {
+    window.alert("Update successful");
+    window.location.href = "/individual";
 }
 
 // Cancel changes
@@ -79,7 +85,6 @@ function addContainer1() {
         })
         .then(function(result) {
             var result = result.result;
-            window.alert(result);
         })
         .catch(function(err) {
             console.log(err);
@@ -124,7 +129,6 @@ function deleteContainer1(tag) {
     })
     .then(function(result) {
         var result = result.result;
-        window.alert(result);
     })
     .catch(function(err) {
         console.log(err);
@@ -159,7 +163,6 @@ function addContainer2() {
         })
         .then(function(result) {
             var result = result.result;
-            window.alert(result);
         })
         .catch(function(err) {
             console.log(err);
@@ -204,7 +207,6 @@ function deleteContainer2(link) {
     })
     .then(function(result) {
         var result = result.result;
-        window.alert(result);
     })
     .catch(function(err) {
         console.log(err);

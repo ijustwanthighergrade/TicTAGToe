@@ -26,6 +26,7 @@ function saveChanges() {
         .then(function(result) {
             var result = result.result;
             window.alert(result);
+            window.location.href = "/individual";
         })
         .catch(function(err) {
             console.log(err);
