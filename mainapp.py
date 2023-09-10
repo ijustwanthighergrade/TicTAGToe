@@ -741,7 +741,7 @@ def AddFriend():
     newFriendId = request.values.get('memId')
 
     try:
-        sql = f'INSERT INTO member_relationship VALUE ({selfMemId}, {newFriendId})'
+        sql = f'INSERT INTO member_relationship VALUE ({selfMemId}, {newFriendId});'
         cursor.execute(sql)
         db.commit()
 
