@@ -3,7 +3,7 @@ $(function(){
 
     ClickTagStartSearch();
 
-    // ! create knowledge map
+    // create knowledge map
     CreateKnowledgeMap(listNodeData,listLinkData);
     
     $("[data-close-block-ui]").on("click", function(){
@@ -61,5 +61,10 @@ $(function(){
         // } else {
             
         // }
+    });
+
+    // search tag
+    $("[data-btn='searchTag']").on("click", function(){
+        location.href = '/searchres?keyword=' + currTag;
     });
 })

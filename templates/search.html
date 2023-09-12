@@ -2,6 +2,7 @@
 <html lang="en">
 {% include '/frame/head.html' %}
 <script>
+    var currTag = '';
     var listNodeData = [];
     var listLinkData = [];
 
@@ -135,6 +136,22 @@
                 </div>
                 <div style="text-align: left;">
                     <span data-input="blockUiContent"></span>
+                </div>
+            </div>
+        </div>
+        <div class="block-ui" data-block-ui="knowledgeMapForTag" style="display: none;">
+            <div class="block-ui-overlay"></div>
+            <div class="block-ui-content">
+            <!-- 在此處放置您要阻止的內容 -->
+            <!-- 關閉 -->
+                <div style="text-align: right;">
+                    <button data-close-block-ui="knowledgeMapForTag" class="w3-hover-blue">X</button>
+                </div>
+                <div style="text-align: left;">
+                    <span data-input="blockUiContentForTag"></span>
+                </div>
+                <div style="text-align: right;">
+                    <button data-btn="searchTag">查詢</button>
                 </div>
             </div>
         </div>

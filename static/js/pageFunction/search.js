@@ -225,7 +225,8 @@ function CreateKnowledgeMap(nodeData,linkData) {
         switch (node.data.type) {
             case 'tag':
                 // search this tag
-                location.href = '/searchres?keyword=' + node.data.text;
+                // location.href = '/searchres?keyword=' + node.data.text;
+                SetBlockUiContentForTag(node.data.description,node.data.text);
                 break;
 
             case 'people':
@@ -258,7 +259,8 @@ function CreateKnowledgeMap(nodeData,linkData) {
 
         return;
     }
- });
+    });
+
 }
 
 function SetBlockUiContent(content,imgSrc='') {
@@ -269,4 +271,10 @@ function SetBlockUiContent(content,imgSrc='') {
     }
     
     $("[data-block-ui='knowledgeMap']")[0].style.display = '';
+}
+
+function SetBlockUiContentForTag(content, tagName) {
+    $("[data-input='blockUiContentForTag']")[0].textContent = content;
+    currTag = tagName;
+    $("[data-block-ui='knowledgeMapForTag']")[0].style.display = '';
 }

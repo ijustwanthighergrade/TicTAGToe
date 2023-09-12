@@ -812,7 +812,6 @@ def ChangeFriendStatus():
     friendId = request.values.get('memId')
     status = request.values.get('status')
 
-    # ! 目前資料表沒有Status這個欄位，需要討論是否新增該欄位
     try:
         status = int(status)
     except:
