@@ -2,6 +2,9 @@ $(function(){
     // control menu
     ControlMenu();
 
+    // header search bar
+    ClickTagStartSearch();
+
     // send friend request
     SendFriendRequest();
 

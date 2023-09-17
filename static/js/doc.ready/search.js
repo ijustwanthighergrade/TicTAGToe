@@ -1,6 +1,7 @@
 $(function(){
     ControlMenu();
 
+    // header search bar
     ClickTagStartSearch();
 
     // create knowledge map
@@ -61,10 +62,5 @@ $(function(){
         // } else {
             
         // }
-    });
-
-    // search tag
-    $("[data-btn='searchTag']").on("click", function(){
-        location.href = '/searchres?keyword=' + $("[data-input='keyword']")[0].value;
     });
 })
