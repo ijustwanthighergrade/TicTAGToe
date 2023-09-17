@@ -65,6 +65,6 @@ $(function(){
 
     // search tag
     $("[data-btn='searchTag']").on("click", function(){
-        location.href = '/searchres?keyword=' + currTag;
+        location.href = '/searchres?keyword=' + $("[data-input='keyword']")[0].value;
     });
 })
