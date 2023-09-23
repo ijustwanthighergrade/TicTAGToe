@@ -3,16 +3,19 @@ from flask_sqlalchemy import SQLAlchemy
 import os,sys
 import json
 import requests
+import time
+import re
+from datetime import datetime
+from PIL import Image
 from bs4 import BeautifulSoup
 import lxml
 from selenium import webdriver
-from selenium.webdriver.chrome.options import Options
-import time
-from selenium.webdriver.common.by import By
-import re
 from selenium.webdriver.edge.service import Service
-from datetime import datetime
-from PIL import Image
+from selenium.webdriver.chrome.options import Options
+from selenium.webdriver.support.wait import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
+from selenium.webdriver.common.action_chains import ActionChains
+from selenium.webdriver.common.by import By
 
 from model import Mysql
 import src,model
@@ -585,36 +588,28 @@ def search_FB():
         socialName = "https://www.facebook.com/hashtag/"
         tagName = str(key)
         url = socialName + tagName
-
         options = Options()
         options.add_argument("--disable-notifications")
-        # edge = webdriver.Edge('./mesdgedriver', options=options)
-        # 創建Edge服務物件，指定驅動程式的路徑
-        service = Service('./mesdgedriver')
-        # 創建Edge瀏覽器物件，傳入選項和服務物件
-        edge = webdriver.Edge(service=service, options=options)
-        edge.get("https://www.facebook.com/")
-    
-        email = edge.find_element(By.ID, "email")
-        password = edge.find_element(By.ID, "pass")
-        
-        email.send_keys('ebo68885@omeie.com')
-        password.send_keys('zxcvb12345')
-        password.submit()
+        browser = webdriver.Chrome(options=options)
 
-        time.sleep(4)
-        edge.get(url)
-        # edge.get(f"{url[socialName]}{tagName}")
-        time.sleep(4)
-        time1 = 0
-        for x in range(page*3):
-            edge.execute_script("window.scrollTo(0,document.body.scrollHeight)")
+        browser.get("https://www.facebook.com/")
+        time.sleep(1)
+        email = browser.find_element(By.ID, "email")
+        password = browser.find_element(By.ID, "pass")
+        email.send_keys('tictagtoe.im@gmail.com')
+        password.send_keys('#TicTAGToe')
+        password.submit()
+        
+        browser.get(url)
+        time.sleep(2)
+        for x in range(page*2): 
+            browser.execute_script("window.scrollTo(0,document.body.scrollHeight);")
             if x < (page-1) * 3:
                 continue
             else:
-                time.sleep(4) 
-        
-        soup = BeautifulSoup(edge.page_source, 'lxml')
+                time.sleep(2) 
+
+        soup = BeautifulSoup(browser.page_source, 'lxml')
 
         #獨立貼文
         posts = soup.find_all('div', {'class': 'x1yztbdb x1n2onr6 xh8yej3 x1ja2u2z'})
@@ -626,41 +621,20 @@ def search_FB():
             if image is not None:
                 image1 = image.get('xlink:href')
             else:
-                image1 = " "
+                image1 = " "       
 
             #發文者名稱
-            name = post.find('a', {'class': 'x1i10hfl xjbqb8w x6umtig x1b1mbwd xaqea5y xav7gou x9f619 x1ypdohk xt0psk2 xe8uvvx xdj266r x11i5rnm xat24cr x1mh8g0r xexx8yu x4uap5 x18d9i69 xkhd6sd x16tdsg8 x1hl2dhg xggy1nq x1a2a7pz x1heor9g xt0b8zv xo1l8bm'})
-            print(name)
-            if name:
+            name = post.find('a', {'class': 'x1i10hfl xjbqb8w x6umtig x1b1mbwd xaqea5y xav7gou x9f619 x1ypdohk xt0psk2 xe8uvvx xdj266r x11i5rnm xat24cr x1mh8g0r xexx8yu x4uap5 x18d9i69 xkhd6sd x16tdsg8 x1hl2dhg xggy1nq x1a2a7pz xt0b8zv xzsf02u x1s688f'})
+            if name is not None:
                 name1 = name.find('span')
             else:
-                name = post.find('a', {'class':'x1i10hfl xjbqb8w x6umtig x1b1mbwd xaqea5y xav7gou x9f619 x1ypdohk xt0psk2 xe8uvvx xdj266r x11i5rnm xat24cr x1mh8g0r xexx8yu x4uap5 x18d9i69 xkhd6sd x16tdsg8 x1hl2dhg xggy1nq x1a2a7pz xt0b8zv xzsf02u x1s688f'})
-                if name is not None:
-                    name1 = name.find('strong').find('span')
-                else:
-                    name = post.find('a', {'class': 'x1i10hfl xjbqb8w x6umtig x1b1mbwd xaqea5y xav7gou x9f619 x1ypdohk xt0psk2 xe8uvvx xdj266r x11i5rnm xat24cr x1mh8g0r xexx8yu x4uap5 x18d9i69 xkhd6sd x16tdsg8 x1hl2dhg xggy1nq x1a2a7pz xt0b8zv xzsf02u x1s688f'})
-                    if name is not None:
-                        name1 = name.find('span', {'class', 'xt0psk2'}).find('span')
-                    else:
-                        name1 = " "
-            
-            print(name1)
-
-            if name1 is not None:
-                name1 = name1.text
-            else:
+                name1 = " "
+            try:
+                if name1 is not None:
+                    name1 = name1.text
+            except Exception as e:
+                print(f"A error occurred: {e}")
                 continue
-
-            
-
-            #發文社團
-            club = post.find('a', {'class': 'x1i10hfl xjbqb8w x6umtig x1b1mbwd xaqea5y xav7gou x9f619 x1ypdohk xt0psk2 xe8uvvx xdj266r x11i5rnm xat24cr x1mh8g0r xexx8yu x4uap5 x18d9i69 xkhd6sd x16tdsg8 x1hl2dhg xggy1nq x1a2a7pz xt0b8zv xzsf02u x1s688f'})
-            if club is not None:
-                club1 = club.find('span')
-            else:
-                club1 = " "
-            if club1 is not None:
-                club1 = club1.text
 
             #發文時間
             timme = post.find('span', {'class': 'x4k7w5x x1h91t0o x1h9r5lt x1jfb8zj xv2umb2 x1beo9mf xaigb6o x12ejxvf x3igimt xarpa2k xedcshv x1lytzrv x1t2pt76 x7ja8zs x1qrby5j'}).find('a')
@@ -685,13 +659,19 @@ def search_FB():
                 text3 = " "
 
             #發文內容圖片
-            pictures = post.find_all('img', {'class': 'x1ey2m1c xds687c x5yr21d x10l6tqk x17qophe x13vifvy xh8yej3'})
+            pictures = post.find_all('img', {'class': 'x1ey2m1c xds687c x5yr21d x10l6tqk x17qophe x13vifvy xh8yej3 xl1xv1r'})
             picture_url = []
             if pictures is not None:
                 for picture in pictures:
                     picture_item = picture.get('src')
                     picture_url.append(picture_item)
-                video4 = ""
+            
+            pictures_multi = post.find_all('img', {'class': 'x1ey2m1c xds687c x5yr21d x10l6tqk x17qophe x13vifvy xh8yej3'})
+            for picture in pictures_multi:
+                picture_item = picture.get('src')
+                picture_url.append(picture_item)
+
+            video4 = ""
 
             #發文hashtag
             hashtag = post.find('div', {'class': 'xdj266r x11i5rnm xat24cr x1mh8g0r x1vvkbs x126k92a'})
@@ -703,16 +683,15 @@ def search_FB():
                     hashtag3 = hashtag2.find('a', {'class': 'x1i10hfl xjbqb8w x6umtig x1b1mbwd xaqea5y xav7gou x9f619 x1ypdohk xt0psk2 xe8uvvx xdj266r x11i5rnm xat24cr x1mh8g0r xexx8yu x4uap5 x18d9i69 xkhd6sd x16tdsg8 x1hl2dhg xggy1nq x1a2a7pz xt0b8zv x1qq9wsj xo1l8bm'})
                     if hashtag3:
                         post_hashtag_collect.append(hashtag3.string)
-            #         else:
-            #             post_hashtag_collect.append(" ")
-            # else:
-            #     post_hashtag_collect.append(" ")
             
             #貼文讚數
-            # likes = post.find('span', {'class': 'xrbpyxo x6ikm8r x10wlt62 xlyipyv x1exxlbk'}).find('span')
-            # if likes is not None:
-            #     likes1 = likes.find('span', {'class': 'xt0b8zv x1e558r4'}).text
-            likes1 = ""
+            likes = post.find('span', {'class': 'xt0b8zv x2bj2ny xrbpyxo xl423tq'})
+            if likes is not None:
+                likes1 = likes.find('span', {'class': 'x1e558r4'})
+                if likes1 is not None:
+                    likes1 = likes1.text
+
+            # likes1 = " "
 
             #貼文留言數
             comments = post.find('div', {'class': 'x9f619 x1n2onr6 x1ja2u2z x78zum5 xdt5ytf x2lah0s x193iq5w xeuugli xg83lxy x1h0ha7o x10b6aqq x1yrsyyn'})
@@ -723,11 +702,9 @@ def search_FB():
                 comments1 = "0"
 
             #每篇貼文的資訊
-            post_detail = {}
             post_detail = {
                 "post_image": image1,
                 "post_name": name1,
-                "post_club": club1,
                 "post_time": timme1,
                 "post_text": text3,
                 "post_picture": picture_url,
@@ -740,12 +717,13 @@ def search_FB():
             #所有貼文的集合
             post_item.append(post_detail)
 
-        edge.quit()
+            print(picture_url)
+
+        browser.quit()
 
         data = {
             'post_item': post_item
         }
-
 
     return jsonify(**data) 
 

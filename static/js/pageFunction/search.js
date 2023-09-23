@@ -1,5 +1,5 @@
 // create social post
-function CreateSocialPostItem(posterImgSrc,posterName,postClub,time,content,likeCount,CommentCount,hashtag=[],postImg=[]) {
+function CreateSocialPostItem(posterImgSrc,posterName,time,content,likeCount,CommentCount,hashtag=[],postImg=[]) {
     // create element
     let postContainer = document.createElement('div');
     let posterImgContainer = document.createElement('div');
@@ -22,13 +22,9 @@ function CreateSocialPostItem(posterImgSrc,posterName,postClub,time,content,like
     posterImg.src = posterImgSrc;
     posterImgContainer.appendChild(posterImg);
 
-    // post's poster
-    poster.className = 'post-title fs-2';
-    poster.textContent = '發文者：' + posterName;
-
-    // post club
+    //post's poster
     club.className = 'post-title fs-2';
-    club.textContent = '社團：' + postClub;
+    club.textContent = '發文者：' + posterName;
 
     // post time
     postTIme.className = 'post-time fs-2';
