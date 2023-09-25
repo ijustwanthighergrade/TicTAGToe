@@ -17,6 +17,7 @@ from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.action_chains import ActionChains
 from selenium.webdriver.common.actions.action_builder import ActionBuilder
 from selenium.webdriver.common.by import By
+from flask_login import LoginManager, UserMixin, login_user, login_required, logout_user, current_user
 
 from model import Mysql
 import src,model
@@ -30,6 +31,7 @@ url = {
 
 #主程式初始化
 app = Flask(__name__,static_url_path ='/static/')
+app.secret_key = '29hPoRZOsSVj5RRD'
 
 #初始化功能模組
 tools_CommonTools = src.CommonTools.CommonTools()
@@ -43,6 +45,25 @@ tagName = ""
 #上傳照片
 app.config['UPLOAD_FOLDER'] = 'static/img/uploads/'
 
+# Init login manager
+login_manager = LoginManager()
+login_manager.init_app(app)
+login_manager.login_view = "Login"
+
+class User(UserMixin):
+    pass
+
+@login_manager.user_loader
+def user_loader(email):
+    sql = f'select * from member where Email = "{email}";'
+    cursor.execute(sql)
+    member = cursor.fetchone()
+    if member is None:
+        return
+    user = User()
+    user.id = email
+    return user
+
 ############################## function ##############################
 #獲取爬蟲抓下的貼文內，所有相關的hashtag集合
 def extract_hashtags(content):
@@ -53,6 +74,7 @@ def extract_hashtags(content):
 ############################## page ##############################
 # 首頁
 @app.route("/", methods=['POST', 'GET'])
+@login_required 
 def Index():
         # 根據資料表出現的Hashtag次數羅列全站熱門
         sql = """
@@ -80,9 +102,33 @@ def Index():
 
         return render_template('index.html', hot_tags=hot_tags, hot_3tags=hot_3tags)
 
+# 登入頁面
+@app.route("/login", methods=['POST', 'GET'])
+def Login():
+    if request.method == 'POST':
+        email = request.values.get('email')
+        password = request.values.get('password')
+        sql = f'select * from member where Email = "{email}" and Password = "{password}";'
+        cursor.execute(sql)
+        member = cursor.fetchone()
+        if member:
+            user = User()
+            user.id = email
+            login_user(user)
+            return redirect(url_for('Index'))
+        else:
+            return render_template('login.html', error=True)
+    return render_template('login.html')
+
+# 登出
+@app.route("/logout")
+def Logout():
+    logout_user()
+    return redirect(url_for('Login'))
 
 # 搜尋結果頁面
 @app.route("/searchres", methods=['GET'])
+@login_required 
 def SearchRes():
     # 取得傳回的參數，此參數需傳回至前端
     # 撈取知識地圖資料，並傳回前端
@@ -247,6 +293,7 @@ def SearchRes():
 
 # 個人頁面
 @app.route("/individual", methods=['POST', 'GET'])
+@login_required 
 def Individual():
     # 利用session 取得會員Id
     # 利用會員Id取得會員資料，並傳送至前端
@@ -313,6 +360,7 @@ def Individual():
 
 # 他人頁面
 @app.route("/otherpeople", methods=['POST', 'GET'])
+@login_required 
 def Otherpeople():
     # 利用會員Id取得會員資料，並傳送至前端
 
@@ -321,6 +369,7 @@ def Otherpeople():
 
 # 修改個人資訊頁面
 @app.route("/infomodify", methods=['POST', 'GET'])
+@login_required 
 def Infomodify():
     memId = "M1685006880" #目前寫死
     sql = f"select * from member where MemId = '{memId}';"
@@ -361,6 +410,7 @@ def Infomodify():
 
 # 個人記事頁面
 @app.route("/personalnotes", methods=['POST', 'GET'])
+@login_required 
 def Personalnotes():
     memId = "M1685006880" #目前寫死
     postId = request.values.get('postId')
@@ -384,6 +434,7 @@ def Personalnotes():
 
 # 編輯記事頁面
 @app.route("/editnote", methods=['POST', 'GET'])
+@login_required 
 def Editnote():
 
     return render_template('edit_note.html')
@@ -391,6 +442,7 @@ def Editnote():
 
 # 新增記事頁面
 @app.route("/newnote", methods=['POST', 'GET'])
+@login_required 
 def Newnote():
     if request.method == 'POST':
         memId = "M1685006880"
@@ -410,6 +462,7 @@ def Newnote():
 
 # 有關hashtag記事頁面
 @app.route("/listnoteshashtag", methods=['POST', 'GET'])
+@login_required 
 def Listnoteshashtag():
 
     return render_template('list_notes_hashtag.html')
@@ -417,6 +470,7 @@ def Listnoteshashtag():
 
 # 好友列表頁面
 @app.route("/friendlist", methods=['POST', 'GET'])
+@login_required 
 def Friendlist():
 
     return render_template('friend_list.html')
@@ -424,6 +478,7 @@ def Friendlist():
 
 # 歷史查詢頁面
 @app.route("/history", methods=['POST', 'GET'])
+@login_required 
 def History():
  # 根據資料表出現的Hashtag次數羅列全站熱門
         sql = """
@@ -454,6 +509,7 @@ def History():
 
 # 客服中心頁面
 @app.route("/customerservice", methods=['POST', 'GET'])
+@login_required 
 def Customerservice():
 
     return render_template('customer_service.html')
@@ -461,6 +517,7 @@ def Customerservice():
 
 # 客服諮詢紀錄頁面
 @app.route("/consultationrecord", methods=['POST', 'GET'])
+@login_required 
 def Consultationrecord():
 
     return render_template('consultation_record.html')
@@ -468,12 +525,14 @@ def Consultationrecord():
 
 # 關於我們頁面
 @app.route("/aboutus", methods=['POST', 'GET'])
+@login_required 
 def Aboutus():
 
     return render_template('about_us.html')
 
 # Hashtag管理頁面
 @app.route("/hashtag_manage", methods=['POST', 'GET'])
+@login_required 
 def Hashtagmanage():
     sqlsearch = """
             SELECT TargetName
@@ -501,6 +560,7 @@ def Hashtagmanage():
 
 # Hashtag管理_新增物件頁面
 @app.route("/hashtag_manage_new", methods=['GET', 'POST'])
+@login_required 
 def Hashtagmanagenew():
     if request.method == 'POST':
         if 'Picfile' in request.files:
@@ -557,6 +617,7 @@ def Hashtagmanagenew():
 
 # Hashtag編輯頁面
 @app.route("/hashtag_manage_edit", methods=['POST', 'GET'])
+@login_required 
 def Hashtagmanageedit():
 
     return render_template('hashtag_manage_edit.html')
