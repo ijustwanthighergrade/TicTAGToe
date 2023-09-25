@@ -15,6 +15,7 @@ from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.action_chains import ActionChains
+from selenium.webdriver.common.actions.action_builder import ActionBuilder
 from selenium.webdriver.common.by import By
 
 from model import Mysql
@@ -599,15 +600,50 @@ def search_FB():
         email.send_keys('tictagtoe.im@gmail.com')
         password.send_keys('#TicTAGToe')
         password.submit()
-        
+
         browser.get(url)
         time.sleep(2)
+        count_comment = 0
+        count_more = 0
         for x in range(page*2): 
             browser.execute_script("window.scrollTo(0,document.body.scrollHeight);")
             if x < (page-1) * 3:
                 continue
             else:
                 time.sleep(2) 
+
+        # comment_btns = browser.find_elements(By.CLASS_NAME, 'x1i10hfl.x1qjc9v5.xjbqb8w.xjqpnuy.xa49m3k.xqeqjp1.x2hbi6w.x13fuv20.xu3j5b3.x1q0q8m5.x26u7qi.x972fbf.xcfux6l.x1qhh985.xm0m39n.x9f619.x1ypdohk.xdl72j9.x2lah0s.xe8uvvx.xdj266r.x11i5rnm.xat24cr.x1mh8g0r.x2lwn1j.xeuugli.xexx8yu.x4uap5.x18d9i69.xkhd6sd.x1n2onr6.x16tdsg8.x1hl2dhg.xggy1nq.x1ja2u2z.x1t137rt.x1o1ewxj.x3x9cwd.x1e5q0jg.x13rtm0m.x3nfvp2.x1q0g3np.x87ps6o.x1lku1pv.x1a2a7pz')
+        # comment_btns = browser.find_elements(By.CSS_SELECTOR, 'div[aria-label="留言"]')
+        comment_btns = browser.find_elements(By.CSS_SELECTOR, 'div.x1i10hfl.x1qjc9v5.xjbqb8w.xjqpnuy.xa49m3k.xqeqjp1.x2hbi6w.x13fuv20.xu3j5b3.x1q0q8m5.x26u7qi.x972fbf.xcfux6l.x1qhh985.xm0m39n.x9f619.x1ypdohk.xdl72j9.x2lah0s.xe8uvvx.xdj266r.x11i5rnm.xat24cr.x1mh8g0r.x2lwn1j.xeuugli.xexx8yu.x4uap5.x18d9i69.xkhd6sd.x1n2onr6.x16tdsg8.x1hl2dhg.xggy1nq.x1ja2u2z.x1t137rt.x1o1ewxj.x3x9cwd.x1e5q0jg.x13rtm0m.x3nfvp2.x1q0g3np.x87ps6o.x1lku1pv.x1a2a7pz[aria-label="留言"][role="button"]')
+        more_btns = browser.find_elements(By.CSS_SELECTOR, 'div.x1i10hfl.xjbqb8w.x6umtig.x1b1mbwd.xaqea5y.xav7gou.x9f619.x1ypdohk.xt0psk2.xe8uvvx.xdj266r.x11i5rnm.xat24cr.x1mh8g0r.xexx8yu.x4uap5.x18d9i69.xkhd6sd.x16tdsg8.x1hl2dhg.xggy1nq.x1a2a7pz.xt0b8zv.xzsf02u.x1s688f[role="button"]')
+
+
+        print(f'總共有{len(comment_btns)}個留言按鈕')
+        print(f'總共有{len(more_btns)}個查看更多按鈕')
+
+        actions = ActionChains(browser)
+        
+        for comment_btn in comment_btns:
+            try:
+                actions.move_to_element(comment_btn).click(comment_btn)
+                actions.perform()
+                ActionBuilder(browser).clear_actions()
+                # comment_btn.click()
+                count_comment += 1
+            except:
+                continue
+        
+        for more_btn in more_btns:
+            try:
+                actions.move_to_element(more_btn).click(more_btn)
+                actions.perform()
+                ActionBuilder(browser).clear_actions()
+                count_more += 1
+            except:
+                continue
+        
+        print(f'成功點擊留言按鈕{count_comment}次')
+        print(f'成功點擊查看更多按鈕{count_more}次')
 
         soup = BeautifulSoup(browser.page_source, 'lxml')
 
@@ -717,8 +753,6 @@ def search_FB():
             #所有貼文的集合
             post_item.append(post_detail)
 
-            print(picture_url)
-
         browser.quit()
 
         data = {
@@ -727,6 +761,77 @@ def search_FB():
 
     return jsonify(**data) 
 
+#搜尋IG貼文頁面
+@app.route("/search_IG", methods=['POST'])
+def search_IG():
+    post_item = [] 
+    if request.method == 'POST':
+        key = request.form['keyword']
+        page = request.form.get('page') or 1
+        page = int(page)
+        socialName = "https://www.instagram.com/explore/tags/"
+        tagName = str(key)
+        url = socialName + tagName
+        options = Options()
+        options.add_argument("--disable-notifications")
+        browser = webdriver.Chrome(options=options)
+
+        browser.get("https://www.instagram.com/")
+        time.sleep(1)
+        email = browser.find_element(By.NAME, "username")
+        password = browser.find_element(By.NAME, "password")
+        login_btn = browser.find_element(By.XPATH, '//*[@id="loginForm"]/div/div[3]/button')
+        email.send_keys('tictagtoe_hashtag')
+        password.send_keys('tictagtoe_cycu')
+        login_btn.click()
+        time.sleep(2)
+        store_btn = browser.find_element(By.TAG_NAME, 'button')
+        store_btn.click()
+        time.sleep(1)
+
+        browser.get(url)
+        time.sleep(2)
+        for x in range(page*2): 
+            browser.execute_script("window.scrollTo(0,document.body.scrollHeight);")
+            if x < (page-1) * 3:
+                continue
+            else:
+                time.sleep(2) 
+
+        soup = BeautifulSoup(browser.page_source, 'lxml')
+        post_urls = []
+        page_body = soup.find('article', {'class': '_aao7'}).find('div', {'class': '_aaq8'}).find_all('div')
+        post_block = page_body[1]
+        posts = post_block.find('div').find_all('div')
+        # print(posts)
+        for row in posts:
+            print(f"{row}=============")
+            # items = row.find('div', {'class': '_aabd _aa8k  _al3l'})
+            # print(items)
+            # for item in items:
+            #     post_url_blocks = item.find_all('div', {'class', '_aabd _aa8k  _al3l'})
+            #     for post_url_block in post_url_blocks:
+            #         post_url_a = post_url_block.find('a', {'class', 'x1i10hfl xjbqb8w x6umtig x1b1mbwd xaqea5y xav7gou x9f619 x1ypdohk xt0psk2 xe8uvvx xdj266r x11i5rnm xat24cr x1mh8g0r xexx8yu x4uap5 x18d9i69 xkhd6sd x16tdsg8 x1hl2dhg xggy1nq x1a2a7pz _a6hd'})
+            #         post_url = post_url_a['href']
+            #         post_urls.append(post_url)
+
+        # print(post_urls)
+
+            # print(item)
+        # post_url = posts['href']
+        # print(post_url)
+        # for post in posts:
+        #     print(post)
+        #     post_a = post.find('a', {'class': 'x1i10hfl xjbqb8w x6umtig x1b1mbwd xaqea5y xav7gou x9f619 x1ypdohk xt0psk2 xe8uvvx xdj266r x11i5rnm xat24cr x1mh8g0r xexx8yu x4uap5 x18d9i69 xkhd6sd x16tdsg8 x1hl2dhg xggy1nq x1a2a7pz _a6hd'})
+        #     post_url = post_a.get_attribute('href')
+        #     post_urls.append(post_url)
+        
+        # print(f"總共取得{len(post_urls)}篇貼文連結")
+        # print(post_urls)
+
+    # browser.quit()
+
+    return
 
 #新增好友
 @app.route("/addfriend", methods=['POST'])
