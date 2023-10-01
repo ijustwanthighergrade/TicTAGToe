@@ -70,7 +70,7 @@
         <div class="container-fluid fs-1 my-5">
             <div class="row align-items-center">
                 <div class="col text-center" style="font-size: 75px;">
-                    <p><b>Login in</b></p>
+                    <p><b>登入</b></p>
                 </div>
             </div>
         </div>
@@ -146,6 +146,42 @@
             </div>
             {% endif %}
 
+            {% if msg_success %}
+            <div class="container fs-1 my-5">
+                <div class="row align-items-center">
+                    <div class="col text-center">
+                        <div class="alert alert-success" role="alert">
+                            {{ msg_success }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endif %}
+
+            {% if msg_fail %}
+            <div class="container fs-1 my-5">
+                <div class="row align-items-center">
+                    <div class="col text-center">
+                        <div class="alert alert-danger" role="alert">
+                            {{ msg_fail }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endif %}
+
+            {% if logout_msg %}
+            <div class="container fs-1 my-5">
+                <div class="row align-items-center">
+                    <div class="col text-center">
+                        <div class="alert alert-success" role="alert">
+                            {{ logout_msg }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endif %}
+
             <div class="container-fluid fs-1 my-5">
                 <div class="row">
                     <div class="col"></div>
@@ -175,111 +211,129 @@
             </div>
         </div>
 
-        <!-- Modal -->
-        <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-            <div class="modal-dialog modal-xl modal-dialog-centered modal-dialog-scrollable">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <p class="modal-title" id="exampleModalLabel" style="font-size: 75px">Register</p>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" style="width: 50px; height: 50px;"></button>
-                    </div>
-                    <div class="modal-body">
-                        <div class="container-fluid fs-1 mt-5">
-                            <div class="row align-items-center">
-                                <div class="col">
-                                    <label for="email1" class="form-label" style="font-size: 40px;">Email:</label>
+        <form action="/add/member" method="POST" enctype="multipart/form-data">
+            <!-- Modal -->
+            <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-xl modal-dialog-centered modal-dialog-scrollable">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <p class="modal-title" id="exampleModalLabel" style="font-size: 75px"><b>註冊</b></p>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" style="width: 50px; height: 50px;"></button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="container-fluid fs-1 mt-5">
+                                <div class="row align-items-center">
+                                    <div class="col">
+                                        <label for="email1" class="form-label" style="font-size: 40px;">Email:</label>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                
-                        <div class="container fs-1 mt-5">
-                            <div class="row align-items-center">
-                                <div class="col text-center">
-                                    <input type="email" class="form-control  form-control-lg" id="email1" style="height: 100px; font-size: 40px;" placeholder="請輸入電子郵件" required>
+                    
+                            <div class="container fs-1 mt-5">
+                                <div class="row align-items-center">
+                                    <div class="col text-center">
+                                        <input type="email" class="form-control  form-control-lg" id="email_register" name="email_register" style="height: 100px; font-size: 40px;" placeholder="請輸入電子郵件" required>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
 
-                        <div class="container fs-1 mt-5">
-                            <div class="row align-items-center">
-                                <div class="col">
-                                    <label for="password1" class="form-label" style="font-size: 40px;">Password:</label>
+                            <div class="container fs-1 mt-5">
+                                <div class="row align-items-center">
+                                    <div class="col">
+                                        <label for="password1" class="form-label" style="font-size: 40px;">Password:</label>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                
-                        <div class="container fs-1 mt-5">
-                            <div class="row align-items-center">
-                                <div class="col text-center">
-                                    <input type="password" class="form-control  form-control-lg" id="password1" style="height: 100px; font-size: 40px;" placeholder="請輸入密碼" required>
+                    
+                            <div class="container fs-1 mt-5">
+                                <div class="row align-items-center">
+                                    <div class="col text-center">
+                                        <input type="password" class="form-control  form-control-lg" id="password_register" name="password_register" style="height: 100px; font-size: 40px;" placeholder="請輸入密碼" required>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
 
-                        <div class="container fs-1 mt-5">
-                            <div class="row align-items-center">
-                                <div class="col">
-                                    <label for="password1" class="form-label" style="font-size: 40px;">Confirm Password:</label>
+                            <div class="container fs-1 mt-5">
+                                <div class="row align-items-center">
+                                    <div class="col">
+                                        <label for="password1" class="form-label" style="font-size: 40px;">Confirm Password:</label>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                
-                        <div class="container fs-1 mt-5">
-                            <div class="row align-items-center">
-                                <div class="col text-center">
-                                    <input type="password" class="form-control  form-control-lg" id="password2" style="height: 100px; font-size: 40px;" placeholder="請再次輸入密碼" required>
+                    
+                            <div class="container fs-1 mt-5">
+                                <div class="row align-items-center">
+                                    <div class="col text-center">
+                                        <input type="password" class="form-control  form-control-lg" id="password_confirm" name="password_confirm" style="height: 100px; font-size: 40px;" placeholder="請再次輸入密碼" required>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
 
-                        <div class="container fs-1 mt-5">
-                            <div class="row align-items-center">
-                                <div class="col">
-                                    <label for="name" class="form-label" style="font-size: 40px;">Name:</label>
+                            <div class="container fs-1 mt-5">
+                                <div class="row align-items-center">
+                                    <div class="col">
+                                        <label for="name" class="form-label" style="font-size: 40px;">Name:</label>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                
-                        <div class="container fs-1 mt-5">
-                            <div class="row align-items-center">
-                                <div class="col text-center">
-                                    <input type="text" class="form-control  form-control-lg" id="name" style="height: 100px; font-size: 40px;" placeholder="請輸入使用者名稱" required>
+                    
+                            <div class="container fs-1 mt-5">
+                                <div class="row align-items-center">
+                                    <div class="col text-center">
+                                        <input type="text" class="form-control  form-control-lg" id="name" name="name" style="height: 100px; font-size: 40px;" placeholder="請輸入使用者名稱" required>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
 
-                        <div class="container fs-1 mt-5">
-                            <div class="row align-items-center">
-                                <div class="col">
-                                    <label for="ID" class="form-label" style="font-size: 40px;">ID:</label>
+                            <div class="container fs-1 mt-5">
+                                <div class="row align-items-center">
+                                    <div class="col">
+                                        <label for="ID" class="form-label" style="font-size: 40px;">ID:</label>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                
-                        <div class="container fs-1 mt-5">
-                            <div class="row align-items-center">
-                                <div class="col text-center">
-                                    <input type="text" class="form-control  form-control-lg" id="ID" style="height: 100px; font-size: 40px;" placeholder="請輸入ID" required>
+                    
+                            <div class="container fs-1 mt-5">
+                                <div class="row align-items-center">
+                                    <div class="col text-center">
+                                        <input type="text" class="form-control  form-control-lg" id="ID" name="ID" style="height: 100px; font-size: 40px;" placeholder="請輸入ID" required>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
 
-                    </div>
-                    <div class="modal-footer">
-                        <div class="container fs-1 my-5">
-                            <div class="row align-items-center">
-                                <div class="col text-center">
-                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" style="font-size: 40px;">取消</button>
+                            <div class="container fs-1 mt-5">
+                                <div class="row align-items-center">
+                                    <div class="col">
+                                        <label for="ID" class="form-label" style="font-size: 40px;">Picture:</label>
+                                    </div>
                                 </div>
-                                <div class="col text-center">
-                                    <button type="submit" class="btn btn-primary" style="font-size: 40px;">註冊</button>
+                            </div>
+
+                            <div class="container fs-1 mt-5">
+                                <div class="row align-items-center">
+                                    <div class="col text-center">
+                                        <input class="form-control form-control-lg" id="picture" name="picture" type="file" accept=".jpg, .png" required>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="modal-footer">
+                            <div class="container fs-1 my-5">
+                                <div class="row align-items-center">
+                                    <div class="col text-center">
+                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" style="font-size: 40px;">取消</button>
+                                    </div>
+                                    <div class="col text-center">
+                                        <button type="submit" class="btn btn-primary" style="font-size: 40px;">註冊</button>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
+        </form>
 
         <div class="container-fluid fs-1 my-5">
             <div class="row">
@@ -295,6 +349,6 @@
     </main>
     
     {% include '/frame/footer.html' %}
-
+    <script src="../static/js/pageFunction/login.js"></script>
 </body>
 </html>

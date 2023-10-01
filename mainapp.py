@@ -18,6 +18,7 @@ from selenium.webdriver.common.action_chains import ActionChains
 from selenium.webdriver.common.actions.action_builder import ActionBuilder
 from selenium.webdriver.common.by import By
 from flask_login import LoginManager, UserMixin, login_user, login_required, logout_user, current_user
+from werkzeug.utils import secure_filename
 
 from model import Mysql
 import src,model
@@ -102,6 +103,7 @@ def Index():
 
         return render_template('index.html', hot_tags=hot_tags, hot_3tags=hot_3tags)
 
+
 # 登入頁面
 @app.route("/login", methods=['POST', 'GET'])
 def Login():
@@ -118,13 +120,58 @@ def Login():
             return redirect(url_for('Index'))
         else:
             return render_template('login.html', error=True)
-    return render_template('login.html')
+    logout_msg = request.values.get('logout_msg')
+    register_msg = request.values.get('msg')
+    register_msg_success = None
+    register_msg_fail = None
+    if register_msg == "註冊成功":
+        register_msg_success = register_msg
+    else:
+        register_msg_fail = register_msg
+
+    return render_template('login.html', msg_success=register_msg_success, msg_fail=register_msg_fail, logout_msg=logout_msg)
+
 
 # 登出
 @app.route("/logout")
 def Logout():
     logout_user()
-    return redirect(url_for('Login'))
+    return redirect(url_for('Login', logout_msg='登出成功'))
+
+
+# 註冊
+@app.route("/add/member", methods=['POST'])
+def add_member():
+    email = request.values.get('email_register')
+    password = request.values.get('password_register')
+    password_confirm = request.values.get('password_confirm')
+    name = request.values.get('name')
+    id = request.values.get('ID')
+    picture = request.files['picture']
+    at_id = f"@{id}"
+    time = str(datetime.now().strftime('%Y-%m-%d-%H:%M:%S'))
+    timestamp = int(datetime.now().timestamp())
+    mem_id = f"M{timestamp}"
+
+    # 檢查是否有圖片檔案
+    if picture:
+        # 儲存圖片
+        picture.save(os.path.join('static/img/uploads', picture.filename))
+        picture_path = f'../static/img/uploads/{picture.filename}'
+        print("成功儲存")
+    else:
+        picture_path = ''  # 如果沒有圖片，設定為空字串或其他適合的預設值
+        print("儲存失敗")
+
+    sql = f"insert into member values ('{mem_id}', '{name}', '{email}', 1, '{time}', '{picture_path}', '{at_id}', '{password}');"
+    try:
+        cursor.execute(sql)
+        db.commit()
+        return redirect(url_for('Login', msg='註冊成功'))
+    except:
+        db.rollback()
+        return redirect(url_for('Login', msg='註冊成功'))
+
 
 # 搜尋結果頁面
 @app.route("/searchres", methods=['GET'])
@@ -297,7 +344,11 @@ def SearchRes():
 def Individual():
     # 利用session 取得會員Id
     # 利用會員Id取得會員資料，並傳送至前端
-    memId = "M1685006880" #目前寫死
+    # memId = "M1685006880" #目前寫死
+    sql = f'select * from member where Email = "{current_user.id}";'
+    cursor.execute(sql)
+    result = cursor.fetchone()
+    memId = result[0]
     sql = 'select * from member where MemId = "%s";' % (memId)
     cursor.execute(sql)
     result = cursor.fetchone()
@@ -371,7 +422,11 @@ def Otherpeople():
 @app.route("/infomodify", methods=['POST', 'GET'])
 @login_required 
 def Infomodify():
-    memId = "M1685006880" #目前寫死
+    # memId = "M1685006880" #目前寫死
+    sql = f'select * from member where Email = "{current_user.id}";'
+    cursor.execute(sql)
+    result = cursor.fetchone()
+    memId = result[0]
     sql = f"select * from member where MemId = '{memId}';"
     cursor.execute(sql)
     result = cursor.fetchone()
@@ -412,9 +467,13 @@ def Infomodify():
 @app.route("/personalnotes", methods=['POST', 'GET'])
 @login_required 
 def Personalnotes():
-    memId = "M1685006880" #目前寫死
+    # memId = "M1685006880" #目前寫死
+    sql = f'select * from member where Email = "{current_user.id}";'
+    cursor.execute(sql)
+    result = cursor.fetchone()
+    memId = result[0]
     postId = request.values.get('postId')
-    sql = f"select * from post where DataId = '{postId}';"
+    sql = f"select * from post where DataId = '{postId}' and Owner = '{memId}';"
     cursor.execute(sql)
     result = cursor.fetchone()
     # tag = result[7]
@@ -445,7 +504,11 @@ def Editnote():
 @login_required 
 def Newnote():
     if request.method == 'POST':
-        memId = "M1685006880"
+        # memId = "M1685006880"
+        sql = f'select * from member where Email = "{current_user.id}";'
+        cursor.execute(sql)
+        result = cursor.fetchone()
+        memId = result[0]
         title = str(request.values.get('title'))
         location = str(request.values.get('location'))
         tag = str(request.values.get('tag'))
