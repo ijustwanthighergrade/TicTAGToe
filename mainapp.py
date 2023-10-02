@@ -144,7 +144,6 @@ def Logout():
 def add_member():
     email = request.values.get('email_register')
     password = request.values.get('password_register')
-    password_confirm = request.values.get('password_confirm')
     name = request.values.get('name')
     id = request.values.get('ID')
     picture = request.files['picture']
@@ -189,32 +188,27 @@ def SearchRes():
     # result = cursor.fetchone()
 
     # tagName = "CYIM"
+    dictCategoryType = {
+        1:"people",
+        2:"place",
+        3:"obj",
+        4:"tag",
+        5:"post",
+    }
     sql = 'select * from hashtag where TagName = "%s";' % (tagName)
     cursor.execute(sql)
     result = cursor.fetchone()
     if result is not None:
         tagId = result[0]
-        category1 = result[2]
-        description1 = result[5]
-        category3 = ""
-
-        if category1 == 1:
-            category3 = "people"
-        elif category1 == 2:
-            category3 = "place"
-        elif category1 == 3:
-            category3 = "obj"
-        elif category1 == 4:
-            category3 = "tag"
-        else:
-            category3 = "post"
+        # category1 = result[2]
+        # description1 = result[5]
 
         node1 = {
             "key": tagId,
-            "category": category3,
+            "category": dictCategoryType[result[2]],
             "text": tagName,
-            "description": description1,
-            "type": category3
+            "description": result[5],
+            "type": dictCategoryType[result[2]]
         }
         nodeData.append(node1)
                 
@@ -229,29 +223,17 @@ def SearchRes():
                 cursor.execute(sql)
                 result1 = cursor.fetchone()
                 targetName = result1[2]
-                category2 = result1[3]
-                description2 = result1[4]
-                imgPath = result1[6]
-                category4 = ""
-
-                if category2 == 1:
-                    category4 = "people"
-                elif category2 == 2:
-                    category4 = "place"
-                elif category2 == 3:
-                    category4 = "obj"
-                elif category2 == 4:
-                    category4 = "tag"
-                else:
-                    category4 = "post"
+                # category2 = result1[3]
+                # description2 = result1[4]
+                # imgPath = result1[6]
 
                 node2 = {
                     "key": objId,
-                    "category": category4,
+                    "category": dictCategoryType[result1[3]],
                     "text": targetName,
-                    "description": description2,
-                    "type": category4,
-                    "imgPath": imgPath
+                    "description": result1[4],
+                    "type": dictCategoryType[result1[3]],
+                    "imgPath": result1[6]
                 }
                 link = {
                     "from": tagId,
@@ -262,26 +244,15 @@ def SearchRes():
                 sql = 'select * from post where DataId = "%s";' % (objId)
                 cursor.execute(sql)
                 result1 = cursor.fetchone()
-                postType = result1[2]
-                postType1 = ""
-
-                if postType == 1:
-                    postType1 = "people"
-                elif postType == 2:
-                    postType1 = "place"
-                elif postType == 3:
-                    postType1 = "obj"
-                elif postType == 4:
-                    postType1 = "tag"
-                else:
-                    postType1 = "post"
+                # postType = result1[2]
+                # postType1 = ""
 
                 node2 = {
                     "key": objId,
-                    "category": postType1,
+                    "category": dictCategoryType[result1[2]],
                     "text": objId,
                     "description": objId,
-                    "type": postType1
+                    "type": dictCategoryType[result1[2]]
                 }
                 link = {
                     "from": tagId,
@@ -298,27 +269,16 @@ def SearchRes():
                 sql = 'select * from hashtag where TagId = "%s";' % (tagId1)
                 cursor.execute(sql)
                 result3 = cursor.fetchone()
-                tagName1 = result3[1]
-                category5 = result3[2]
-                description3 = result3[5]
-
-                if category5 == 1:
-                    category6 = "people"
-                elif category5 == 2:
-                    category6 = "place"
-                elif category5 == 3:
-                    category6 = "obj"
-                elif category5 == 4:
-                    category6 = "tag"
-                else:
-                    category6 = "post"
+                # tagName1 = result3[1]
+                # category5 = result3[2]
+                # description3 = result3[5]
 
                 node3 = {
                     "key": tagId1,
-                    "category": category6,
-                    "text": tagName1,
-                    "description": description3,
-                    "type": category6
+                    "category": dictCategoryType[result3[2]],
+                    "text": result3[1],
+                    "description": result3[5],
+                    "type": dictCategoryType[result3[2]]
                 }
                 link1 = {
                     "from": objId,
@@ -427,18 +387,21 @@ def Infomodify():
     cursor.execute(sql)
     result = cursor.fetchone()
     memId = result[0]
+
     sql = f"select * from member where MemId = '{memId}';"
     cursor.execute(sql)
     result = cursor.fetchone()
     name = result[1]
     memAtId = result[6]
     email = result[2]
+
     sql = f"select * from hashtag where Owner = '{memId}' and TagType = 6;"
     cursor.execute(sql)
     results = cursor.fetchall()
     tags = []
     for result in results:
         tags.append(result[1])
+        
     sql = f"select * from member_social_link where Memid = '{memId}';"
     cursor.execute(sql)
     results = cursor.fetchall()
