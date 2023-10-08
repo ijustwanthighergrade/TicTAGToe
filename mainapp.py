@@ -249,10 +249,10 @@ def SearchRes():
 
                 node2 = {
                     "key": objId,
-                    "category": dictCategoryType[result1[2]],
+                    "category": dictCategoryType[result1[3]],
                     "text": objId,
                     "description": objId,
-                    "type": dictCategoryType[result1[2]]
+                    "type": dictCategoryType[result1[3]]
                 }
                 link = {
                     "from": tagId,
@@ -852,6 +852,7 @@ def search_FB():
 @app.route("/search_IG", methods=['POST'])
 def search_IG():
     post_item = [] 
+    soup_list = []
     if request.method == 'POST':
         key = request.form['keyword']
         page = request.form.get('page') or 1
@@ -871,7 +872,7 @@ def search_IG():
         email.send_keys('tictagtoe_hashtag')
         password.send_keys('tictagtoe_cycu')
         login_btn.click()
-        time.sleep(2)
+        time.sleep(4)
         store_btn = browser.find_element(By.TAG_NAME, 'button')
         store_btn.click()
         time.sleep(1)
@@ -884,41 +885,86 @@ def search_IG():
                 continue
             else:
                 time.sleep(2) 
-
+    
         soup = BeautifulSoup(browser.page_source, 'lxml')
+
+        #取得每篇貼文的連結
         post_urls = []
         page_body = soup.find('article', {'class': '_aao7'}).find('div', {'class': '_aaq8'}).find_all('div')
         post_block = page_body[1]
-        posts = post_block.find('div').find_all('div')
-        # print(posts)
-        for row in posts:
-            print(f"{row}=============")
-            # items = row.find('div', {'class': '_aabd _aa8k  _al3l'})
-            # print(items)
-            # for item in items:
-            #     post_url_blocks = item.find_all('div', {'class', '_aabd _aa8k  _al3l'})
-            #     for post_url_block in post_url_blocks:
-            #         post_url_a = post_url_block.find('a', {'class', 'x1i10hfl xjbqb8w x6umtig x1b1mbwd xaqea5y xav7gou x9f619 x1ypdohk xt0psk2 xe8uvvx xdj266r x11i5rnm xat24cr x1mh8g0r xexx8yu x4uap5 x18d9i69 xkhd6sd x16tdsg8 x1hl2dhg xggy1nq x1a2a7pz _a6hd'})
-            #         post_url = post_url_a['href']
-            #         post_urls.append(post_url)
-
-        # print(post_urls)
-
-            # print(item)
-        # post_url = posts['href']
-        # print(post_url)
-        # for post in posts:
-        #     print(post)
-        #     post_a = post.find('a', {'class': 'x1i10hfl xjbqb8w x6umtig x1b1mbwd xaqea5y xav7gou x9f619 x1ypdohk xt0psk2 xe8uvvx xdj266r x11i5rnm xat24cr x1mh8g0r xexx8yu x4uap5 x18d9i69 xkhd6sd x16tdsg8 x1hl2dhg xggy1nq x1a2a7pz _a6hd'})
-        #     post_url = post_a.get_attribute('href')
-        #     post_urls.append(post_url)
+        items = post_block.find('div').find_all('div')
+        for rows in items:
+            a_tag_block = rows.find_all('div')
+            for block in a_tag_block:
+                block_url = block.find('a')
+                if block_url:
+                    # print(block_url['href'])
+                    post_urls.append(block_url['href'])
         
-        # print(f"總共取得{len(post_urls)}篇貼文連結")
-        # print(post_urls)
+        browser.quit() 
 
-    # browser.quit()
+        post_urls = post_urls[:9]
+        soup_list = get_ig_post_content(post_urls)
 
-    return
+        for soup in soup_list:
+            post_body = soup.find('div', {'class': 'x1yvgwvq x1dqoszc x1ixjvfu xhk4uv x13fuv20 xu3j5b3 x1q0q8m5 x26u7qi x178xt8z xm81vs4 xso031l xy80clv x78zum5 x1q0g3np xh8yej3'})
+            # print(post_body)
+            primary_part = post_body.find('div', {'class': 'x4h1yfo'})\
+                .find('div', {'class': 'xvbhtw8 x78zum5 xdt5ytf x5yr21d x1n2onr6 xh8yej3'})\
+                .find('div', {'class': 'x5yr21d xw2csxc x1odjw0f x1n2onr6'})\
+                .find('div', {'class': 'x9f619 x78zum5 xdt5ytf x5yr21d x10l6tqk xh8yej3 xexx8yu x4uap5 x18d9i69 xkhd6sd'})\
+                .find('div', {'class': 'x5yr21d'})\
+                .find('ul', {'class': '_a9z6 _a9za'})\
+                .find('div', {'class': 'x1qjc9v5 x972fbf xcfux6l x1qhh985 xm0m39n x9f619 x78zum5 xdt5ytf x2lah0s xk390pu xdj266r x11i5rnm xat24cr x1mh8g0r xexx8yu x4uap5 x18d9i69 xkhd6sd x1n2onr6 xggy1nq x11njtxf'})\
+                .find('li', {'class': '_a9zj _a9zl  _a9z5'})
+            print(primary_part)
+                # .find('div', {'class': '_a9zm'})\
+                # .find('div', {'class': '_a9zn _a9zo'})
+            # post_image = primary_part.find('div', {'class': 'x1lliihq'})\
+            #     .find('div', {'class': 'x1lliihq'})\
+            #     .find('div', {'class': '_aarf _a9zp'})\
+            #     .find('a', {'class': 'x1i10hfl x1qjc9v5 xjbqb8w xjqpnuy xa49m3k xqeqjp1 x2hbi6w x13fuv20 xu3j5b3 x1q0q8m5 x26u7qi x972fbf xcfux6l x1qhh985 xm0m39n x9f619 x1ypdohk x78zum5 xdl72j9 xdt5ytf x2lah0s xe8uvvx xdj266r x11i5rnm xat24cr x1mh8g0r x2lwn1j xeuugli xexx8yu x4uap5 x18d9i69 xkhd6sd x1n2onr6 x16tdsg8 x1hl2dhg xggy1nq x1ja2u2z x1t137rt xnz67gz x14yjl9h xudhj91 x18nykt9 xww2gxu x9f619 x1lliihq x2lah0s x6ikm8r x10wlt62 x1n2onr6 x1ykvv32 xougopr x159fomc xnp5s1o x194ut8o x1vzenxt xd7ygy7 xt298gk x1xrz1ek x1s928wv x1n449xj x2q1x1w x1j6awrg x162n7g1 x1m1drc7 x1ypdohk x4gyw5p _a6hd'})\
+            #     .find('img')
+            # print(post_image)
+            
+
+
+            # print(primary_part)
+            
+
+            # primary_part = post_body.find('div', {'class': 'x4h1yfo'}).find('div', {'class': 'xvbhtw8 x78zum5 xdt5ytf x5yr21d x1n2onr6 xh8yej3'})
+            # post_image = primary_part.find('li', {'class': '_a9zj _a9zl  _a9z5'}).find('div', {'class': '_a9zm'}).find('div', {'class': '_a9zn _a9zo'}).find('img')
+            # print(post_image)
+
+        
+    return None
+
+def get_ig_post_content(url_list):
+    ig_url = "https://www.instagram.com/"
+    soup_list = []
+    options = Options()
+    options.add_argument("--disable-notifications")
+    browser = webdriver.Chrome(options=options)
+    browser.get(ig_url)
+    time.sleep(1)
+    email = browser.find_element(By.NAME, "username")
+    password = browser.find_element(By.NAME, "password")
+    login_btn = browser.find_element(By.XPATH, '//*[@id="loginForm"]/div/div[3]/button')
+    email.send_keys('tictagtoe_hashtag')
+    password.send_keys('tictagtoe_cycu')
+    login_btn.click()
+    time.sleep(4)
+    store_btn = browser.find_element(By.TAG_NAME, 'button')
+    store_btn.click()
+    time.sleep(1)
+    print(url_list)
+    for url in url_list:
+        post_url = f'{ig_url}{url}'
+        browser.get(post_url)
+        soup = BeautifulSoup(browser.page_source, 'lxml')
+        soup_list.append(soup)
+    browser.quit() 
+    return soup_list
 
 #新增好友
 @app.route("/addfriend", methods=['POST'])
