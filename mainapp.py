@@ -55,14 +55,14 @@ class User(UserMixin):
     pass
 
 @login_manager.user_loader
-def user_loader(email):
-    sql = f'select * from member where Email = "{email}";'
+def user_loader(member_id):
+    sql = f'select * from member where MemId = "{member_id}";'
     cursor.execute(sql)
     member = cursor.fetchone()
     if member is None:
         return
     user = User()
-    user.id = email
+    user.id = member_id
     return user
 
 ############################## function ##############################
@@ -114,8 +114,9 @@ def Login():
         cursor.execute(sql)
         member = cursor.fetchone()
         if member:
+            member_id = member[0]
             user = User()
-            user.id = email
+            user.id = member_id
             login_user(user)
             return redirect(url_for('Index'))
         else:
@@ -304,11 +305,8 @@ def SearchRes():
 def Individual():
     # 利用session 取得會員Id
     # 利用會員Id取得會員資料，並傳送至前端
-    # memId = "M1685006880" #目前寫死
-    sql = f'select * from member where Email = "{current_user.id}";'
-    cursor.execute(sql)
-    result = cursor.fetchone()
-    memId = result[0]
+    memId = current_user.id
+    print(memId)
     sql = 'select * from member where MemId = "%s";' % (memId)
     cursor.execute(sql)
     result = cursor.fetchone()
@@ -382,12 +380,7 @@ def Otherpeople():
 @app.route("/infomodify", methods=['POST', 'GET'])
 @login_required 
 def Infomodify():
-    # memId = "M1685006880" #目前寫死
-    sql = f'select * from member where Email = "{current_user.id}";'
-    cursor.execute(sql)
-    result = cursor.fetchone()
-    memId = result[0]
-
+    memId = current_user.id
     sql = f"select * from member where MemId = '{memId}';"
     cursor.execute(sql)
     result = cursor.fetchone()
@@ -430,11 +423,7 @@ def Infomodify():
 @app.route("/personalnotes", methods=['POST', 'GET'])
 @login_required 
 def Personalnotes():
-    # memId = "M1685006880" #目前寫死
-    sql = f'select * from member where Email = "{current_user.id}";'
-    cursor.execute(sql)
-    result = cursor.fetchone()
-    memId = result[0]
+    memId = current_user.id
     postId = request.values.get('postId')
     sql = f"select * from post where DataId = '{postId}' and Owner = '{memId}';"
     cursor.execute(sql)
@@ -467,11 +456,7 @@ def Editnote():
 @login_required 
 def Newnote():
     if request.method == 'POST':
-        # memId = "M1685006880"
-        sql = f'select * from member where Email = "{current_user.id}";'
-        cursor.execute(sql)
-        result = cursor.fetchone()
-        memId = result[0]
+        memId = current_user.id
         title = str(request.values.get('title'))
         location = str(request.values.get('location'))
         tag = str(request.values.get('tag'))
@@ -903,38 +888,33 @@ def search_IG():
         
         browser.quit() 
 
-        post_urls = post_urls[:9]
+        post_urls = post_urls[:12]
         soup_list = get_ig_post_content(post_urls)
 
         for soup in soup_list:
-            post_body = soup.find('div', {'class': 'x1yvgwvq x1dqoszc x1ixjvfu xhk4uv x13fuv20 xu3j5b3 x1q0q8m5 x26u7qi x178xt8z xm81vs4 xso031l xy80clv x78zum5 x1q0g3np xh8yej3'})
-            # print(post_body)
-            primary_part = post_body.find('div', {'class': 'x4h1yfo'})\
-                .find('div', {'class': 'xvbhtw8 x78zum5 xdt5ytf x5yr21d x1n2onr6 xh8yej3'})\
-                .find('div', {'class': 'x5yr21d xw2csxc x1odjw0f x1n2onr6'})\
-                .find('div', {'class': 'x9f619 x78zum5 xdt5ytf x5yr21d x10l6tqk xh8yej3 xexx8yu x4uap5 x18d9i69 xkhd6sd'})\
-                .find('div', {'class': 'x5yr21d'})\
-                .find('ul', {'class': '_a9z6 _a9za'})\
-                .find('div', {'class': 'x1qjc9v5 x972fbf xcfux6l x1qhh985 xm0m39n x9f619 x78zum5 xdt5ytf x2lah0s xk390pu xdj266r x11i5rnm xat24cr x1mh8g0r xexx8yu x4uap5 x18d9i69 xkhd6sd x1n2onr6 xggy1nq x11njtxf'})\
-                .find('li', {'class': '_a9zj _a9zl  _a9z5'})
-            print(primary_part)
-                # .find('div', {'class': '_a9zm'})\
-                # .find('div', {'class': '_a9zn _a9zo'})
-            # post_image = primary_part.find('div', {'class': 'x1lliihq'})\
-            #     .find('div', {'class': 'x1lliihq'})\
-            #     .find('div', {'class': '_aarf _a9zp'})\
-            #     .find('a', {'class': 'x1i10hfl x1qjc9v5 xjbqb8w xjqpnuy xa49m3k xqeqjp1 x2hbi6w x13fuv20 xu3j5b3 x1q0q8m5 x26u7qi x972fbf xcfux6l x1qhh985 xm0m39n x9f619 x1ypdohk x78zum5 xdl72j9 xdt5ytf x2lah0s xe8uvvx xdj266r x11i5rnm xat24cr x1mh8g0r x2lwn1j xeuugli xexx8yu x4uap5 x18d9i69 xkhd6sd x1n2onr6 x16tdsg8 x1hl2dhg xggy1nq x1ja2u2z x1t137rt xnz67gz x14yjl9h xudhj91 x18nykt9 xww2gxu x9f619 x1lliihq x2lah0s x6ikm8r x10wlt62 x1n2onr6 x1ykvv32 xougopr x159fomc xnp5s1o x194ut8o x1vzenxt xd7ygy7 xt298gk x1xrz1ek x1s928wv x1n449xj x2q1x1w x1j6awrg x162n7g1 x1m1drc7 x1ypdohk x4gyw5p _a6hd'})\
-            #     .find('img')
-            # print(post_image)
-            
-
-
-            # print(primary_part)
-            
-
-            # primary_part = post_body.find('div', {'class': 'x4h1yfo'}).find('div', {'class': 'xvbhtw8 x78zum5 xdt5ytf x5yr21d x1n2onr6 xh8yej3'})
-            # post_image = primary_part.find('li', {'class': '_a9zj _a9zl  _a9z5'}).find('div', {'class': '_a9zm'}).find('div', {'class': '_a9zn _a9zo'}).find('img')
-            # print(post_image)
+            try:
+                post_body = soup.find('div', {'class': 'x1yvgwvq x1dqoszc x1ixjvfu xhk4uv x13fuv20 xu3j5b3 x1q0q8m5 x26u7qi x178xt8z xm81vs4 xso031l xy80clv x78zum5 x1q0g3np xh8yej3'})
+                # print(post_body)
+                primary_part = post_body.find('div', {'class': 'x4h1yfo'})\
+                    .find('div', {'class': 'xvbhtw8 x78zum5 xdt5ytf x5yr21d x1n2onr6 xh8yej3'})\
+                    .find('div', {'class': 'x5yr21d xw2csxc x1odjw0f x1n2onr6'})\
+                    .find('div', {'class': 'x9f619 x78zum5 xdt5ytf x5yr21d x10l6tqk xh8yej3 xexx8yu x4uap5 x18d9i69 xkhd6sd'})\
+                    .find('div', {'class': 'x5yr21d'})\
+                    .find('ul', {'class': '_a9z6 _a9za'})\
+                    .find('div', {'class': 'x1qjc9v5 x972fbf xcfux6l x1qhh985 xm0m39n x9f619 x78zum5 xdt5ytf x2lah0s xk390pu xdj266r x11i5rnm xat24cr x1mh8g0r xexx8yu x4uap5 x18d9i69 xkhd6sd x1n2onr6 xggy1nq x11njtxf'})\
+                    .find('li')\
+                    .find('div', {'class': '_a9zm'})\
+                    .find('div', {'class': '_a9zn _a9zo'})
+                # print(primary_part)
+                post_image = primary_part.find('div', {'class': 'x1lliihq'})\
+                    .find('div', {'class': 'x1lliihq'})\
+                    .find('div', {'class': '_aarf _a9zp'})\
+                    .find('a', {'class': 'x1i10hfl x1qjc9v5 xjbqb8w xjqpnuy xa49m3k xqeqjp1 x2hbi6w x13fuv20 xu3j5b3 x1q0q8m5 x26u7qi x972fbf xcfux6l x1qhh985 xm0m39n x9f619 x1ypdohk x78zum5 xdl72j9 xdt5ytf x2lah0s xe8uvvx xdj266r x11i5rnm xat24cr x1mh8g0r x2lwn1j xeuugli xexx8yu x4uap5 x18d9i69 xkhd6sd x1n2onr6 x16tdsg8 x1hl2dhg xggy1nq x1ja2u2z x1t137rt xnz67gz x14yjl9h xudhj91 x18nykt9 xww2gxu x9f619 x1lliihq x2lah0s x6ikm8r x10wlt62 x1n2onr6 x1ykvv32 xougopr x159fomc xnp5s1o x194ut8o x1vzenxt xd7ygy7 xt298gk x1xrz1ek x1s928wv x1n449xj x2q1x1w x1j6awrg x162n7g1 x1m1drc7 x1ypdohk x4gyw5p _a6hd'})\
+                    .find('img')['src']
+                print(post_image)
+            except Exception as e:
+                print(e)
+                continue
 
         
     return None
@@ -965,6 +945,65 @@ def get_ig_post_content(url_list):
         soup_list.append(soup)
     browser.quit() 
     return soup_list
+
+#搜尋twitter貼文頁面
+@app.route("/search_twitter", methods=['POST'])
+def search_twitter():
+    post_item = [] 
+    if request.method == 'POST':
+        key = request.form['keyword']
+        url = f'https://twitter.com/search?q=(%23{key})%20lang%3Azh-tw&src=typed_query'
+        options = Options()
+        options.add_argument("--disable-notifications")
+        browser = webdriver.Chrome(options=options)
+        browser.get("https://twitter.com/")
+        time.sleep(1)
+
+    return None
+
+#搜尋本站貼文頁面
+@app.route("/search_tictagtoe", methods=['POST'])
+def search_tictagtoe():
+    if request.method == 'POST':
+        key = request.form['keyword']
+        sql = 'select * from post;'
+        cursor.execute(sql)
+        results = cursor.fetchall()
+        post_item = []
+        for result in results:
+            post_hashtag = result[7]
+            if key in post_hashtag:
+                poster = result[4]
+                sql = f'select * from member where MemId = "{poster}";'
+                cursor.execute(sql)
+                member = cursor.fetchone()
+                member_name = member[1]
+                member_avatar = member[5]
+                post_time = result[6]
+                post_content = result[2]
+                post_tag = extract_hashtags(result[7])
+                post_img = ""
+                post_vedio = ""
+                post_like = 0
+                post_comment = 0
+                #每篇貼文的資訊
+                post_detail = {
+                    "post_image": member_avatar,
+                    "post_name": member_name,
+                    "post_time": post_time,
+                    "post_text": post_content,
+                    "post_picture": post_img,
+                    "post_video": post_vedio,
+                    "post_hashtag": post_tag,
+                    "post_likes": post_like,
+                    "post_comments": post_comment
+                }
+                #所有貼文的集合
+                post_item.append(post_detail)
+        data = {
+            'post_item': post_item
+        }
+    return jsonify(**data) 
 
 #新增好友
 @app.route("/addfriend", methods=['POST'])
