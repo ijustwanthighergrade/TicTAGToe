@@ -870,7 +870,6 @@ def search_IG():
                 continue
             else:
                 time.sleep(2) 
-    
         soup = BeautifulSoup(browser.page_source, 'lxml')
 
         #取得每篇貼文的連結
@@ -883,18 +882,16 @@ def search_IG():
             for block in a_tag_block:
                 block_url = block.find('a')
                 if block_url:
-                    # print(block_url['href'])
                     post_urls.append(block_url['href'])
         
         browser.quit() 
 
-        post_urls = post_urls[:12]
+        post_urls = post_urls[:6]
         soup_list = get_ig_post_content(post_urls)
 
         for soup in soup_list:
             try:
                 post_body = soup.find('div', {'class': 'x1yvgwvq x1dqoszc x1ixjvfu xhk4uv x13fuv20 xu3j5b3 x1q0q8m5 x26u7qi x178xt8z xm81vs4 xso031l xy80clv x78zum5 x1q0g3np xh8yej3'})
-                # print(post_body)
                 primary_part = post_body.find('div', {'class': 'x4h1yfo'})\
                     .find('div', {'class': 'xvbhtw8 x78zum5 xdt5ytf x5yr21d x1n2onr6 xh8yej3'})\
                     .find('div', {'class': 'x5yr21d xw2csxc x1odjw0f x1n2onr6'})\
@@ -905,19 +902,88 @@ def search_IG():
                     .find('li')\
                     .find('div', {'class': '_a9zm'})\
                     .find('div', {'class': '_a9zn _a9zo'})
-                # print(primary_part)
+                
+                #貼文者頭貼
                 post_image = primary_part.find('div', {'class': 'x1lliihq'})\
                     .find('div', {'class': 'x1lliihq'})\
                     .find('div', {'class': '_aarf _a9zp'})\
                     .find('a', {'class': 'x1i10hfl x1qjc9v5 xjbqb8w xjqpnuy xa49m3k xqeqjp1 x2hbi6w x13fuv20 xu3j5b3 x1q0q8m5 x26u7qi x972fbf xcfux6l x1qhh985 xm0m39n x9f619 x1ypdohk x78zum5 xdl72j9 xdt5ytf x2lah0s xe8uvvx xdj266r x11i5rnm xat24cr x1mh8g0r x2lwn1j xeuugli xexx8yu x4uap5 x18d9i69 xkhd6sd x1n2onr6 x16tdsg8 x1hl2dhg xggy1nq x1ja2u2z x1t137rt xnz67gz x14yjl9h xudhj91 x18nykt9 xww2gxu x9f619 x1lliihq x2lah0s x6ikm8r x10wlt62 x1n2onr6 x1ykvv32 xougopr x159fomc xnp5s1o x194ut8o x1vzenxt xd7ygy7 xt298gk x1xrz1ek x1s928wv x1n449xj x2q1x1w x1j6awrg x162n7g1 x1m1drc7 x1ypdohk x4gyw5p _a6hd'})\
                     .find('img')['src']
-                print(post_image)
+                
+                #貼文者名稱
+                post_name = primary_part.find('div', {'class': '_a9zr'})\
+                    .find('h2')\
+                    .find('div', {'class': 'x9f619 xjbqb8w x78zum5 x168nmei x13lgxp2 x5pf9jr xo71vjh xw3qccf x1n2onr6 x1plvlek xryxfnj x1c4vz4f x2lah0s xdt5ytf xqjyukv x1qjc9v5 x1oa3qoh x1nhvcw1'})\
+                    .find('div', {'class': 'xt0psk2'})\
+                    .find('div', {'class': 'xt0psk2'})\
+                    .find('a', {'class': 'x1i10hfl xjqpnuy xa49m3k xqeqjp1 x2hbi6w xdl72j9 x2lah0s xe8uvvx xdj266r x11i5rnm xat24cr x1mh8g0r x2lwn1j xeuugli x1hl2dhg xggy1nq x1ja2u2z x1t137rt x1q0g3np x1lku1pv x1a2a7pz x6s0dn4 xjyslct x1ejq31n xd10rxx x1sy0etr x17r0tee x9f619 x1ypdohk x1i0vuye x1f6kntn xwhw2v2 xl56j7k x17ydfre x2b8uid xlyipyv x87ps6o x14atkfc xcdnw81 xjbqb8w xm3z3ea x1x8b98j x131883w x16mih1h x972fbf xcfux6l x1qhh985 xm0m39n xt0psk2 xt7dq6l xexx8yu x4uap5 x18d9i69 xkhd6sd x1n2onr6 x1n5bzlp xqnirrm xj34u2y x568u83'}).text                    
+                
+                #貼文內容
+                post_content = primary_part.find('div', class_='_a9zr')\
+                    .find('div', class_='_a9zs')\
+                    .find('h1', class_='_aacl _aaco _aacu _aacx _aad7 _aade').text    
+
+                #貼文時間            
+                post_time = post_body.find('div', class_='x4h1yfo')\
+                    .find('div', class_='xvbhtw8 x78zum5 xdt5ytf x5yr21d x1n2onr6 xh8yej3')\
+                    .find('div', class_='x1xp8e9x x13fuv20 x178xt8z x9f619 x1yrsyyn x1pi30zi x10b6aqq x1swvt13 xh8yej3')\
+                    .find('div', class_='x9f619 xjbqb8w x78zum5 x168nmei x13lgxp2 x5pf9jr xo71vjh x1yztbdb x1uhb9sk x1plvlek xryxfnj x1c4vz4f x2lah0s xdt5ytf xqjyukv x1cy8zhl x1oa3qoh x1nhvcw1')\
+                    .find('div', class_='_aacl _aaco _aacu _aacx _aad6 _aade _aaqb')\
+                    .find('a', class_='x1i10hfl xjbqb8w x6umtig x1b1mbwd xaqea5y xav7gou x9f619 x1ypdohk xt0psk2 xe8uvvx xdj266r x11i5rnm xat24cr x1mh8g0r xexx8yu x4uap5 x18d9i69 xkhd6sd x16tdsg8 x1hl2dhg xggy1nq x1a2a7pz _a6hd')\
+                    .find('span', class_='x1lliihq x1plvlek xryxfnj x1n2onr6 x193iq5w xeuugli x1fj9vlw x13faqbe x1vvkbs x1s928wv xhkezso x1gmr53x x1cpjm7i x1fgarty x1943h6x x1i0vuye x1yxbuor xo1l8bm x1roi4f4 x1s3etm8 x676frb x10wh9bi x1wdrske x8viiok x18hxmgj')\
+                    .find('time', class_='_aaqe').text
+                
+                picture_url = []
+                #貼文圖片
+                post_picture = post_body.find('div', class_='x6s0dn4 x1dqoszc xu3j5b3 xm81vs4 x78zum5 x1iyjqo2 x1tjbqro')\
+                    .find('div', class_='x1lliihq xh8yej3')\
+                    .find('div', class_='x1qjc9v5 x972fbf xcfux6l x1qhh985 xm0m39n x9f619 x78zum5 xdt5ytf x2lah0s xk390pu xdj266r x11i5rnm xat24cr x1mh8g0r xexx8yu x4uap5 x18d9i69 xkhd6sd x1n2onr6 xggy1nq x11njtxf')\
+                    .find('div')\
+                    .find('div', class_='x1i10hfl')\
+                    .find('div')\
+                    .find('div', class_='_aagu')\
+                    .find('div', class_='_aagv')\
+                    .find('img')['src']
+                picture_url.append(post_picture)
+
+                #貼文讚數
+                post_likes = post_body.find('div', class_='x4h1yfo')\
+                    .find('div', class_='xvbhtw8 x78zum5 xdt5ytf x5yr21d x1n2onr6 xh8yej3')\
+                    .find('div', class_='x1xp8e9x x13fuv20 x178xt8z x9f619 x1yrsyyn x1pi30zi x10b6aqq x1swvt13 xh8yej3')\
+                    .find('section', class_='x12nagc')\
+                    .find('div', class_='x9f619 xjbqb8w x78zum5 x168nmei x13lgxp2 x5pf9jr xo71vjh x1n2onr6 x1plvlek xryxfnj x1iyjqo2 x2lwn1j xeuugli x1q0g3np xqjyukv x6s0dn4 x1oa3qoh x1nhvcw1')\
+                    .find('div', class_='x9f619 xjbqb8w x78zum5 x168nmei x13lgxp2 x5pf9jr xo71vjh xr1yuqi xkrivgy x4ii5y1 x1gryazu x1n2onr6 x1plvlek xryxfnj x1iyjqo2 x2lwn1j xeuugli xdt5ytf x1a02dak xqjyukv x1cy8zhl x1oa3qoh x1nhvcw1')\
+                    .find('span', class_='x1lliihq x1plvlek xryxfnj x1n2onr6 x193iq5w xeuugli x1fj9vlw x13faqbe x1vvkbs x1s928wv xhkezso x1gmr53x x1cpjm7i x1fgarty x1943h6x x1i0vuye xvs91rp xo1l8bm x5n08af x10wh9bi x1wdrske x8viiok x18hxmgj')\
+                    .find('a', class_='x1i10hfl xjbqb8w x6umtig x1b1mbwd xaqea5y xav7gou x9f619 x1ypdohk xt0psk2 xe8uvvx xdj266r x11i5rnm xat24cr x1mh8g0r xexx8yu x4uap5 x18d9i69 xkhd6sd x16tdsg8 x1hl2dhg xggy1nq x1a2a7pz _a6hd')\
+                    .find('span', class_='x193iq5w xeuugli x1fj9vlw x13faqbe x1vvkbs xt0psk2 x1i0vuye xvs91rp x1s688f x5n08af x10wh9bi x1wdrske x8viiok x18hxmgj')\
+                    .find('span', class_='html-span xdj266r x11i5rnm xat24cr x1mh8g0r xexx8yu x4uap5 x18d9i69 xkhd6sd x1hl2dhg x16tdsg8 x1vvkbs').text
+                
+                #貼文hashtag
+                post_hashtag = extract_hashtags(post_content)
+                post_tags = ['#' + tag for tag in post_hashtag]       
+
+                #每篇貼文的資訊
+                post_detail = {
+                    "post_image": post_image,
+                    "post_name": post_name,
+                    "post_time": post_time,
+                    "post_text": post_content,
+                    "post_picture": picture_url,
+                    "post_video": "",
+                    "post_hashtag": post_tags,
+                    "post_likes": post_likes,
+                    "post_comments": 0
+                }
+                post_item.append(post_detail)   
             except Exception as e:
                 print(e)
                 continue
 
-        
-    return None
+        data = {
+            'post_item': post_item
+        }
+
+    return jsonify(**data) 
 
 def get_ig_post_content(url_list):
     ig_url = "https://www.instagram.com/"
@@ -941,6 +1007,7 @@ def get_ig_post_content(url_list):
     for url in url_list:
         post_url = f'{ig_url}{url}'
         browser.get(post_url)
+        time.sleep(2)
         soup = BeautifulSoup(browser.page_source, 'lxml')
         soup_list.append(soup)
     browser.quit() 
@@ -952,12 +1019,45 @@ def search_twitter():
     post_item = [] 
     if request.method == 'POST':
         key = request.form['keyword']
+        page = request.form.get('page') or 1
+        page = int(page)
         url = f'https://twitter.com/search?q=(%23{key})%20lang%3Azh-tw&src=typed_query'
         options = Options()
         options.add_argument("--disable-notifications")
         browser = webdriver.Chrome(options=options)
         browser.get("https://twitter.com/")
         time.sleep(1)
+        login_btn = browser.find_element(By.XPATH, '//*[@id="react-root"]/div/div/div[2]/main/div/div/div[1]/div/div/div[3]/div[5]/a')
+        login_btn.click()
+        time.sleep(2)
+        email = browser.find_element(By.XPATH, '//*[@id="layers"]/div[2]/div/div/div/div/div/div[2]/div[2]/div/div/div[2]/div[2]/div/div/div/div[5]/label/div/div[2]/div/input')
+        next_step_btn = browser.find_element(By.XPATH, '//*[@id="layers"]/div[2]/div/div/div/div/div/div[2]/div[2]/div/div/div[2]/div[2]/div/div/div/div[6]')
+        email.send_keys('tictagtoe.im@gmail.com')
+        next_step_btn.click()
+        time.sleep(2)
+        user_name = browser.find_element(By.XPATH, '//*[@id="layers"]/div[2]/div/div/div/div/div/div[2]/div[2]/div/div/div[2]/div[2]/div[1]/div/div[2]/label/div/div[2]/div/input')
+        next_step_btn = browser.find_element(By.XPATH, '//*[@id="layers"]/div[2]/div/div/div/div/div/div[2]/div[2]/div/div/div[2]/div[2]/div[2]/div/div/div/div')
+        user_name.send_keys('tictagtoe_cyim')
+        next_step_btn.click()
+        time.sleep(2)
+        password = browser.find_element(By.XPATH, '//*[@id="layers"]/div[2]/div/div/div/div/div/div[2]/div[2]/div/div/div[2]/div[2]/div[1]/div/div/div[3]/div/label/div/div[2]/div[1]/input')
+        confirm_login_btn = browser.find_element(By.XPATH, '//*[@id="layers"]/div[2]/div/div/div/div/div/div[2]/div[2]/div/div/div[2]/div[2]/div[2]/div/div[1]/div/div/div')
+        password.send_keys('#TicTAGToe')
+        confirm_login_btn.click()
+        time.sleep(2)
+        browser.get(url)
+        time.sleep(2)
+
+        for x in range(page*2): 
+            browser.execute_script("window.scrollTo(0,document.body.scrollHeight);")
+            if x < (page-1) * 3:
+                continue
+            else:
+                time.sleep(2) 
+        soup = BeautifulSoup(browser.page_source, 'lxml')
+
+
+        browser.quit()
 
     return None
 
