@@ -14,23 +14,24 @@
         </div>
     </div> -->
 
-    <nav class="navbar navbar-light fixed-top bg-gradient" style="background-color: #97CBFF; height: 120px; position: relative;">
+    <nav class="navbar navbar-light fixed-top bg-gradient" style="background-color: #97CBFF; height: 150px; position: relative;">
         <div class="container-fluid">
-          <button class="navbar-toggler ms-5" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar" aria-controls="offcanvasNavbar">
-            <span class="navbar-toggler-icon" style="width: 60px; height: 60px;"></span>
+          <button class="navbar-toggler mx-5" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar" aria-controls="offcanvasNavbar">
+            <span class="navbar-toggler-icon" style="width: 60px; height: 80px;"></span>
           </button>
-          <a class="navbar-brand fs-1 mx-5" href="/"># TICTAGTOE</a>
+          <!-- <a class="navbar-brand fs-1 mx-5" href="/"># TICTAGTOE</a> -->
           <!-- <a class="navbar-brand fs-1 mx-5" href="/"><img src="../../static/img/tictagtoe_removebg.png" alt="tictagtoe logo" style="width: 175px; height: 80px;"></a> -->
-          <form class="d-flex  flex-grow-1 me-5">
+          <form class="d-flex  flex-grow-1">
             <div class="input-group">
-                <input class="form-control form-control-lg bg-light fs-2" style="height: 60px;" type="text" placeholder="請輸入關鍵字" id="key" data-input="keyword" value="{{Keyword}}" aria-label="Search">
-                <button class="btn btn-light border-0" type="button" data-btn="searchTag">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
-                    <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"/>
-                  </svg>
-                </button>
-            </div>              
+                <input class="form-control form-control-lg bg-light fs-1 ms-2 me-2" style="height: 80px;" type="text" placeholder="請輸入關鍵字" id="key" data-input="keyword" value="{{Keyword}}" aria-label="Search">
+            </div>
+            <!-- <button class="btn btn-light border-5 mx-5" type="button" data-btn="searchTag"> -->
+                
+            <!-- </button>               -->
           </form>
+          <svg xmlns="http://www.w3.org/2000/svg" width="50" height="50" fill="currentColor" class="bi bi-search border-5 mx-5" viewBox="0 0 16 16" type="button" data-btn="searchTag">
+            <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"/>
+          </svg>
           <div class="offcanvas offcanvas-start" style="width: 80%; opacity: 0.9;" tabindex="-1" id="offcanvasNavbar" aria-labelledby="offcanvasNavbarLabel">
             <div class="offcanvas-header mb-5">
               <h5 class="offcanvas-title fs-1 ms-3" id="offcanvasNavbarLabel"># TICTAGTOE</h5>
@@ -38,7 +39,16 @@
             </div>
             <div class="offcanvas-body fs-1 text-center">
               <ul class="navbar-nav justify-content-end flex-grow-1 pe-3">
-                <li class="nav-item mb-5">
+                <li class="nav-item my-5">
+                    <a class="nav-link active" href="/" style="color: #97CBFF;">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="50" height="50" fill="#97CBFF" class="bi bi-house-fill me-3" viewBox="0 0 16 16">
+                            <path d="M8.707 1.5a1 1 0 0 0-1.414 0L.646 8.146a.5.5 0 0 0 .708.708L8 2.207l6.646 6.647a.5.5 0 0 0 .708-.708L13 5.793V2.5a.5.5 0 0 0-.5-.5h-1a.5.5 0 0 0-.5.5v1.293L8.707 1.5Z"/>
+                            <path d="m8 3.293 6 6V13.5a1.5 1.5 0 0 1-1.5 1.5h-9A1.5 1.5 0 0 1 2 13.5V9.293l6-6Z"/>
+                        </svg>
+                        回到首頁
+                    </a>
+                </li>
+                <li class="nav-item my-5">
                     <a class="nav-link active" href="/individual" style="color: #97CBFF;">
                         <svg xmlns="http://www.w3.org/2000/svg" width="50" height="50" fill="#97CBFF" class="bi bi-person-fill me-3" viewBox="0 0 16 16">
                             <path d="M3 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1H3Zm5-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6Z"/>

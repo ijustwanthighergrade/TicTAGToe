@@ -271,4 +271,6 @@ function SetBlockUiContentForTag(content, tagName) {
     $("[data-input='blockUiContentForTag']")[0].textContent = content;
     currTag = tagName;
     $("[data-block-ui='knowledgeMapForTag']")[0].style.display = '';
+    var search_url = "/searchres?keyword=" + currTag;
+    $("[data-btn='searchOtherTag']")[0].href = search_url; 
 }

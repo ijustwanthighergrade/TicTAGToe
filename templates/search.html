@@ -56,8 +56,10 @@
             .block-ui-content {
                 background-color: white;
                 padding: 20px;
-                border-radius: 5px;
-                width: 70%;
+                border-radius: 10px;
+                width: 80%;
+                height: 20%;
+                font-size: 40px;
                 margin-left: 15%;
                 margin-right: 15%;
                 text-align: center;
@@ -89,23 +91,23 @@
         </div> -->
         <!-- todo 加上圖示 -->
         <!-- <div class="icon-explain-container"> -->
-        <div class="container-fluid mt-5">
+        <div class="container-fluid mt-5 fs-1">
             <div class="row  align-items-center">
                 <!-- <span>圖示：</span> -->
                 <!-- <ul class="icon-explain"> -->
                 <div class="col text-center">
-                    <span class="fs-3">圖示：</span>
+                    <span class="fs-2">圖示：</span>
                 </div>
                 <div class="col text-center">
                     <!-- <li> -->
                         <img src="../static/img/people.png" class="me-2"/>
-                        <span class="fs-4">人物</span>
+                        <span class="fs-3">人物</span>
                     <!-- </li> -->
                 </div>
                 <div class="col text-center">
                     <!-- <li> -->
                         <img src="../static/img/address.png" class="me-2"/>
-                        <span class="fs-4">地點</span>
+                        <span class="fs-3">地點</span>
                     <!-- </li> -->
                 </div>
                 <div class="col text-center">
@@ -117,7 +119,7 @@
                 <div class="col text-center">
                     <!-- <li> -->
                         <img src="../static/img/post.png" class="me-2"/>
-                        <span class="fs-4">貼文</span>
+                        <span class="fs-3">貼文</span>
                     <!-- </li> -->
                 </div>
                 <!-- </ul> -->
@@ -145,13 +147,14 @@
             <!-- 在此處放置您要阻止的內容 -->
             <!-- 關閉 -->
                 <div style="text-align: right;">
-                    <button data-close-block-ui="knowledgeMapForTag" class="w3-hover-blue">X</button>
+                    <button data-close-block-ui="knowledgeMapForTag" class="w3-hover-blue" style="border-radius: 50%; width: 70px; height: 70px;">X</button>
                 </div>
                 <div style="text-align: left;">
                     <span data-input="blockUiContentForTag"></span>
                 </div>
                 <div style="text-align: right;">
-                    <button data-btn="searchTag">查詢</button>
+                    <!-- <button data-btn="searchTag">查詢</button> -->
+                    <a class="btn btn-primary" href="#" data-btn="searchOtherTag" style="font-size: 40px;">查詢</a>
                 </div>
             </div>
         </div>
