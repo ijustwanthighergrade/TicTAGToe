@@ -440,8 +440,32 @@ def Personalnotes():
         "id": result[0]
     }
 
-    return render_template('personal_notes.html', postItem=postItem)
+    return render_template('personal_notes.html', postItem=postItem, edit_model=True)
 
+# 記事搜尋結果頁面
+@app.route("/notes/<data_id>", methods=['GET'])
+@login_required
+def ResultNotes(data_id):
+    sql = f"select * from post where DataId = '{data_id}';"
+    cursor.execute(sql)
+    result = cursor.fetchone()
+    if result:
+        user_id = result[4]
+        sql = f"select * from member where MemId='{user_id}';"
+        cursor.execute(sql)
+        member_result = cursor.fetchone()
+        postItem = {
+            "location": result[8],
+            "time": result[6],
+            "tags": result[7],
+            "title": result[1],
+            "content": result[2],
+            "id": result[0],
+            "user_name": member_result[1]
+        }
+        return render_template('personal_notes.html', postItem=postItem, view_model=True)
+    else:
+        return redirect(url_for('Index'))
 
 # 編輯記事頁面
 @app.route("/editnote", methods=['POST', 'GET'])

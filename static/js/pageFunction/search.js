@@ -217,6 +217,7 @@ function CreateKnowledgeMap(nodeData,linkData) {
     var part = e.subject.part;
     if (part instanceof go.Node) {
         var node = part;
+        console.log(node.data);
         // alert("Node clicked: " + node.data.type);
         switch (node.data.type) {
             case 'tag':
@@ -232,19 +233,21 @@ function CreateKnowledgeMap(nodeData,linkData) {
 
             case 'post':
                 // todo 到貼文頁面
-                // location.href = '/...?a=';
-                alert('該功能尚未開啟，未來將會導向至個人頁面');
+                var note_url = "notes/" + node.data.description;
+                location.href = note_url;
+                // alert('該功能尚未開啟，未來將會導向至個人頁面');
                 break;
 
             case 'place':
                 // todo open block ui and show info
-                SetBlockUiContent('地點描述：' + node.data.text);
+                var content = node.data.text + ': ' + node.data.description;
+                SetBlockUiContent(content, node.data.imgPath);
                 break;
 
             case 'obj':
                 // todo open block ui and show info
-
-                SetBlockUiContent('物品描述：' + node.data.text,node.data.imgPath);
+                var content = node.data.text + ': ' + node.data.description;
+                SetBlockUiContent(content, node.data.imgPath);
                 break;
         
             default:
