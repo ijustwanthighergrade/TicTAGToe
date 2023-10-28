@@ -24,6 +24,7 @@
 <script type="text/javascript" src="../static/js/pageFunction/search.js"></script>
 <script type="text/javascript" src="../static/js/doc.ready/search.js"></script>
 <link rel="stylesheet" type="text/css" href="../static/css/block.css">
+<link rel="stylesheet" type="text/css" href="../static/css/loading.css">
 <style>
     
 </style>
@@ -127,16 +128,16 @@
         </div>
         <div class="block-ui" data-block-ui="knowledgeMap" style="display: none;">
             <div class="block-ui-overlay"></div>
-            <div class="block-ui-content">
+            <div class="block-ui-content" style="width: fit-content; height: fit-content;">
             <!-- 在此處放置您要阻止的內容 -->
             <!-- 關閉 -->
                 <div style="text-align: right;">
                     <button data-close-block-ui="knowledgeMap" class="w3-hover-blue" style="border-radius: 50%; width: 70px; height: 70px;">X</button>
                 </div>
                 <div>
-                    <img src="" style="max-width: 300px;max-height: 400px;" data-block-ui-img/>
+                    <img src="" style="max-width: 300px;max-height: 400px;" class="my-5" data-block-ui-img/>
                 </div>
-                <div style="text-align: left;">
+                <div style="text-align: left;" class="my-5">
                     <span data-input="blockUiContent"></span>
                 </div>
             </div>
@@ -149,12 +150,31 @@
                 <div style="text-align: right;">
                     <button data-close-block-ui="knowledgeMapForTag" class="w3-hover-blue" style="border-radius: 50%; width: 70px; height: 70px;">X</button>
                 </div>
-                <div style="text-align: left;">
+                <div style="text-align: left;" class="my-5">
                     <span data-input="blockUiContentForTag"></span>
                 </div>
                 <div style="text-align: right;">
                     <!-- <button data-btn="searchTag">查詢</button> -->
-                    <a class="btn btn-primary" href="#" data-btn="searchOtherTag" style="font-size: 40px;">查詢</a>
+                    <a class="btn btn-primary my-5" href="#" data-btn="searchOtherTag" style="font-size: 40px;">查詢</a>
+                </div>
+            </div>
+        </div>
+        <div class="block-ui" data-block-ui="knowledgeMapForPlace" style="display: none;">
+            <div class="block-ui-overlay"></div>
+            <div class="block-ui-content" style="width: fit-content; height: fit-content;">
+            <!-- 在此處放置您要阻止的內容 -->
+            <!-- 關閉 -->
+                <div style="text-align: right;">
+                    <button data-close-block-ui="knowledgeMapForPlace" class="w3-hover-blue" style="border-radius: 50%; width: 70px; height: 70px;">X</button>
+                </div>
+                <div>
+                    <img src="" style="max-width: 300px;max-height: 400px;" class="my-5" data-block-ui-img-place/>
+                </div>
+                <div style="text-align: left;">
+                    <span data-input="blockUiContentForPlace"></span>
+                </div>
+                <div style="text-align: right;">
+                    <a class="btn btn-primary my-5" href="#" target="_blank" data-btn="searchPlace" style="font-size: 40px;">查詢</a>
                 </div>
             </div>
         </div>
@@ -209,7 +229,18 @@
         </div>
 
         <!-- Set Post Start-->
-        <div class="px-3" data-container="socialPost"></div>
+        <div class="px-3" data-container="socialPost">
+            <div id="circularG" style="display: none; margin-top: 300px;">
+                <div id="circularG_1" class="circularG"></div>
+                <div id="circularG_2" class="circularG"></div>
+                <div id="circularG_3" class="circularG"></div>
+                <div id="circularG_4" class="circularG"></div>
+                <div id="circularG_5" class="circularG"></div>
+                <div id="circularG_6" class="circularG"></div>
+                <div id="circularG_7" class="circularG"></div>
+                <div id="circularG_8" class="circularG"></div>
+            </div>
+        </div>
         <!-- Set Post End-->
     </main>
     

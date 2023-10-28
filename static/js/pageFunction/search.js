@@ -241,7 +241,8 @@ function CreateKnowledgeMap(nodeData,linkData) {
             case 'place':
                 // todo open block ui and show info
                 var content = node.data.text + ': ' + node.data.description;
-                SetBlockUiContent(content, node.data.imgPath);
+                // SetBlockUiContent(content, node.data.imgPath);
+                SetBlockUiContentForPlace(content, node.data.imgPath, node.data.text)
                 break;
 
             case 'obj':
@@ -276,4 +277,13 @@ function SetBlockUiContentForTag(content, tagName) {
     $("[data-block-ui='knowledgeMapForTag']")[0].style.display = '';
     var search_url = "/searchres?keyword=" + currTag;
     $("[data-btn='searchOtherTag']")[0].href = search_url; 
+}
+
+function SetBlockUiContentForPlace(content, imgSrc='', tagName) {
+    $("[data-input='blockUiContentForPlace']")[0].textContent = content;
+    $("[data-block-ui-img-place]")[0].src = imgSrc;
+    var currTag = tagName;
+    var search_url = "https://www.google.com/maps/search/" + currTag;
+    $("[data-btn='searchPlace']")[0].href = search_url;
+    $("[data-block-ui='knowledgeMapForPlace']")[0].style.display = '';
 }
