@@ -1172,7 +1172,7 @@ def DeleteFriend():
 @app.route("/getfriendlist", methods=['GET','POST'])
 def GetFriendList():
     try:
-        sql = f'Select member_relationship.ObjId,MemName,ImagePath FROM member_relationship left join member on member_relationship.ObjId = member.MemId where member_relationship.MemId=\'{current_user.id}\' and member_relationship.Status=1 ;'
+        sql = f'Select member_relationship.ObjId,MemName,ImagePath FROM member_relationship left join member on member_relationship.ObjId = member.MemId where member_relationship.MemId=\'{current_user.id}\' and member_relationship.Status>0 ;'
         cursor.execute(sql)
         res = cursor.fetchall()
         print(res)

@@ -35,9 +35,9 @@ function GetFriendList(url){
     AjaxRequest(url,{'memName':$("[data-name='memName']")[0].value},function(data){
         console.log(data);
         for (let i = 0; i < data['data'].length; i++) {
-            var memContainer = CreateMemListElement(data['data'][i][0],data['data'][i][1],data['data'][i][2]);
+            var memContainer = CreateMemListElement(data['data'][i][0],data['data'][i][1],data['data'][i][2],url);
 
-            url == '/getfriendlist' ? $("[data-block='friendList']")[0].appendChild(memContainer) : $("[data-block='searchFriend']")[0].appendChild(memContainer)
+            url == '/getfriendlist' ? $("[data-block='friendList']")[0].appendChild(memContainer) : $("[data-block='searchFriend']")[0].appendChild(memContainer);
             
             linkMem();
         }
@@ -54,7 +54,7 @@ function linkMem(){
 }
 
 // create好友列表區塊element
-function CreateMemListElement(memId,memName,imgSrc) {
+function CreateMemListElement(memId,memName,imgSrc,type) {
     var memContainer = document.createElement('div');
     var contentContainer = document.createElement('div');
     var imgContainer = document.createElement('div');
@@ -84,13 +84,15 @@ function CreateMemListElement(memId,memName,imgSrc) {
     btnContainer.className = 'col-3 text-center';
     btn.className = 'btn btn-light border-0 bg-transparent';
     btn.style.cursor = 'point';
-    btnSvg.setAttribute('xmlns','http://www.w3.org/2000/svg');
-    btnSvg.setAttribute('width','70');
-    btnSvg.setAttribute('height','70');
-    btnSvg.setAttribute('fill','#97CBFF');
-    btnSvg.setAttribute('class','bi bi-x-square-fill');
-    btnSvg.setAttribute('viewBox','0 0 16 16');
-    btnPath.setAttribute('d','M2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2zm3.354 4.646L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 1 1 .708-.708z');
+    // type == '/getfriendlist' ? btn.textContent = '刪除' : btn.textContent = '添加';
+    btn.style.fontSize = '40px';
+    // btnSvg.setAttribute('xmlns','http://www.w3.org/2000/svg');
+    // btnSvg.setAttribute('width','70');
+    // btnSvg.setAttribute('height','70');
+    // btnSvg.setAttribute('fill','#97CBFF');
+    // btnSvg.setAttribute('class','bi bi-x-square-fill');
+    // btnSvg.setAttribute('viewBox','0 0 16 16');
+    // btnPath.setAttribute('d','M2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2zm3.354 4.646L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 1 1 .708-.708z');
 
     memContainer.appendChild(contentContainer);
     contentContainer.appendChild(imgContainer);
@@ -99,7 +101,7 @@ function CreateMemListElement(memId,memName,imgSrc) {
     imgContainer.appendChild(img);
     nameContainer.appendChild(nameSpan);
     btnContainer.appendChild(btn);
-    btn.appendChild(btnSvg);
-    btnSvg.appendChild(btnPath);
+    // btn.appendChild(btnSvg);
+    // btnSvg.appendChild(btnPath);
     return memContainer;
 }
