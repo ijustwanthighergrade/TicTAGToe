@@ -44,12 +44,28 @@ function GetFriendList(url){
     });
 }
 
-// 
+// 跳轉到會員頁面
 function linkMem(){
     $("[data-mem-link]").off("click");
 
     $("[data-mem-link]").on("click",function(){
         location.href = '/individual?mem=' + this.dataset.memLink;
+    });
+}
+
+// 發送好友邀請
+function SendFriendRequest() {
+    
+}
+
+// 刪除好友
+function DelFriend() {
+    $("[data-del-friend]").off("click");
+
+    $("[data-del-friend]").on("click",function(){
+        AjaxRequest('/deletefriend',{'memId':this.dataset.delFriend},function(data){
+            location.reload();
+        });
     });
 }
 
@@ -84,6 +100,13 @@ function CreateMemListElement(memId,memName,imgSrc,type) {
     btnContainer.className = 'col-3 text-center';
     btn.className = 'btn btn-light border-0 bg-transparent';
     btn.style.cursor = 'point';
+    if (type == '/getfriendlist') {
+        btn.textContent = '刪除';
+        btn.dataset.delFriend = memId;
+    } else {
+        btn.textContent = '添加';
+        btn.dataset.addFriend = memId;
+    }
     // type == '/getfriendlist' ? btn.textContent = '刪除' : btn.textContent = '添加';
     btn.style.fontSize = '40px';
     // btnSvg.setAttribute('xmlns','http://www.w3.org/2000/svg');

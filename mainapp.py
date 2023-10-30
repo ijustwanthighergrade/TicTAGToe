@@ -1154,7 +1154,7 @@ def AddFriend():
 @app.route("/deletefriend", methods=['POST'])
 def DeleteFriend():
     # 取得MemId
-    selfMemId = ''
+    selfMemId = current_user.id
     friendId = request.values.get('memId')
 
     try:
@@ -1204,9 +1204,9 @@ def GetMemList():
 @app.route("/changefriendstatus", methods=['POST'])
 def ChangeFriendStatus():
     # 取得MemId
-    selfMemId = ''
+    selfMemId = current_user.id
     friendId = request.values.get('memId')
-    status = request.values.get('status')
+    status = request.values.get('status') # 1: 正常,2: 傳送好友邀請
 
     try:
         status = int(status)
