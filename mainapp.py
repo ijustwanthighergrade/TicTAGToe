@@ -305,7 +305,18 @@ def SearchRes():
 def Individual():
     # 利用session 取得會員Id
     # 利用會員Id取得會員資料，並傳送至前端
-    memId = current_user.id
+    if request.method == 'POST':
+        memId = request.values.get('mem') or current_user.id
+    
+    else:
+        memId = request.args.get('mem') or current_user.id
+
+    if memId == current_user.id:
+        mode = 'self'
+    
+    else:
+        mode = 'other'
+
     print(memId)
     sql = 'select * from member where MemId = "%s";' % (memId)
     cursor.execute(sql)
@@ -364,16 +375,7 @@ def Individual():
         "posts": posts
     }
 
-    return render_template('individual.html', user=user)
-
-
-# 他人頁面
-@app.route("/otherpeople", methods=['POST', 'GET'])
-@login_required 
-def Otherpeople():
-    # 利用會員Id取得會員資料，並傳送至前端
-
-    return render_template('other_people.html')
+    return render_template('individual.html', user=user,Mode=mode)
 
 
 # 修改個人資訊頁面
@@ -1181,7 +1183,7 @@ def search_tictagtoe():
 @app.route("/addfriend", methods=['POST'])
 def AddFriend():
     # 取得MemId
-    selfMemId = ''
+    selfMemId = current_user.id
     newFriendId = request.values.get('memId')
 
     try:
@@ -1215,16 +1217,31 @@ def DeleteFriend():
 
 
 #查詢好友列表
-@app.route("/getfriendlist", methods=['POST'])
+@app.route("/getfriendlist", methods=['GET','POST'])
 def GetFriendList():
-    # 取得MemId
-    selfMemId = ''
     try:
-        sql = f'Select FROM member_relationship WHERE MemId=\'{selfMemId}\';'
+        sql = f'Select member_relationship.ObjId,MemName,ImagePath FROM member_relationship left join member on member_relationship.ObjId = member.MemId where member_relationship.MemId=\'{current_user.id}\' and member_relationship.Status>0 ;'
         cursor.execute(sql)
         res = cursor.fetchall()
         print(res)
-        return jsonify(**{'res':'success'})
+        return jsonify(**{'res':'success','data':res})
+
+    except Exception as e:
+        db.rollback()
+        return jsonify(**{'res':'fail','msg':str(e)})
+    
+
+#查詢會員
+@app.route("/getmemlist", methods=['POST'])
+def GetMemList():
+    # 取得MemId
+    memName = request.values.get('memName')
+    try:
+        sql = f'Select MemId,MemName,ImagePath FROM member where MemName=\'{memName}\';'
+        cursor.execute(sql)
+        res = cursor.fetchall()
+        print(res)
+        return jsonify(**{'res':'success','data':res})
 
     except:
         db.rollback()
