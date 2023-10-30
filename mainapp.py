@@ -1082,6 +1082,54 @@ def search_twitter():
                 time.sleep(2) 
         soup = BeautifulSoup(browser.page_source, 'lxml')
 
+        posts = soup.find_all('article', class_='css-1dbjc4n r-1loqt21 r-18u37iz r-1ny4l3l r-1udh08x r-1qhn6m8 r-i023vh r-o7ynqc r-6416eg')
+        for post in posts:
+            print("\n")
+            # print(post)
+
+            post_body = post.find('div', class_='css-1dbjc4n r-eqz5dr r-16y2uox r-1wbh5a2')\
+                .find('div', class_='css-1dbjc4n r-16y2uox r-1wbh5a2 r-1ny4l3l')\
+                .find_all('div', class_='css-1dbjc4n r-18u37iz')[1]\
+                .find('div', class_='css-1dbjc4n r-1iusvr4 r-16y2uox r-1777fci r-kzbkwu')
+
+            post_name = post_body.find('div', class_='css-1dbjc4n r-zl2h9q')\
+                .find('div', class_='css-1dbjc4n r-k4xj1c r-18u37iz r-1wtj0ep')\
+                .find('div', class_='css-1dbjc4n r-1d09ksm r-18u37iz r-1wbh5a2')\
+                .find('div', class_='css-1dbjc4n r-1wbh5a2 r-dnmrzs r-1ny4l3l')\
+                .find('div', class_='css-1dbjc4n r-1awozwy r-18u37iz r-1wbh5a2 r-dnmrzs r-1ny4l3l')  \
+                .find('div', class_='css-1dbjc4n r-1awozwy r-18u37iz r-1wbh5a2 r-dnmrzs')\
+                .find('div', class_='css-1dbjc4n r-1wbh5a2 r-dnmrzs')\
+                .find('a', class_='css-4rbku5 css-18t94o4 css-1dbjc4n r-1loqt21 r-1wbh5a2 r-dnmrzs r-1ny4l3l')\
+                .find('div', class_='css-1dbjc4n r-1awozwy r-18u37iz r-1wbh5a2 r-dnmrzs')\
+                .find('div', class_='css-901oao r-1awozwy r-18jsvk2 r-6koalj r-37j5jr r-a023e6 r-b88u0q r-rjixqe r-bcqeeo r-1udh08x r-3s2u2q r-qvutc0')\
+                .find('span', class_='css-901oao css-16my406 css-1hf3ou5 r-poiln3 r-bcqeeo r-qvutc0')\
+                .find('span', class_='css-901oao css-16my406 r-poiln3 r-bcqeeo r-qvutc0').text
+            # print(post_name)
+
+            try:
+                post_time = post_body.find('div', class_='css-1dbjc4n r-zl2h9q')\
+                .find('div', class_='css-1dbjc4n r-k4xj1c r-18u37iz r-1wtj0ep')\
+                .find('div', class_='css-1dbjc4n r-1d09ksm r-18u37iz r-1wbh5a2')\
+                .find('div', class_='css-1dbjc4n r-1wbh5a2 r-dnmrzs r-1ny4l3l')\
+                .find('div', class_='css-1dbjc4n r-1awozwy r-18u37iz r-1wbh5a2 r-dnmrzs r-1ny4l3l')  \
+                .find('div', class_='css-1dbjc4n r-18u37iz r-1wbh5a2 r-13hce6t')\
+                .find('div', class_='css-1dbjc4n r-1d09ksm r-18u37iz r-1wbh5a2')\
+                .find('div', class_='css-1dbjc4n r-18u37iz r-1q142lx')\
+                .find('a', class_='css-4rbku5 css-18t94o4 css-901oao r-14j79pv r-1loqt21 r-xoduu5 r-1q142lx r-1w6e6rj r-37j5jr r-a023e6 r-16dba41 r-9aw3ui r-rjixqe r-bcqeeo r-3s2u2q r-qvutc0')\
+                .find('time').text
+            except:
+                continue
+            # print(post_time)
+
+            # print(post_body)
+            post_content = post_body.find('div', class_='css-1dbjc4n')\
+                .find('div', class_='css-901oao css-cens5h r-18jsvk2 r-37j5jr r-a023e6 r-16dba41 r-rjixqe r-bcqeeo r-bnwqim r-qvutc0')\
+                .find('span', class_='css-901oao css-16my406 r-poiln3 r-bcqeeo r-qvutc0').text
+            
+            print(post_content)
+
+
+            print("\n")
 
         browser.quit()
 
