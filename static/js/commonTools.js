@@ -43,3 +43,14 @@ function ClickTagStartSearch() {
     });
     
 }
+
+// delete element
+function DeleteElement(dataAttr='') {
+    if ($(dataAttr).length > 0) {
+
+        for (let i = 0; i < $(dataAttr).length; i++) {
+            $(dataAttr)[0].remove();
+        }
+        
+    }
+}
