@@ -123,7 +123,7 @@ function CreateMemListElement(memId,memName,imgSrc,type) {
     contentContainer.appendChild(btnContainer);
     imgContainer.appendChild(img);
     nameContainer.appendChild(nameSpan);
-    btnContainer.appendChild(btn);
+    // btnContainer.appendChild(btn);
     // btn.appendChild(btnSvg);
     // btnSvg.appendChild(btnPath);
     return memContainer;

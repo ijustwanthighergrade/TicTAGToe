@@ -135,10 +135,6 @@ function CreateKnowledgeMap(nodeData,linkData) {
         // $(go.Shape, "Circle",{ fill: "lightgreen", stroke: "black", strokeWidth: 1, width: 40, height: 40 }),
         $(go.Picture,{ source: "../static/img/post.png", width: 30, height: 30 })
     )
-    //,
-    // $(go.TextBlock,{ margin: 8, font: "12px sans-serif" },
-    //     new go.Binding("text", "text")
-    // )
 )
     );
 
@@ -201,16 +197,8 @@ function CreateKnowledgeMap(nodeData,linkData) {
  // create the model for the concept map
 //  var nodeDataArray = [
 //   { key: 1,category:"icon", text: "Concept Maps",type:"tag" },
-//   { key: 2, text: "Organized Knowledge" },
-//   { key: 3, text: "Context Dependent" },
-//   { key: 4, text: "Concepts" },
 //  ];
     var nodeDataArray = nodeData;
-//  var linkDataArray = [
-//   { from: 1, to: 2, text: "represent" },
-//   { from: 2, to: 3, text: "is" },
-//   { from: 2, to: 4, text: "is" }
-//  ];
     var linkDataArray = linkData;
     myDiagram.model = new go.GraphLinksModel(nodeDataArray, linkDataArray);
     myDiagram.addDiagramListener("ObjectSingleClicked", function(e) {
