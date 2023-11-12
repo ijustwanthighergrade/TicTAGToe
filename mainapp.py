@@ -183,12 +183,6 @@ def SearchRes():
     tagName = str(key)
     nodeData = []
     linkData = []
-
-    # sqlname = 'SELECT Owner FROM hashtag WHERE TagName = "%s";' % (tagName)
-    # cursor.execute(sqlname)
-    # result = cursor.fetchone()
-
-    # tagName = "CYIM"
     dictCategoryType = {
         1:"people",
         2:"place",
@@ -196,13 +190,12 @@ def SearchRes():
         4:"tag",
         5:"post",
     }
+
     sql = 'select * from hashtag where TagName = "%s";' % (tagName)
     cursor.execute(sql)
     result = cursor.fetchone()
     if result is not None:
         tagId = result[0]
-        # category1 = result[2]
-        # description1 = result[5]
 
         node1 = {
             "key": tagId,
@@ -224,9 +217,6 @@ def SearchRes():
                 cursor.execute(sql)
                 result1 = cursor.fetchone()
                 targetName = result1[2]
-                # category2 = result1[3]
-                # description2 = result1[4]
-                # imgPath = result1[6]
 
                 node2 = {
                     "key": objId,
@@ -245,8 +235,6 @@ def SearchRes():
                 sql = 'select * from post where DataId = "%s";' % (objId)
                 cursor.execute(sql)
                 result1 = cursor.fetchone()
-                # postType = result1[2]
-                # postType1 = ""
 
                 node2 = {
                     "key": objId,
@@ -270,9 +258,6 @@ def SearchRes():
                 sql = 'select * from hashtag where TagId = "%s";' % (tagId1)
                 cursor.execute(sql)
                 result3 = cursor.fetchone()
-                # tagName1 = result3[1]
-                # category5 = result3[2]
-                # description3 = result3[5]
 
                 node3 = {
                     "key": tagId1,
@@ -698,51 +683,17 @@ def search_FB():
         email.send_keys('tictagtoe.im@gmail.com')
         password.send_keys('#TicTAGToe')
         password.submit()
+        time.sleep(1)
 
         browser.get(url)
-        time.sleep(2)
-        count_comment = 0
-        count_more = 0
+        time.sleep(4)
         for x in range(page*2): 
             browser.execute_script("window.scrollTo(0,document.body.scrollHeight);")
             if x < (page-1) * 3:
                 continue
             else:
                 time.sleep(2) 
-
-        # comment_btns = browser.find_elements(By.CLASS_NAME, 'x1i10hfl.x1qjc9v5.xjbqb8w.xjqpnuy.xa49m3k.xqeqjp1.x2hbi6w.x13fuv20.xu3j5b3.x1q0q8m5.x26u7qi.x972fbf.xcfux6l.x1qhh985.xm0m39n.x9f619.x1ypdohk.xdl72j9.x2lah0s.xe8uvvx.xdj266r.x11i5rnm.xat24cr.x1mh8g0r.x2lwn1j.xeuugli.xexx8yu.x4uap5.x18d9i69.xkhd6sd.x1n2onr6.x16tdsg8.x1hl2dhg.xggy1nq.x1ja2u2z.x1t137rt.x1o1ewxj.x3x9cwd.x1e5q0jg.x13rtm0m.x3nfvp2.x1q0g3np.x87ps6o.x1lku1pv.x1a2a7pz')
-        # comment_btns = browser.find_elements(By.CSS_SELECTOR, 'div[aria-label="留言"]')
-        comment_btns = browser.find_elements(By.CSS_SELECTOR, 'div.x1i10hfl.x1qjc9v5.xjbqb8w.xjqpnuy.xa49m3k.xqeqjp1.x2hbi6w.x13fuv20.xu3j5b3.x1q0q8m5.x26u7qi.x972fbf.xcfux6l.x1qhh985.xm0m39n.x9f619.x1ypdohk.xdl72j9.x2lah0s.xe8uvvx.xdj266r.x11i5rnm.xat24cr.x1mh8g0r.x2lwn1j.xeuugli.xexx8yu.x4uap5.x18d9i69.xkhd6sd.x1n2onr6.x16tdsg8.x1hl2dhg.xggy1nq.x1ja2u2z.x1t137rt.x1o1ewxj.x3x9cwd.x1e5q0jg.x13rtm0m.x3nfvp2.x1q0g3np.x87ps6o.x1lku1pv.x1a2a7pz[aria-label="留言"][role="button"]')
-        more_btns = browser.find_elements(By.CSS_SELECTOR, 'div.x1i10hfl.xjbqb8w.x6umtig.x1b1mbwd.xaqea5y.xav7gou.x9f619.x1ypdohk.xt0psk2.xe8uvvx.xdj266r.x11i5rnm.xat24cr.x1mh8g0r.xexx8yu.x4uap5.x18d9i69.xkhd6sd.x16tdsg8.x1hl2dhg.xggy1nq.x1a2a7pz.xt0b8zv.xzsf02u.x1s688f[role="button"]')
-
-
-        print(f'總共有{len(comment_btns)}個留言按鈕')
-        print(f'總共有{len(more_btns)}個查看更多按鈕')
-
-        actions = ActionChains(browser)
-        
-        for comment_btn in comment_btns:
-            try:
-                actions.move_to_element(comment_btn).click(comment_btn)
-                actions.perform()
-                ActionBuilder(browser).clear_actions()
-                # comment_btn.click()
-                count_comment += 1
-            except:
-                continue
-        
-        for more_btn in more_btns:
-            try:
-                actions.move_to_element(more_btn).click(more_btn)
-                actions.perform()
-                ActionBuilder(browser).clear_actions()
-                count_more += 1
-            except:
-                continue
-        
-        print(f'成功點擊留言按鈕{count_comment}次')
-        print(f'成功點擊查看更多按鈕{count_more}次')
-
+    
         soup = BeautifulSoup(browser.page_source, 'lxml')
 
         #獨立貼文
