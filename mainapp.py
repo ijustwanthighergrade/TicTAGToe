@@ -563,7 +563,9 @@ def Hashtagmanage():
             SELECT TargetId
             FROM member_img_target 
             WHERE MemId = 'M1685006880'
-            );
+            )
+            ORDER BY CreateTime DESC;
+            ;
         """
 
     cursor.execute(sqlsearch)
@@ -601,6 +603,7 @@ def Hashtagmanagenew():
 
                 # Convert to JPEG format and Save image
                 target_id = "T" + str(int(time.time()))
+                tag_id = "H" + str(int(time.time()))
                 new_filename = target_id+'.jpg'
                 now = datetime.now()
                 create_time = now.strftime('%Y-%m-%d %H:%M')
@@ -612,11 +615,16 @@ def Hashtagmanagenew():
         #user_n.append(image_path)
                 status="1"
                 MemId="M1685006880" #先寫死
+                TagType="6"
 
                 sql = 'INSERT INTO img_target (TargetId, TargetName, ObjName, Type, Description, CreateTime, ImagePath) VALUES (%s, %s, %s, %s, %s, %s, %s)'
                 data = (target_id, TargetName, ObjName, Type, Description, create_time, image_path)
                 sql_2 = 'INSERT INTO member_img_target (TargetId, MemId, RelationshipType, status, CreateTime) VALUES (%s, %s, %s, %s, %s)'
                 data_2 = (target_id, MemId, Type, status, create_time)
+                sql_3 = 'INSERT INTO hashtag (TagId, TagName, TagType, Owner, Status, Description, CreateTime) VALUES (%s, %s, %s, %s, %s, %s, %s)'
+                data_3 = (tag_id, TargetName, TagType, MemId, status, TargetName, create_time)
+                sql_4 = 'INSERT INTO hashtag_relationship (TagId, ObjId, RelationshipType, Status, CreateTime) VALUES (%s, %s, %s, %s, %s)'
+                data_4 = (tag_id, target_id, status, status, create_time)
             
             #target_id_to_delete = "T1693142334";  刪除測試用
 
@@ -628,6 +636,10 @@ def Hashtagmanagenew():
                 db.commit()
                 cursor.execute(sql_2, data_2)
                 db.commit()
+                cursor.execute(sql_3, data_3)
+                db.commit()
+                cursor.execute(sql_4, data_4)
+                db.commit()
                 return redirect(url_for('Hashtagmanage'))
 
             except Exception as e:
@@ -638,11 +650,59 @@ def Hashtagmanagenew():
     #測試用：user_TargetName=user_TargetName,user_n=user_n, user_ObjName=user_ObjName, user_Type= user_Type, user_Des=user_Des, user_Targetid=user_Targetid, user_nf=user_nf, user_n=user_n
 
 # Hashtag編輯頁面
-@app.route("/hashtag_manage_edit", methods=['POST', 'GET'])
+@app.route("/hashtag_manage_edit/<option>", methods=['POST', 'GET'])
 @login_required 
-def Hashtagmanageedit():
+def Hashtagmanageedit(option):
+        sql = f"select * from img_target where TargetName= '{option}';"
+        cursor.execute(sql)
+        result = cursor.fetchone()   
 
-    return render_template('hashtag_manage_edit.html')
+        image_target_id=result[0]
+        target_name = result[1]
+        description=result[4]
+        jpg_url=result[6]
+
+        print(result)
+
+        public_words = request.form.getlist('public_words[]')
+        private_words = request.form.getlist('private_words[]')
+
+        tag_id = "H" + str(int(time.time()))
+        now = datetime.now()
+        create_time = now.strftime('%Y-%m-%d %H:%M')
+        relationshiptype="1"
+        publicStatus="4"
+        privateStatus="6"
+        MemId="M1685006880"
+
+        for word in public_words:
+            sql = 'INSERT INTO hashtag_relationship (TagId, ObjId, RelationshipType, Status, CreateTime) VALUES (%s, %s, %s, %s, %s)'
+            data = (tag_id, image_target_id, relationshiptype, relationshiptype, create_time)
+            sql2 = 'INSERT INTO hashtag (TagId, TagName, TagType, Owner, Status, Description, CreateTime) VALUES (%s, %s, %s, %s, %s, %s, %s)'
+            data2 = (tag_id, word, publicStatus, MemId, relationshiptype, word, create_time)
+
+        for word in private_words:
+            sql3 = 'INSERT INTO hashtag_relationship (TagId, ObjId, RelationshipType, Status, CreateTime) VALUES (%s, %s, %s, %s, %s)'
+            data3 = (tag_id, image_target_id, relationshiptype, relationshiptype, create_time)
+            sql4 = 'INSERT INTO hashtag (TagId, TagName, TagType, Owner, Status, Description, CreateTime) VALUES (%s, %s, %s, %s, %s, %s, %s)'
+            data4 = (tag_id, word, privateStatus, MemId, relationshiptype, word, create_time)
+            
+            try:
+                cursor.execute(sql, data)
+                db.commit()
+                cursor.execute(sql2, data2)
+                db.commit()
+                cursor.execute(sql3, data3)
+                db.commit()
+                cursor.execute(sql4, data4)
+                db.commit()
+                return redirect(url_for('Hashtagmanage'))
+
+            except Exception as e:
+                db.rollback()
+                #print("Insertion failed:", str(e))
+        
+        return render_template('hashtag_manage_edit.html', target_name=target_name, description=description, jpg_url=jpg_url)
 
 ############################## page ##############################
 

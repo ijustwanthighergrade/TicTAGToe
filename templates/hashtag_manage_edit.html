@@ -97,7 +97,9 @@
         <div class="container-fluid mt-5">
             <div class="row align-items-center">
                 <div class="col">
-                    <img id="uploadedImage" src="../static/img/uploads/T1694265954.jpg" class="mx-auto d-block" style="width: 700px; height: 680px; border: 5px solid #97CBFF; border-radius: 25%;" alt="Uploaded Image">
+                    {% if jpg_url %}
+                    <img id="uploadedImage" src="{{ jpg_url }}" class="mx-auto d-block" style="width: 700px; height: 680px; border: 5px solid #97CBFF; border-radius: 25%;" alt="Uploaded Image">
+                    {% endif %}
                 </div>
             </div>
         </div>
@@ -105,13 +107,18 @@
         
         <div class="container fs-1 mt-5">
             <div class="row align-items-center mb-3" style="height:50px; font-size: 50px; margin-bottom:0px ;">
-                尖叫女人
+                {% if target_name %}
+                {{ target_name }}
+                <!-- Add other fields here -->
+                {% endif %}
             </div>
         </div>
 
         <div class="container fs-1 mt-5">
             <div class="row align-items-center mb-3" style=" height:130px; font-size: 35px; ">
-                敘述：我的心靈狀態我的心靈狀態我的心靈狀態我的心靈狀態我的心靈狀態我的心靈狀態我的心靈狀態我的心靈狀態大概50字長度
+                {% if description %}
+                敘述：{{ description }}
+                {% endif %}
             </div>
         </div>
 
@@ -120,8 +127,13 @@
             </div>
             <div class="row align-items-center">
                 <div class="form-control form-control-lg" style="overflow: auto; height:500px; border-radius:30px; background-color: #f5aad3; font-size: 40px; width:100%">
-                    <input type="text" style="border-radius: 35px;" id="inputText" placeholder=" 請輸入Hashtag標籤">
-                    <button id="submitButton">確認新增</button>
+                    <input type="text" style="border-radius: 35px; width: 45%; font-size: 40px;" id="inputText"  placeholder=" 請輸入Hashtag">
+                     <!-- Add the radio button here -->
+                    <input type="radio" name="visibility" value="4" id="publicRadio" style="width: 20px; height: 20px;" checked>
+                    <label for="publicRadio">公開</label> 
+                    <input type="radio" name="visibility" value="6" id="privateRadio" style="width: 20px; height: 20px;">
+                    <label for="privateRadio">私人</label> 
+                    <button id="submitButton">新增</button>
                     <ul id="displayList" style="list-style-type:none;"></ul>
                 </div>
             </div>
@@ -140,44 +152,61 @@
 
 <script>
     document.addEventListener('DOMContentLoaded', function() {
-    const inputText = document.getElementById('inputText');
-    const submitButton = document.getElementById('submitButton');
-    const displayList = document.getElementById('displayList');
-    const words = [];  // 用于保存词汇的数组
+        const inputText = document.getElementById('inputText');
+        const submitButton = document.getElementById('submitButton');
+        const displayList = document.getElementById('displayList');
+        const publicRadio = document.getElementById('publicRadio');
+        const privateRadio = document.getElementById('privateRadio');
 
-    submitButton.addEventListener('click', function(event) {
-        event.preventDefault();  // 阻止默认的表单提交行为
+        const publicWords = [];  // Array for public words
+        const privateWords = []; // Array for private words
 
-        const inputValue = inputText.value;
-        if (inputValue.trim() !== '') {
-            words.push(inputValue);  // 将词汇添加到数组
-            updateDisplay();
-            inputText.value = '';  // 清空输入框
-        }
-    });
+        submitButton.addEventListener('click', function(event) {
+            event.preventDefault();
 
-    // 更新显示区域的内容
-    function updateDisplay() {
-        displayList.innerHTML = '';  // 清空显示区域
-        for (let i = 0; i < words.length; i++) {
-            const li = document.createElement('li');
-            li.textContent = "#"+words[i];
-            
-            const deleteButton = document.createElement('img');
-            deleteButton.src = '../static/img/delete-forever.png';
-            deleteButton.alt = '删除';
-            deleteButton.addEventListener('click', function() {
-                words.splice(i, 1);  // 从数组中删除词汇
+            const inputValue = inputText.value;
+            if (inputValue.trim() !== '') {
+                // Add to the appropriate array based on the radio selection
+                if (publicRadio.checked) {
+                    publicWords.push(inputValue);
+                } else {
+                    privateWords.push(inputValue);
+                }
+
                 updateDisplay();
-            });
+                inputText.value = '';
+            }
+        });
 
-            li.appendChild(deleteButton);
+        function updateDisplay() {
+            displayList.innerHTML = '';
+            const selectedArray = publicRadio.checked ? publicWords : privateWords;
+            const visibilitySuffix = publicRadio.checked ? " (公開)" : " (私人)";
 
-            displayList.appendChild(li);
+            for (let i = 0; i < selectedArray.length; i++) {
+                const li = document.createElement('li');
+                li.textContent = "#" + selectedArray[i] + visibilitySuffix;
+
+                const deleteButton = document.createElement('img');
+                deleteButton.src = '../static/img/delete-forever.png';
+                deleteButton.alt = '删除';
+
+                deleteButton.addEventListener('click', function() {
+                    // Remove from the appropriate array
+                    selectedArray.splice(i, 1);
+                    updateDisplay();
+                });
+
+                li.appendChild(deleteButton);
+                displayList.appendChild(li);
+            }
         }
-    }
-});
-</script>
 
+        // Add event listeners to the radio buttons
+        publicRadio.addEventListener('change', updateDisplay);
+        privateRadio.addEventListener('change', updateDisplay);
+
+    });
+</script>
 
 </html>

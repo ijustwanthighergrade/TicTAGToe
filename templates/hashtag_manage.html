@@ -88,16 +88,16 @@
             </div>
         </div>
 
+        {% for tag in hashtag_manage %}
         <div class="container-fluid mt-5">
             <div class="row align-items-center">
                 <div class="col text-center">
-                    {% for tag in hashtag_manage %}
-                    <a href="/hashtag_manage_edit"><button type="button" class="btn btn-light btn-lg fs-1" style="width: 90%; height: 100px;">{{ tag[0] }}</button></a>
+                    <a href="/hashtag_manage_edit/{{ tag[0] }}"><button type="button" class="btn btn-light btn-lg fs-1" style="width: 90%; height: 100px;">#{{ tag[0] }}</button></a>
                     <img src="../static/img/x-coordinate.png" style="width: 90px; height: 90px; float: right;" alt="">
-                    {% endfor %}
                 </div>
             </div>
         </div>
+        {% endfor %}
         <div class="container-fluid mt-5">
             <div class="row align-items-center">
                 <div class="col text-center">
