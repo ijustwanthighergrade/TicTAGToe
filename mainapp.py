@@ -56,6 +56,16 @@ class User(UserMixin):
 
 @login_manager.user_loader
 def user_loader(member_id):
+    if member_id == "M1685006123":
+        sql = f'select * from sys_admin where MemId = "{member_id}";'
+        cursor.execute(sql)
+        admin = cursor.fetchone()
+        if admin is None:
+            return
+        user = User()
+        user.id = member_id
+        return user
+
     sql = f'select * from member where MemId = "{member_id}";'
     cursor.execute(sql)
     member = cursor.fetchone()
@@ -77,6 +87,8 @@ def extract_hashtags(content):
 @app.route("/", methods=['POST', 'GET'])
 @login_required 
 def Index():
+        memId = current_user.id
+        print(f'current user: {memId}')
         # 根據資料表出現的Hashtag次數羅列全站熱門
         sql = """
             SELECT h.TagName, COUNT(hr.TagId) as Count
@@ -110,6 +122,17 @@ def Login():
     if request.method == 'POST':
         email = request.values.get('email')
         password = request.values.get('password')
+
+        sql = f'select * from sys_admin where Account = "{email}" and Password = "{password}";'
+        cursor.execute(sql)
+        admin = cursor.fetchone()
+        if admin:
+            member_id = admin[0]
+            user = User()
+            user.id = member_id
+            login_user(user)
+            return redirect(url_for('Index'))
+        
         sql = f'select * from member where Email = "{email}" and Password = "{password}";'
         cursor.execute(sql)
         member = cursor.fetchone()
@@ -191,7 +214,8 @@ def SearchRes():
         5:"post",
     }
 
-    sql = 'select * from hashtag where TagName = "%s";' % (tagName)
+    sql = 'select * from hashtag where TagName = "%s" and Status = %s;' % (tagName, 1)
+    print(sql)
     cursor.execute(sql)
     result = cursor.fetchone()
     if result is not None:
@@ -255,7 +279,7 @@ def SearchRes():
             result2 = cursor.fetchall()
             for row1 in result2:
                 tagId1 = row1[0]
-                sql = 'select * from hashtag where TagId = "%s";' % (tagId1)
+                sql = 'select * from hashtag where TagId = "%s" and Status = %s;' % (tagId1, 1)
                 cursor.execute(sql)
                 result3 = cursor.fetchone()
 
@@ -703,6 +727,12 @@ def Hashtagmanageedit(option):
                 #print("Insertion failed:", str(e))
         
         return render_template('hashtag_manage_edit.html', target_name=target_name, description=description, jpg_url=jpg_url)
+
+@app.route("/hashtag_review", methods=['GET'])
+def HashtagReview():
+
+
+    return render_template('hashtag_review.html')
 
 ############################## page ##############################
 
@@ -1258,7 +1288,6 @@ def GetMemList():
         db.rollback()
         return jsonify(**{'res':'fail'})
 
-
 #變更好友間狀態、關係
 @app.route("/changefriendstatus", methods=['POST'])
 def ChangeFriendStatus():
@@ -1404,6 +1433,45 @@ def delete_note():
     postId = data.get('postId', None)
     try:
         sql = f"delete from post where DataId = '{postId}';"
+        cursor.execute(sql)
+        db.commit()
+        return jsonify({"result": "Delete successful"}), 200
+    except:
+        db.rollback()
+        return jsonify({"result": "Delete failed"}), 400
+
+@app.route('/update/hashtag/status/report', methods=['PATCH'])
+def update_hashtag_status_report():
+    data = request.get_json()
+    hashtagId = data.get('hashtagId', None)
+    try:
+        sql = f'update hashtag set Status = 2 where TagId = {hashtagId};'
+        cursor.execute(sql)
+        db.commit()
+        return jsonify({"result": "Update successful"}), 200
+    except:
+        db.rollback()
+        return jsonify({"result": "Update failed"}), 400
+
+@app.route('/update/hashtag/status/accept', methods=['PATCH'])
+def update_hashtag_status_accept():
+    data = request.get_json()
+    hashtagId = data.get('hashtagId', None)
+    try:
+        sql = f'update hashtag set Status = 1 where TagId = {hashtagId};'
+        cursor.execute(sql)
+        db.commit()
+        return jsonify({"result": "Update successful"}), 200
+    except:
+        db.rollback()
+        return jsonify({"result": "Update failed"}), 400
+
+@app.route('/delete/hashtag', methods=['DELETE'])
+def delete_hashtag():
+    data = request.get_json()
+    hashtagId = data.get('hashtagId', None)
+    try:
+        sql = f'delete from hashtag where TagId = "{hashtagId}";'
         cursor.execute(sql)
         db.commit()
         return jsonify({"result": "Delete successful"}), 200
