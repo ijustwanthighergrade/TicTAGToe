@@ -34,6 +34,11 @@ function GetFriendList(url){
 
     AjaxRequest(url,{'memName':$("[data-name='memName']")[0].value},function(data){
         console.log(data);
+        var n = $("[data-mem-list]").length;
+
+        for (let i = 0; i < n; i++) {
+            $("[data-mem-list]")[0].remove();
+        }
         for (let i = 0; i < data['data'].length; i++) {
             var memContainer = CreateMemListElement(data['data'][i][0],data['data'][i][1],data['data'][i][2],url);
 
