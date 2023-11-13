@@ -26,8 +26,10 @@ DROP TABLE IF EXISTS `feedback`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `feedback` (
   `DataId` varchar(45) COLLATE utf8mb4_general_ci NOT NULL,
+  `Type` int NOT NULL,
   `MemId` varchar(45) COLLATE utf8mb4_general_ci NOT NULL,
   `TagId` varchar(45) COLLATE utf8mb4_general_ci NOT NULL,
+  `TargetId` varchar(45) COLLATE utf8mb4_general_ci NOT NULL,
   `Content` varchar(100) COLLATE utf8mb4_general_ci NOT NULL,
   `CreateTime` varchar(45) COLLATE utf8mb4_general_ci NOT NULL,
   PRIMARY KEY (`DataId`)
@@ -354,4 +356,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2023-11-13 13:30:36
+-- Dump completed on 2023-11-13 15:07:10

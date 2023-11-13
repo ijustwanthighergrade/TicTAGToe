@@ -730,9 +730,11 @@ def Hashtagmanageedit(option):
 
 @app.route("/hashtag_review", methods=['GET'])
 def HashtagReview():
-
-
-    return render_template('hashtag_review.html')
+    sql = f'select * from feedback;'
+    cursor.execute(sql)
+    results = cursor.fetchall()
+    
+    return render_template('hashtag_review.html', hashtags=results)
 
 ############################## page ##############################
 
