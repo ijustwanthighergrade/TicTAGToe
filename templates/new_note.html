@@ -56,6 +56,48 @@
                 z-index: 10000;
             }
 
+            .autocomplete {
+                /*the container must be positioned relative:*/
+                position: relative;
+                display: inline-block;
+            }
+            input {
+                border: 1px solid transparent;
+                background-color: #f1f1f1;
+                padding: 10px;
+                font-size: 16px;
+            }
+            input[type=text] {
+                background-color: #f1f1f1;
+                width: 100%;
+            }
+            .autocomplete-items {
+                position: absolute;
+                border: 1px solid #d4d4d4;
+                border-bottom: none;
+                border-top: none;
+                z-index: 99;
+                /*position the autocomplete items to be the same width as the container:*/
+                top: 100%;
+                left: 0;
+                right: 0;
+            }
+            .autocomplete-items div {
+                padding: 10px;
+                cursor: pointer;
+                background-color: #fff;
+                border-bottom: 1px solid #d4d4d4;
+            }
+            .autocomplete-items div:hover {
+                /*when hovering an item:*/
+                background-color: #e9e9e9;
+            }
+            .autocomplete-active {
+                /*when navigating through the items using the arrow keys:*/
+                background-color: DodgerBlue !important;
+                color: #ffffff;
+            }
+
         </style>
         <!-- <div class="menu-title-div" data-block="menu">
             <ul class="menu-title-container" >
@@ -83,7 +125,7 @@
         <div class="container-fluid fs-1 mt-5">
             <div class="row text-center">
                 <div class="col">
-                    <h1>新增個人記事</h1>
+                    <h1>個人記事</h1>
                 </div>
             </div>
         </div>
@@ -139,13 +181,15 @@
                     </div>
                 </div>
                 <div class="row align-items-center">
-                    <div class="col text-center">
-                        <select class="form-select" aria-label="Default select example" style="height: 100px; font-size: 40px;">
-                            <option selected>Open this select menu</option>
-                            <option value="1">One</option>
-                            <option value="2">Two</option>
-                            <option value="3">Three</option>
-                        </select>
+                    <div class="col-9 text-center">
+                        <form autocomplete="off" action="">
+                            <div class="autocomplete">
+                                <input type="text" name="public_tag" id="public_tag" class="form-control form-control-lg" style="height: 100px; font-size: 40px;" placeholder="請輸入公開的hashtag">
+                            </div>
+                        </form>
+                    </div>
+                    <div class="col-3 text-center">
+                        <button type="button" id="public_btn" class="btn btn-outline-secondary" style="height: 100px; font-size: 40px; border-radius: 25px;">新增</button>
                     </div>
                 </div>
             </div>
@@ -157,13 +201,15 @@
                     </div>
                 </div>
                 <div class="row align-items-center">
-                    <div class="col text-center">
-                        <select class="form-select" aria-label="Default select example" style="height: 100px; font-size: 40px;">
-                            <option selected>Open this select menu</option>
-                            <option value="1">One</option>
-                            <option value="2">Two</option>
-                            <option value="3">Three</option>
-                        </select>
+                    <div class="col-9 text-center">
+                        <form autocomplete="off" action="">
+                            <div class="autocomplete">
+                                <input type="text" name="private_tag" id="private_tag" class="form-control form-control-lg" style="height: 100px; font-size: 40px;" placeholder="請輸入私人的hashtag">
+                            </div>
+                        </form>
+                    </div>
+                    <div class="col-3 text-center">
+                        <button type="button" id="private_btn" class="btn btn-outline-secondary" style="height: 100px; font-size: 40px; border-radius: 25px;">新增</button>
                     </div>
                 </div>
             </div>
@@ -176,7 +222,7 @@
                 </div>
                 <div class="row align-items-center">
                     <div class="col text-center">
-                        <input type="text" name="tag" class="form-control form-control-lg" style="height: 100px; font-size: 40px;" placeholder="請輸入hashtag" required>
+                        <input type="text" name="tag" class="form-control form-control-lg" style="height: 100px; font-size: 40px;" placeholder="請輸入要新增的hashtag">
                     </div>
                 </div>
             </div>
@@ -188,11 +234,28 @@
                     </div>
                 </div>
                 <div class="row align-items-center">
-                    <div class="col text-center">
+                    <div class="col-9 text-center">
                         <select class="form-select" aria-label="Default select example" style="height: 100px; font-size: 40px;">
                             <option selected value="4">公開</option>
                             <option value="6">私人</option>
                         </select>
+                    </div>
+                    <div class="col-3 text-center">
+                        <button type="button" id="newtag_btn" class="btn btn-outline-secondary" style="height: 100px; font-size: 40px; border-radius: 25px;">新增</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="container fs-1 mt-5">
+                <div class="row align-items-center mb-3">
+                    <div class="col">
+                        <label for="exampleFormControlInput1" class="form-label">已標記hashtag</label>
+                    </div>
+                </div>
+                <div class="row align-items-center">
+                    <div class="col text-center">
+                        <span id="test">#test</span>&nbsp;
+                        <span id="test1">#test1</span>&nbsp;
                     </div>
                 </div>
             </div>
@@ -235,6 +298,6 @@
     </main>
     
     {% include '/frame/footer.html' %}
-
+    <script src="../static/js/pageFunction/new_note.js"></script>
 </body>
 </html>

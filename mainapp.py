@@ -1481,6 +1481,28 @@ def delete_hashtag():
         db.rollback()
         return jsonify({"result": "Delete failed"}), 400
 
+@app.route('/public/hashtags', methods=['GET'])
+def get_public_hashtags():
+    hashtag_list = []
+    sql = f'select TagName from hashtag where TagType = 4;'
+    cursor.execute(sql)
+    results = cursor.fetchall()
+    for result in results:
+        hashtag_list.append(result[0])
+
+    return jsonify({'result': hashtag_list}), 200
+
+@app.route('/private/hashtags', methods=['GET'])
+def get_private_hashtags():
+    hashtag_list = []
+    sql = f'select TagName from hashtag where TagType = 6;'
+    cursor.execute(sql)
+    results = cursor.fetchall()
+    for result in results:
+        hashtag_list.append(result[0])
+    
+    return jsonify({'result': hashtag_list}), 200
+
 ############################## fetch ##############################
 
 

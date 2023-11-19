@@ -1,10 +1,10 @@
 CREATE DATABASE  IF NOT EXISTS `tictagtoe` /*!40100 DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci */ /*!80016 DEFAULT ENCRYPTION='N' */;
 USE `tictagtoe`;
--- MySQL dump 10.13  Distrib 8.0.28, for Win64 (x86_64)
+-- MySQL dump 10.13  Distrib 8.0.32, for Win64 (x86_64)
 --
--- Host: 127.0.0.1    Database: tictagtoe
+-- Host: localhost    Database: tictagtoe
 -- ------------------------------------------------------
--- Server version	8.0.28
+-- Server version	8.0.32
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -25,13 +25,13 @@ DROP TABLE IF EXISTS `feedback`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `feedback` (
-  `DataId` varchar(45) COLLATE utf8mb4_general_ci NOT NULL,
+  `DataId` varchar(45) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
   `Type` int NOT NULL,
-  `MemId` varchar(45) COLLATE utf8mb4_general_ci NOT NULL,
-  `TagId` varchar(45) COLLATE utf8mb4_general_ci NOT NULL,
-  `TargetId` varchar(45) COLLATE utf8mb4_general_ci NOT NULL,
-  `Content` varchar(100) COLLATE utf8mb4_general_ci NOT NULL,
-  `CreateTime` varchar(45) COLLATE utf8mb4_general_ci NOT NULL,
+  `MemId` varchar(45) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `TagId` varchar(45) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `TargetId` varchar(45) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `Content` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `CreateTime` varchar(45) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
   PRIMARY KEY (`DataId`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -53,13 +53,13 @@ DROP TABLE IF EXISTS `hashtag`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `hashtag` (
-  `TagId` varchar(45) COLLATE utf8mb4_general_ci NOT NULL,
-  `TagName` varchar(45) COLLATE utf8mb4_general_ci NOT NULL,
+  `TagId` varchar(45) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `TagName` varchar(45) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
   `TagType` int NOT NULL,
-  `Owner` varchar(45) COLLATE utf8mb4_general_ci NOT NULL,
+  `Owner` varchar(45) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
   `Status` int NOT NULL,
-  `Description` varchar(100) COLLATE utf8mb4_general_ci DEFAULT NULL,
-  `CreateTime` varchar(45) COLLATE utf8mb4_general_ci NOT NULL,
+  `Description` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `CreateTime` varchar(45) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
   PRIMARY KEY (`TagId`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -82,11 +82,11 @@ DROP TABLE IF EXISTS `hashtag_relationship`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `hashtag_relationship` (
-  `TagId` varchar(45) COLLATE utf8mb4_general_ci NOT NULL,
-  `ObjId` varchar(45) COLLATE utf8mb4_general_ci NOT NULL,
+  `TagId` varchar(45) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `ObjId` varchar(45) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
   `RelationshipType` int NOT NULL,
   `Status` int NOT NULL,
-  `CreateTime` varchar(45) COLLATE utf8mb4_general_ci NOT NULL,
+  `CreateTime` varchar(45) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
   PRIMARY KEY (`TagId`,`ObjId`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -109,13 +109,13 @@ DROP TABLE IF EXISTS `img_target`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `img_target` (
-  `TargetId` varchar(45) COLLATE utf8mb4_general_ci NOT NULL,
-  `TargetName` varchar(45) COLLATE utf8mb4_general_ci NOT NULL,
-  `ObjName` varchar(45) COLLATE utf8mb4_general_ci NOT NULL,
+  `TargetId` varchar(45) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `TargetName` varchar(45) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `ObjName` varchar(45) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
   `Type` int NOT NULL,
-  `Description` varchar(500) COLLATE utf8mb4_general_ci DEFAULT NULL,
-  `CreateTime` varchar(45) COLLATE utf8mb4_general_ci NOT NULL,
-  `ImagePath` varchar(100) COLLATE utf8mb4_general_ci NOT NULL,
+  `Description` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `CreateTime` varchar(45) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `ImagePath` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
   PRIMARY KEY (`TargetId`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -138,14 +138,14 @@ DROP TABLE IF EXISTS `member`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `member` (
-  `MemId` varchar(45) COLLATE utf8mb4_general_ci NOT NULL,
-  `MemName` varchar(45) COLLATE utf8mb4_general_ci NOT NULL,
-  `Email` varchar(45) COLLATE utf8mb4_general_ci NOT NULL,
+  `MemId` varchar(45) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `MemName` varchar(45) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `Email` varchar(45) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
   `Status` int NOT NULL,
-  `CreateTime` varchar(45) COLLATE utf8mb4_general_ci NOT NULL,
-  `ImagePath` varchar(100) COLLATE utf8mb4_general_ci NOT NULL,
-  `MemAtId` varchar(45) COLLATE utf8mb4_general_ci NOT NULL,
-  `Password` varchar(45) COLLATE utf8mb4_general_ci NOT NULL,
+  `CreateTime` varchar(45) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `ImagePath` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `MemAtId` varchar(45) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `Password` varchar(45) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
   PRIMARY KEY (`MemId`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -168,11 +168,11 @@ DROP TABLE IF EXISTS `member_account_link`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `member_account_link` (
-  `MemId` varchar(45) COLLATE utf8mb4_general_ci NOT NULL,
-  `SocialId` varchar(45) COLLATE utf8mb4_general_ci NOT NULL,
-  `SocialMedia` varchar(45) COLLATE utf8mb4_general_ci NOT NULL,
+  `MemId` varchar(45) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `SocialId` varchar(45) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `SocialMedia` varchar(45) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
   `Status` int NOT NULL,
-  `CreateTime` varchar(45) COLLATE utf8mb4_general_ci NOT NULL,
+  `CreateTime` varchar(45) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
   PRIMARY KEY (`MemId`,`SocialId`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -194,11 +194,11 @@ DROP TABLE IF EXISTS `member_img_target`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `member_img_target` (
-  `TargetId` varchar(45) COLLATE utf8mb4_general_ci NOT NULL,
-  `MemId` varchar(45) COLLATE utf8mb4_general_ci NOT NULL,
+  `TargetId` varchar(45) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `MemId` varchar(45) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
   `RelationshipType` int NOT NULL,
   `status` int NOT NULL,
-  `CreateTime` varchar(45) COLLATE utf8mb4_general_ci NOT NULL,
+  `CreateTime` varchar(45) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
   PRIMARY KEY (`TargetId`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -220,10 +220,10 @@ DROP TABLE IF EXISTS `member_relationship`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `member_relationship` (
-  `MemId` varchar(45) COLLATE utf8mb4_general_ci NOT NULL,
-  `ObjId` varchar(45) COLLATE utf8mb4_general_ci NOT NULL,
+  `MemId` varchar(45) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `ObjId` varchar(45) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
   `Status` int NOT NULL,
-  `CreateTime` varchar(45) COLLATE utf8mb4_general_ci NOT NULL,
+  `CreateTime` varchar(45) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
   PRIMARY KEY (`MemId`,`ObjId`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -246,8 +246,8 @@ DROP TABLE IF EXISTS `member_social_link`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `member_social_link` (
-  `MemId` varchar(45) COLLATE utf8mb4_general_ci NOT NULL,
-  `SocialLink` varchar(100) COLLATE utf8mb4_general_ci NOT NULL,
+  `MemId` varchar(45) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `SocialLink` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
   `CreateTime` datetime NOT NULL,
   PRIMARY KEY (`MemId`,`SocialLink`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
@@ -271,15 +271,16 @@ DROP TABLE IF EXISTS `post`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `post` (
-  `DataId` varchar(45) COLLATE utf8mb4_general_ci NOT NULL,
-  `Title` varchar(45) COLLATE utf8mb4_general_ci NOT NULL,
-  `Content` varchar(500) COLLATE utf8mb4_general_ci NOT NULL,
+  `DataId` varchar(45) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `Title` varchar(45) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `Content` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
   `PostType` int NOT NULL,
-  `Owner` varchar(45) COLLATE utf8mb4_general_ci NOT NULL,
+  `Owner` varchar(45) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
   `Status` int NOT NULL,
-  `CreateTime` varchar(45) COLLATE utf8mb4_general_ci NOT NULL,
-  `Hashtag` varchar(100) COLLATE utf8mb4_general_ci NOT NULL,
-  `Location` varchar(100) COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `CreateTime` varchar(45) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `Hashtag` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `Location` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `MemAtId` varchar(45) COLLATE utf8mb4_general_ci DEFAULT NULL,
   PRIMARY KEY (`DataId`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -290,7 +291,7 @@ CREATE TABLE `post` (
 
 LOCK TABLES `post` WRITE;
 /*!40000 ALTER TABLE `post` DISABLE KEYS */;
-INSERT INTO `post` VALUES ('P1685088420','資管專題1','專題 我們的專題將帶你進入無限可能的世界！我們的團隊充滿熱情和創意，致力於解決實際問題和創新科技。無論是與人工智慧或者數位行銷相關，我們將為你帶來前所未有的啟發與驚喜。跟隨我們的腳步，一起探索未知的領域吧！?',5,'M1685006880',1,'2023-05-26-16:07:20','#CYCU #CYIM #112','桃園中壢'),('P1685088540','資管專題2','這次我們的研究充滿了無限的想像力和創造力。我們將挑戰傳統，探索新領域，為世界帶來全新的視野和驚喜。準備好迎接我們帶來的創新嗎？一起開啟這場奇幻之旅吧！✨',5,'M1685006880',1,'2023-05-26-16:09:30','#專題研究 #創意專題','台北信義');
+INSERT INTO `post` VALUES ('P1685088420','資管專題1','專題 我們的專題將帶你進入無限可能的世界！我們的團隊充滿熱情和創意，致力於解決實際問題和創新科技。無論是與人工智慧或者數位行銷相關，我們將為你帶來前所未有的啟發與驚喜。跟隨我們的腳步，一起探索未知的領域吧！?',5,'M1685006880',1,'2023-05-26-16:07:20','#CYCU #CYIM #112','桃園中壢',NULL),('P1685088540','資管專題2','這次我們的研究充滿了無限的想像力和創造力。我們將挑戰傳統，探索新領域，為世界帶來全新的視野和驚喜。準備好迎接我們帶來的創新嗎？一起開啟這場奇幻之旅吧！✨',5,'M1685006880',1,'2023-05-26-16:09:30','#專題研究 #創意專題','台北信義',NULL);
 /*!40000 ALTER TABLE `post` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -302,10 +303,10 @@ DROP TABLE IF EXISTS `post_extra_file`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `post_extra_file` (
-  `DataId` varchar(45) COLLATE utf8mb4_general_ci NOT NULL,
-  `PostId` varchar(45) COLLATE utf8mb4_general_ci NOT NULL,
-  `FilePath` varchar(45) COLLATE utf8mb4_general_ci NOT NULL,
-  `FileType` varchar(45) COLLATE utf8mb4_general_ci NOT NULL,
+  `DataId` varchar(45) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `PostId` varchar(45) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `FilePath` varchar(45) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `FileType` varchar(45) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
   PRIMARY KEY (`DataId`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -327,12 +328,12 @@ DROP TABLE IF EXISTS `sys_admin`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `sys_admin` (
-  `MemId` varchar(45) COLLATE utf8mb4_general_ci NOT NULL,
-  `Account` varchar(45) COLLATE utf8mb4_general_ci NOT NULL,
-  `Password` varchar(45) COLLATE utf8mb4_general_ci NOT NULL,
-  `Name` varchar(45) COLLATE utf8mb4_general_ci NOT NULL,
-  `Permissions` varchar(45) COLLATE utf8mb4_general_ci NOT NULL,
-  `CreateTime` varchar(45) COLLATE utf8mb4_general_ci NOT NULL,
+  `MemId` varchar(45) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `Account` varchar(45) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `Password` varchar(45) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `Name` varchar(45) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `Permissions` varchar(45) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `CreateTime` varchar(45) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
   PRIMARY KEY (`MemId`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -356,4 +357,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2023-11-13 15:07:10
+-- Dump completed on 2023-11-19 15:00:18
