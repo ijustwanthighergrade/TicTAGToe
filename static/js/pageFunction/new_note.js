@@ -126,12 +126,363 @@ document.addEventListener("DOMContentLoaded", function () {
     fetch_public_hashtags().then(public_hashtags => {
       console.log(public_hashtags.result);
       autocomplete(document.getElementById('public_tag'), public_hashtags.result);
-    });
-  
-    fetch_private_hashtags().then(private_hashtags => {
-      console.log(private_hashtags.result);
-      console.log('Private hashtags fetched successfully?');
-      autocomplete(document.getElementById('private_tag'), private_hashtags.result);
+      fetch_private_hashtags().then(private_hashtags => {
+        console.log(private_hashtags.result);
+        autocomplete(document.getElementById('private_tag'), private_hashtags.result);
+      });
     });
   })();
+});
+
+document.getElementById('public_btn').addEventListener('click', function () {
+  // Get the input value
+  var inputValue = document.getElementById('public_tag').value;
+
+  // Check if the input value is not empty
+  if (inputValue.trim() !== '') {
+      const checkExistPublic = async (inputValue) => {
+        let url = `/check/public/hashtag`;
+        let headers = {
+          "Content-Type": "application/json"
+        };
+        let body = {
+          'tag_name': inputValue
+        };
+      
+        const res = await fetch(url, {method: 'POST', headers: headers, body: JSON.stringify(body)})
+        const result = await res.json()
+        console.log(result.result);
+        if (result.result === 'This hashtag does not exist') {
+          alert('並沒有這個公開的hashtag!!');
+          return;
+        }
+        else {
+          // Create a new span element
+          var newSpan = document.createElement('span');
+
+          // Set the id and text content of the new span
+          newSpan.id = inputValue;
+          newSpan.textContent = '#' + inputValue;
+          newSpan.setAttribute('data-hashtag-type', 'public');
+          newSpan.setAttribute('data-hashtag-status', 'old');
+          newSpan.style.color = '#97CBFF';
+
+          // Append the new span to the hashtag_list div
+          document.getElementById('hashtag_list').appendChild(newSpan);
+
+          // Add a non-breaking space after the new span
+          document.getElementById('hashtag_list').appendChild(document.createTextNode('\u00A0'));
+
+          // Clear the input field
+          document.getElementById('public_tag').value = '';
+        }
+      }
+
+      checkExistPublic(inputValue);
+  }
+  else {
+    alert('欄位請勿為空值!!');
+    return;
+  }
+});
+
+document.getElementById('private_btn').addEventListener('click', function () {
+  // Get the input value
+  var inputValue = document.getElementById('private_tag').value;
+
+  // Check if the input value is not empty
+  if (inputValue.trim() !== '') {
+    const checkExistPrivate = async (inputValue) => {
+      let url = `/check/private/hashtag`;
+      let headers = {
+        "Content-Type": "application/json"
+      };
+      let body = {
+        'tag_name': inputValue
+      };
+    
+      const res = await fetch(url, {method: 'POST', headers: headers, body: JSON.stringify(body)})
+      const result = await res.json()
+      console.log(result.result);
+      if (result.result === 'This hashtag does not exist') {
+        alert('並沒有這個私人的hashtag!!');
+        return;
+      }
+      else {
+        // Create a new span element
+        var newSpan = document.createElement('span');
+
+        // Set the id and text content of the new span
+        newSpan.id = inputValue;
+        newSpan.textContent = '#' + inputValue;
+        newSpan.setAttribute('data-hashtag-type', 'private');
+        newSpan.setAttribute('data-hashtag-status', 'old');
+        newSpan.style.color = '#f5aad3';
+
+        // Append the new span to the hashtag_list div
+        document.getElementById('hashtag_list').appendChild(newSpan);
+
+        // Add a non-breaking space after the new span
+        document.getElementById('hashtag_list').appendChild(document.createTextNode('\u00A0'));
+
+        // Clear the input field
+        document.getElementById('private_tag').value = '';
+      }
+    }
+
+    checkExistPrivate(inputValue);
+
+  }
+  else {
+    alert('欄位請勿為空值!!');
+    return;
+  }
+});
+
+document.getElementById('newtag_btn').addEventListener('click', function () {
+  // Get the input value
+  var inputValue = document.getElementById('new_tag').value;
+  var selectValue = document.getElementById('tag_type').value;
+  var color, tagCategory;
+
+  // Check if the input value is not empty
+  if (inputValue.trim() !== '') {
+      if (selectValue === '4') {
+        color = '#97CBFF';
+        tagCategory = 'public';
+      }
+      else {
+        color = '#f5aad3';
+        tagCategory = 'private';
+      }
+
+      // Create a new span element
+      var newSpan = document.createElement('span');
+
+      // Set the id and text content of the new span
+      newSpan.id = inputValue;
+      newSpan.textContent = '#' + inputValue;
+      newSpan.setAttribute('data-hashtag-type', tagCategory);
+      newSpan.setAttribute('data-hashtag-status', 'new');
+      newSpan.style.color = color;
+
+      // Append the new span to the hashtag_list div
+      document.getElementById('hashtag_list').appendChild(newSpan);
+
+      // Add a non-breaking space after the new span
+      document.getElementById('hashtag_list').appendChild(document.createTextNode('\u00A0'));
+
+      // Clear the input field
+      document.getElementById('new_tag').value = '';
+  }
+  else {
+    alert('欄位請勿為空值!!');
+    return;
+  }
+});
+
+document.getElementById('confirm_submit').addEventListener('click', function (event) {
+      event.stopPropagation();
+      let title = document.getElementById('title').value;
+      let location = document.getElementById('location').value;
+      let member = document.getElementById('member').value;
+      let content = document.getElementById('content').value;
+      let tagContent = '';
+      let spanArray;
+      let oldTagArray = [];
+      let newTagArray = [];
+      let dataId;
+
+      if (title !== '' && content !== '' ) {
+        // Get the reference to the parent div
+        var hashtagListDiv = document.getElementById('hashtag_list');
+
+        // Get all span elements inside the div
+        var spanElements = hashtagListDiv.getElementsByTagName('span');
+
+        // Convert the HTMLCollection to an array
+        spanArray = Array.from(spanElements);
+
+        spanArray.forEach(function(span) {
+          if (span.dataset.hashtagStatus === 'old') {
+            oldTagArray.push(span);
+          }
+          else if (span.dataset.hashtagStatus === 'new') {
+            newTagArray.push(span);
+          }
+
+          tagContent += span.textContent;
+          tagContent += ' ';
+
+          // console.log('content: ', span.textContent);
+          // console.log('id: ', span.getAttribute('id')); 
+          // console.log('hashtagType: ', span.dataset.hashtagType); 
+          // console.log('hashtagStatus: ', span.dataset.hashtagStatus); 
+        });
+        console.log("tagContent: ", tagContent);
+
+        if (newTagArray.length > 0) {
+          newTagArray.forEach(function(newTag) {
+            let addTagUrl = `/add_tag`;
+            let headers = {
+              "Content-Type": "application/json"
+            };
+            let addTagBody = {
+              "tag": newTag.getAttribute('id'),
+              "tagType": 4
+            };
+  
+            fetch(addTagUrl, {method: 'POST', headers: headers, body: JSON.stringify(addTagBody)})
+            .then(res => {
+              return res.json();
+            })
+            .then(result => {
+              if (result.result === 'Add failed') {
+                alert('Add failed!!');
+                return;
+              }
+            })
+            .catch(error => {
+              console.log("Error: ", error);
+            });
+          });
+        }
+
+        let AddNoteUrl = `/add/note`;
+        let headers = {
+          "Content-Type": "application/json"
+        };
+        let AddNoteBody = {
+          "title": title,
+          "location": location,
+          "member": member,
+          "content": content,
+          "tag": tagContent
+        }
+
+        fetch(AddNoteUrl, {method: 'POST', headers: headers, body: JSON.stringify(AddNoteBody)})
+        .then(res => {
+          return res.json();
+        })
+        .then(result => {
+          if (result.result === 'Add failed') {
+            alert('Add failed!!');
+            return;
+          }
+          else {
+            dataId = result.postId;
+
+            // 目前這部分的bug還沒有解決，所以先註解掉
+            // add hashtag and post relationship
+            // if(spanArray.length > 0) {
+            //   spanArray.forEach(function(span) {
+            //     if (span.dataset.hashtagType === 'public') {
+            //       let tagId;
+            //       let getPublicTagIdUrl = `/get/public/hashtagId`;
+            //       let headers = {
+            //         "Content-Type": "application/json"
+            //       };
+            //       let getPublicTagIdBody = {
+            //         'tagName': span.getAttribute('id')
+            //       };
+            //       console.log("tagName: ", span.getAttribute('id'));
+        
+            //       fetch(getPublicTagIdUrl, {method: 'POST', headers: headers, body: JSON.stringify(getPublicTagIdBody)})
+            //       .then(res => {
+            //         return res.json();
+            //       })
+            //       .then(result => {
+            //         // tagId = result.result;
+            //         return result.result;
+            //       })
+            //       .then(tagId => {
+            //         console.log("public tagId: ", tagId)
+            //         let addRelationshipUrl = `/add/hashtag/relationship`;
+            //         let headers = {
+            //           "Content-Type": "application/json"
+            //         };
+            //         let addRelationshipBody = {
+            //           'tagId': tagId,
+            //           'dataId': dataId
+            //         };
+            //         fetch(addRelationshipUrl, {method: 'POST', headers: headers, body: JSON.stringify(addRelationshipBody)})
+            //         .then(res => {
+            //           return res.json();
+            //         })
+            //         .then(result => {
+            //           if (result.result === 'Add suceessful') {
+            //             console.log('Add suceessful');
+            //           }
+            //           else {
+            //             console.log('Add failed');
+            //           }
+            //         })
+            //         .catch(error => {
+            //           console.log("Error: ", error);
+            //         });
+            //       })
+            //       .catch(error => {
+            //         console.log("Error: ", error);
+            //       });
+            //     }
+            //     else {
+            //       let tagId;
+            //       let getPrivateTagIdUrl = `/get/private/hashtagId`;
+            //       let headers = {
+            //         "Content-Type": "application/json"
+            //       };
+            //       let getPrivateTagIdBody = {
+            //         'tagName': span.getAttribute('id')
+            //       };
+            //       fetch(getPrivateTagIdUrl, {method: 'POST', headers: headers, body: JSON.stringify(getPrivateTagIdBody)})
+            //       .then(res => {
+            //         return res.json();
+            //       })
+            //       .then(result => {
+            //         // tagId = result.result;
+            //         return result.result;
+            //       })
+            //       .then(tagId => {
+            //         let addRelationshipUrl = `/add/hashtag/relationship`;
+            //         let headers = {
+            //           "Content-Type": "application/json"
+            //         };
+            //         let addRelationshipBody = {
+            //           'tagId': tagId,
+            //           'dataId': dataId
+            //         };
+            //         fetch(addRelationshipUrl, {method: 'POST', headers: headers, body: JSON.stringify(addRelationshipBody)})
+            //         .then(res => {
+            //           return res.json();
+            //         })
+            //         .then(result => {
+            //           if (result.result === 'Add suceessful') {
+            //             console.log('Add suceessful');
+            //           }
+            //           else {
+            //             console.log('Add failed');
+            //           }
+            //         })
+            //         .catch(error => {
+            //           console.log(error);
+            //         })
+            //       })
+            //       .catch(error => {
+            //         console.log("Error: ", error);
+            //       });
+            //     }
+            //   });
+            // }
+            alert('Add successful!!');
+            window.location.href = "/individual";
+          }
+        })
+        .catch(error => {
+          console.log("Error: ", error);
+        });
+      }
+      else {
+        alert('標題和內容欄位請勿為空!!');
+        return;
+      }
 });

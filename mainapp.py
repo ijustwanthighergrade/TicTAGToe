@@ -730,11 +730,25 @@ def Hashtagmanageedit(option):
 
 @app.route("/hashtag_review", methods=['GET'])
 def HashtagReview():
+    review_objs = []
     sql = f'select * from feedback;'
     cursor.execute(sql)
     results = cursor.fetchall()
+    for result in results:
+        tag_id = result[3]
+        print(tag_id)
+        sql = f'select * from hashtag where TagId = "{tag_id}";'
+        cursor.execute(sql)
+        res = cursor.fetchone()
+        obj = {
+            "tag_id": res[0],
+            "tag_name": res[1],
+            "reason": result[5]
+        }
+        print(obj)
+        review_objs.append(obj)
     
-    return render_template('hashtag_review.html', hashtags=results)
+    return render_template('hashtag_review.html', reviews=review_objs)
 
 ############################## page ##############################
 
@@ -1321,14 +1335,15 @@ def ChangeFriendStatus():
 def add_tag():
     data = request.get_json()
     tag = str(data.get('tag', None))
+    tagType = data.get('tagType', None)
     print(tag)
-    memId = "M1685006880" #目前寫死
+    memId = current_user.id
     time = str(datetime.now().strftime('%Y-%m-%d-%H:%M:%S'))
     timestamp = int(datetime.now().timestamp())
     tagId = str("H%s" % (timestamp))
     print(tagId)
     try:
-        sql = f"insert into hashtag values ('{tagId}', '{tag}', 6, '{memId}', 1, '{tag}', '{time}');"
+        sql = f"insert into hashtag values ('{tagId}', '{tag}', {tagType}, '{memId}', 1, '{tag}', '{time}');"
         result = cursor.execute(sql)
         db.commit()
         return jsonify({"result": "Add successful"}), 200
@@ -1340,7 +1355,7 @@ def add_tag():
 def delete_tag():
     data = request.get_json()
     tag = str(data.get('tag', None))
-    memId = "M1685006880" #目前寫死
+    memId = current_user.id
     try:
         sql = f"delete from hashtag where Owner = '{memId}' and TagName = '{tag}' and TagType = 6;"
         result = cursor.execute(sql)
@@ -1354,7 +1369,7 @@ def delete_tag():
 def add_link():
     data = request.get_json()
     link = str(data.get('link', None))
-    memId = "M1685006880" #目前寫死
+    memId = current_user.id
     time = str(datetime.now().strftime('%Y-%m-%d-%H:%M:%S'))
     try:
         sql = f"insert into member_social_link values ('{memId}', '{link}', '{time}');"
@@ -1371,7 +1386,7 @@ def add_link():
 def delete_link():
     data = request.get_json()
     link = str(data.get('link', None))
-    memId = "M1685006880" #目前寫死
+    memId = current_user.id
     try:
         sql = f"delete from member_social_link where MemId = '{memId}' and SocialLink = '{link}';"
         result = cursor.execute(sql)
@@ -1387,7 +1402,7 @@ def update_info():
     name = str(data.get('name', None))
     memAtId = str(data.get('id', None))
     email = str(data.get('email', None))
-    memId = "M1685006880" #目前寫死
+    memId = current_user.id
     try:
         sql = f"update member set MemName = '{name}', Email = '{email}', MemAtId = '{memAtId}' where MemId = '{memId}';"
         cursor.execute(sql)
@@ -1399,7 +1414,7 @@ def update_info():
     
 @app.route("/update_cancel", methods=['GET'])
 def update_cancel():
-    memId = "M1685006880" #目前寫死
+    memId = current_user.id
     sql = f"select * from member where MemId = '{memId}';"
     cursor.execute(sql)
     result = cursor.fetchone()
@@ -1483,25 +1498,123 @@ def delete_hashtag():
 
 @app.route('/public/hashtags', methods=['GET'])
 def get_public_hashtags():
-    hashtag_list = []
-    sql = f'select TagName from hashtag where TagType = 4;'
-    cursor.execute(sql)
-    results = cursor.fetchall()
-    for result in results:
-        hashtag_list.append(result[0])
-
-    return jsonify({'result': hashtag_list}), 200
+    try:
+        hashtag_list = []
+        sql = f'select TagName from hashtag where TagType = 4;'
+        cursor.execute(sql)
+        results = cursor.fetchall()
+        for result in results:
+            hashtag_list.append(result[0])
+        return jsonify({'result': hashtag_list}), 200
+    except Exception as e:
+        return jsonify({'result': e}), 400
 
 @app.route('/private/hashtags', methods=['GET'])
 def get_private_hashtags():
-    hashtag_list = []
-    sql = f'select TagName from hashtag where TagType = 6;'
+    try:
+        hashtag_list = []
+        sql = f'select TagName from hashtag where TagType = 6;'
+        cursor.execute(sql)
+        results = cursor.fetchall()
+        for result in results:
+            hashtag_list.append(result[0])
+        return jsonify({'result': hashtag_list}), 200
+    except Exception as e:
+        return jsonify({'result': e}), 400
+
+@app.route('/check/public/hashtag', methods=['POST'])
+def check_public_hashtag():
+    data = request.get_json()
+    tag_name = data.get('tag_name', None)
+    sql = f'select * from hashtag where TagName = "{tag_name}" and TagType = 4;'
     cursor.execute(sql)
-    results = cursor.fetchall()
-    for result in results:
-        hashtag_list.append(result[0])
+    result = cursor.fetchone()
+    if result:
+        return jsonify({'result': 'This hashtag already exists'})
+    else:
+        return jsonify({'result': 'This hashtag does not exist'})
     
-    return jsonify({'result': hashtag_list}), 200
+@app.route('/check/private/hashtag', methods=['POST'])
+def check_private_hashtag():
+    data = request.get_json()
+    tag_name = data.get('tag_name', None)
+    sql = f'select * from hashtag where TagName = "{tag_name}" and TagType = 6;'
+    cursor.execute(sql)
+    result = cursor.fetchone()
+    if result:
+        return jsonify({'result': 'This hashtag already exists'})
+    else:
+        return jsonify({'result': 'This hashtag does not exist'})
+
+@app.route('/get/public/hashtagId', methods=['POST'])
+def get_public_hashtagId():
+    data = request.get_json()
+    tagName = data.get('tagName', None)
+    try:
+        with db.cursor() as cursor:
+            sql = f'select * from hashtag where TagName = "{tagName}" and TagType = 4;'
+            cursor.execute(sql)
+            result = cursor.fetchone()
+            tagId = result[0]
+            print(f'tagId: {tagId}')
+            return jsonify({'result': tagId})
+    except Exception as e:
+        print(f"Error: {e}")
+        return jsonify({'result': 'Error'}), 500
+
+@app.route('/get/private/hashtagId', methods=['POST'])
+def get_private_hashtagId():
+    data = request.get_json()
+    tagName = data.get('tagName', None)
+    try:
+        with db.cursor() as cursor:
+            sql = f'select * from hashtag where TagName = "{tagName}" and TagType = 6;'
+            cursor.execute(sql)
+            result = cursor.fetchone()
+            tagId = result[0]
+            print(f'tagId: {tagId}')
+            return jsonify({'result': tagId})
+    except Exception as e:
+        print(f"Error: {e}")
+        return jsonify({'result': 'Error'}), 500
+
+@app.route('/add/hashtag/relationship', methods=['POST'])
+def add_hashtag_relationship():
+    data = request.get_json()
+    tagId = data.get('tagId', None)
+    dataId = data.get('dataId', None)
+    time = str(datetime.now().strftime('%Y-%m-%d-%H:%M:%S'))
+    try:
+        with db.cursor() as cursor:
+            sql = f"insert into `hashtag_relationship` (`TagId`, `ObjId`, `RelationshipType`, `Status`, `CreateTime`) values ('{tagId}', '{dataId}', 2, 1, '{time}');"
+            cursor.execute(sql)
+        db.commit()
+        return jsonify({'result': 'Add suceessful'}), 200
+    except Exception as e:
+        db.rollback()
+        print(f"Error: {e}")
+        return jsonify({'result': 'Add failed'}), 400
+
+@app.route('/add/note', methods=['POST'])
+def add_note():
+    data = request.get_json()
+    memId = current_user.id
+    title = data.get('title', None)
+    location = data.get('location', None)
+    member = data.get('member', None)
+    content = data.get('content', None)
+    tag = data.get('tag', None)
+    time = str(datetime.now().strftime('%Y-%m-%d-%H:%M:%S'))
+    timestamp = int(datetime.now().timestamp())
+    postId = str("P%s" % (timestamp))
+    try:
+        sql = f"INSERT INTO `post` (`DataId`, `Title`, `Content`, `PostType`, `Owner`, `Status`, `CreateTime`, `Hashtag`, `Location`, `MemAtId`) VALUES ('{postId}', '{title}', '{content}', 5, '{memId}', 1, '{time}', '{tag}', '{location}', '{member}');"
+        cursor.execute(sql)
+        db.commit()
+        return jsonify({'result': 'Add successful', 'postId': postId}), 200
+    except Exception as e:
+        db.rollback()
+        return jsonify({'result': 'Add failed'}), 400
 
 ############################## fetch ##############################
 

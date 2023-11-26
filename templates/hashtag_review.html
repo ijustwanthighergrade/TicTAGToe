@@ -109,28 +109,33 @@
             </div>
         </div>
 
-        {% for hashtag in hashtags %}
+        <div class="container-fluid mt-5 mb-5">
+            <div class="row">
+            </div>
+        </div>
+
+        {% for review in reviews %}
         <div class="container-fluid mt-5 hashtag_list">
             <div class="row text-center">
                 <div class="col-6">
-                    <span>{{ hashtag.id }}</span>
-                    <span>#{{ hashtag.name }}</span>
+                    <span class="mx-3">{{ review.tag_id }}</span>
+                    <span class="mx-3">{{ review.tag_name }}</span>
                 </div>
                 <div class="col-3">
-                    <button type="button" class="btn btn-outline-success review_btn">通過</button>
+                    <button type="button" id="{{ review.tag_id }}" class="btn btn-outline-success review_btn">通過</button>
                 </div>
                 <div class="col-3">
-                    <button type="button" class="btn btn-outline-danger review_btn">拒絕</button>
+                    <button type="button" id="{{ review.tag_id }}" class="btn btn-outline-danger review_btn">拒絕</button>
                 </div>
             </div>
         </div>
         <div class="container-fluid mt-5 hashtag_list">
             <div class="row text-center">
                 <div class="col-6">
-                    <span>檢舉原因</span>
+                    <span>審查原因</span>
                 </div>
                 <div class="col-6">
-                    <span>{{ hashtag_reason }}</span>
+                    <span>{{ review.reason }}</span>
                 </div>
             </div>
         </div>
