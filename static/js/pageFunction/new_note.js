@@ -281,7 +281,7 @@ document.getElementById('newtag_btn').addEventListener('click', function () {
   }
 });
 
-document.getElementById('confirm_submit').addEventListener('click', function (event) {
+document.getElementById('confirm_submit').addEventListener('click', async function (event) {
       event.stopPropagation();
       let title = document.getElementById('title').value;
       let location = document.getElementById('location').value;
@@ -303,7 +303,24 @@ document.getElementById('confirm_submit').addEventListener('click', function (ev
         // Convert the HTMLCollection to an array
         spanArray = Array.from(spanElements);
 
-        spanArray.forEach(function(span) {
+        // spanArray.forEach(function(span) {
+        //   if (span.dataset.hashtagStatus === 'old') {
+        //     oldTagArray.push(span);
+        //   }
+        //   else if (span.dataset.hashtagStatus === 'new') {
+        //     newTagArray.push(span);
+        //   }
+
+        //   tagContent += span.textContent;
+        //   tagContent += ' ';
+
+        //   // console.log('content: ', span.textContent);
+        //   // console.log('id: ', span.getAttribute('id')); 
+        //   // console.log('hashtagType: ', span.dataset.hashtagType); 
+        //   // console.log('hashtagStatus: ', span.dataset.hashtagStatus); 
+        // });
+
+        await Promise.all(spanArray.map(async function (span) {
           if (span.dataset.hashtagStatus === 'old') {
             oldTagArray.push(span);
           }
@@ -313,39 +330,118 @@ document.getElementById('confirm_submit').addEventListener('click', function (ev
 
           tagContent += span.textContent;
           tagContent += ' ';
+        }));
 
-          // console.log('content: ', span.textContent);
-          // console.log('id: ', span.getAttribute('id')); 
-          // console.log('hashtagType: ', span.dataset.hashtagType); 
-          // console.log('hashtagStatus: ', span.dataset.hashtagStatus); 
-        });
         console.log("tagContent: ", tagContent);
 
+        // if (newTagArray.length > 0) {
+        //   newTagArray.forEach(function(newTag) {
+        //     if (newTag.dataset.hashtagType === "public") {
+        //       let addTagUrl = `/add_tag`;
+        //       let headers = {
+        //         "Content-Type": "application/json"
+        //       };
+        //       let addTagBody = {
+        //         "tag": newTag.getAttribute('id'),
+        //         "tagType": 4,
+        //         "status": 2
+        //       };
+    
+        //       fetch(addTagUrl, {method: 'POST', headers: headers, body: JSON.stringify(addTagBody)})
+        //       .then(res => {
+        //         return res.json();
+        //       })
+        //       .then(result => {
+        //         if (result.result === 'Add failed') {
+        //           alert('Add failed!!');
+        //           return;
+        //         }
+        //       })
+        //       .catch(error => {
+        //         console.log("Error: ", error);
+        //       });
+
+        //       let addReportUrl = `/add/hashtag/report`;
+        //       let addReportBody = {
+        //         "tag_id": newTag.getAttribute('id')
+        //       }
+        //       fetch(addReportUrl, {method: "POST", headers: headers, body: JSON.stringify(addReportBody)})
+        //       .then(res => {
+        //         return res.json();
+        //       })
+        //       .then(result => {
+        //         if (result.result === 'Add report failed') {
+        //           alert('Add failed!!');
+        //           return;
+        //         }
+        //       })
+        //       .catch(error => {
+        //         console.log("Error: ", error);
+        //       })
+        //     }
+        //     else {
+        //       let addTagUrl = `/add_tag`;
+        //       let headers = {
+        //         "Content-Type": "application/json"
+        //       };
+        //       let addTagBody = {
+        //         "tag": newTag.getAttribute('id'),
+        //         "tagType": 4,
+        //         "status": 6
+        //       };
+    
+        //       fetch(addTagUrl, {method: 'POST', headers: headers, body: JSON.stringify(addTagBody)})
+        //       .then(res => {
+        //         return res.json();
+        //       })
+        //       .then(result => {
+        //         if (result.result === 'Add failed') {
+        //           alert('Add failed!!');
+        //           return;
+        //         }
+        //       })
+        //       .catch(error => {
+        //         console.log("Error: ", error);
+        //       });
+        //     }
+        //   });
+        // }
+
         if (newTagArray.length > 0) {
-          newTagArray.forEach(function(newTag) {
-            let addTagUrl = `/add_tag`;
-            let headers = {
-              "Content-Type": "application/json"
-            };
-            let addTagBody = {
-              "tag": newTag.getAttribute('id'),
-              "tagType": 4
-            };
-  
-            fetch(addTagUrl, {method: 'POST', headers: headers, body: JSON.stringify(addTagBody)})
-            .then(res => {
-              return res.json();
-            })
-            .then(result => {
-              if (result.result === 'Add failed') {
-                alert('Add failed!!');
-                return;
+          await Promise.all(newTagArray.map(async function (newTag) {
+              let addTagUrl = `/add_tag`;
+              let headers = {
+                  "Content-Type": "application/json"
+              };
+              let addTagBody = {
+                  "tag": newTag.getAttribute('id'),
+                  "tagType": newTag.dataset.hashtagType === "public" ? 4 : 6,
+                  "status": newTag.dataset.hashtagStatus === "public" ? 2 : 1
+              };
+
+              try {
+                  const res = await fetch(addTagUrl, { method: 'POST', headers: headers, body: JSON.stringify(addTagBody) });
+                  const result = await res.json();
+                  if (result.result === 'Add failed') {
+                      alert('Add failed!!');
+                      return;
+                  }
+
+                  let addReportUrl = `/add/hashtag/report`;
+                  let addReportBody = {
+                      "tag_id": newTag.getAttribute('id')
+                  };
+
+                  const reportRes = await fetch(addReportUrl, { method: "POST", headers: headers, body: JSON.stringify(addReportBody) });
+                  const reportResult = await reportRes.json();
+                  if (reportResult.result === 'Add report failed') {
+                      alert('Add failed!!');
+                      return;
+                  }
+              } catch (error) {
+                  console.log("Error: ", error);
               }
-            })
-            .catch(error => {
-              console.log("Error: ", error);
-            });
-          });
+          }));
         }
 
         let AddNoteUrl = `/add/note`;
@@ -360,129 +456,154 @@ document.getElementById('confirm_submit').addEventListener('click', function (ev
           "tag": tagContent
         }
 
-        fetch(AddNoteUrl, {method: 'POST', headers: headers, body: JSON.stringify(AddNoteBody)})
-        .then(res => {
-          return res.json();
-        })
-        .then(result => {
-          if (result.result === 'Add failed') {
-            alert('Add failed!!');
-            return;
-          }
-          else {
-            dataId = result.postId;
-
-            // 目前這部分的bug還沒有解決，所以先註解掉
-            // add hashtag and post relationship
-            // if(spanArray.length > 0) {
-            //   spanArray.forEach(function(span) {
-            //     if (span.dataset.hashtagType === 'public') {
-            //       let tagId;
-            //       let getPublicTagIdUrl = `/get/public/hashtagId`;
-            //       let headers = {
-            //         "Content-Type": "application/json"
-            //       };
-            //       let getPublicTagIdBody = {
-            //         'tagName': span.getAttribute('id')
-            //       };
-            //       console.log("tagName: ", span.getAttribute('id'));
-        
-            //       fetch(getPublicTagIdUrl, {method: 'POST', headers: headers, body: JSON.stringify(getPublicTagIdBody)})
-            //       .then(res => {
-            //         return res.json();
-            //       })
-            //       .then(result => {
-            //         // tagId = result.result;
-            //         return result.result;
-            //       })
-            //       .then(tagId => {
-            //         console.log("public tagId: ", tagId)
-            //         let addRelationshipUrl = `/add/hashtag/relationship`;
-            //         let headers = {
-            //           "Content-Type": "application/json"
-            //         };
-            //         let addRelationshipBody = {
-            //           'tagId': tagId,
-            //           'dataId': dataId
-            //         };
-            //         fetch(addRelationshipUrl, {method: 'POST', headers: headers, body: JSON.stringify(addRelationshipBody)})
-            //         .then(res => {
-            //           return res.json();
-            //         })
-            //         .then(result => {
-            //           if (result.result === 'Add suceessful') {
-            //             console.log('Add suceessful');
-            //           }
-            //           else {
-            //             console.log('Add failed');
-            //           }
-            //         })
-            //         .catch(error => {
-            //           console.log("Error: ", error);
-            //         });
-            //       })
-            //       .catch(error => {
-            //         console.log("Error: ", error);
-            //       });
-            //     }
-            //     else {
-            //       let tagId;
-            //       let getPrivateTagIdUrl = `/get/private/hashtagId`;
-            //       let headers = {
-            //         "Content-Type": "application/json"
-            //       };
-            //       let getPrivateTagIdBody = {
-            //         'tagName': span.getAttribute('id')
-            //       };
-            //       fetch(getPrivateTagIdUrl, {method: 'POST', headers: headers, body: JSON.stringify(getPrivateTagIdBody)})
-            //       .then(res => {
-            //         return res.json();
-            //       })
-            //       .then(result => {
-            //         // tagId = result.result;
-            //         return result.result;
-            //       })
-            //       .then(tagId => {
-            //         let addRelationshipUrl = `/add/hashtag/relationship`;
-            //         let headers = {
-            //           "Content-Type": "application/json"
-            //         };
-            //         let addRelationshipBody = {
-            //           'tagId': tagId,
-            //           'dataId': dataId
-            //         };
-            //         fetch(addRelationshipUrl, {method: 'POST', headers: headers, body: JSON.stringify(addRelationshipBody)})
-            //         .then(res => {
-            //           return res.json();
-            //         })
-            //         .then(result => {
-            //           if (result.result === 'Add suceessful') {
-            //             console.log('Add suceessful');
-            //           }
-            //           else {
-            //             console.log('Add failed');
-            //           }
-            //         })
-            //         .catch(error => {
-            //           console.log(error);
-            //         })
-            //       })
-            //       .catch(error => {
-            //         console.log("Error: ", error);
-            //       });
-            //     }
-            //   });
-            // }
-            alert('Add successful!!');
-            window.location.href = "/individual";
-          }
-        })
-        .catch(error => {
-          console.log("Error: ", error);
-        });
+        try {
+            const res = await fetch(AddNoteUrl, { method: 'POST', headers: headers, body: JSON.stringify(AddNoteBody) });
+            const result = await res.json();
+            if (result.result === 'Add failed') {
+                alert('Add failed!!');
+                return;
+            } else {
+                dataId = result.postId;
+                alert('Add successful!!');
+                window.location.href = "/individual";
+            }
+        } catch (error) {
+            console.log("Error: ", error);
+        }
       }
       else {
         alert('標題和內容欄位請勿為空!!');
         return;
       }
+
+      //   fetch(AddNoteUrl, {method: 'POST', headers: headers, body: JSON.stringify(AddNoteBody)})
+      //   .then(res => {
+      //     return res.json();
+      //   })
+      //   .then(result => {
+      //     if (result.result === 'Add failed') {
+      //       alert('Add failed!!');
+      //       return;
+      //     }
+      //     else {
+      //       dataId = result.postId;
+
+      //       // 目前這部分的bug還沒有解決，所以先註解掉
+      //       // add hashtag and post relationship
+      //       // if(spanArray.length > 0) {
+      //       //   spanArray.forEach(function(span) {
+      //       //     if (span.dataset.hashtagType === 'public') {
+      //       //       let tagId;
+      //       //       let getPublicTagIdUrl = `/get/public/hashtagId`;
+      //       //       let headers = {
+      //       //         "Content-Type": "application/json"
+      //       //       };
+      //       //       let getPublicTagIdBody = {
+      //       //         'tagName': span.getAttribute('id')
+      //       //       };
+      //       //       console.log("tagName: ", span.getAttribute('id'));
+        
+      //       //       fetch(getPublicTagIdUrl, {method: 'POST', headers: headers, body: JSON.stringify(getPublicTagIdBody)})
+      //       //       .then(res => {
+      //       //         return res.json();
+      //       //       })
+      //       //       .then(result => {
+      //       //         // tagId = result.result;
+      //       //         return result.result;
+      //       //       })
+      //       //       .then(tagId => {
+      //       //         console.log("public tagId: ", tagId)
+      //       //         let addRelationshipUrl = `/add/hashtag/relationship`;
+      //       //         let headers = {
+      //       //           "Content-Type": "application/json"
+      //       //         };
+      //       //         let addRelationshipBody = {
+      //       //           'tagId': tagId,
+      //       //           'dataId': dataId
+      //       //         };
+      //       //         fetch(addRelationshipUrl, {method: 'POST', headers: headers, body: JSON.stringify(addRelationshipBody)})
+      //       //         .then(res => {
+      //       //           return res.json();
+      //       //         })
+      //       //         .then(result => {
+      //       //           if (result.result === 'Add suceessful') {
+      //       //             console.log('Add suceessful');
+      //       //           }
+      //       //           else {
+      //       //             console.log('Add failed');
+      //       //           }
+      //       //         })
+      //       //         .catch(error => {
+      //       //           console.log("Error: ", error);
+      //       //         });
+      //       //       })
+      //       //       .catch(error => {
+      //       //         console.log("Error: ", error);
+      //       //       });
+      //       //     }
+      //       //     else {
+      //       //       let tagId;
+      //       //       let getPrivateTagIdUrl = `/get/private/hashtagId`;
+      //       //       let headers = {
+      //       //         "Content-Type": "application/json"
+      //       //       };
+      //       //       let getPrivateTagIdBody = {
+      //       //         'tagName': span.getAttribute('id')
+      //       //       };
+      //       //       fetch(getPrivateTagIdUrl, {method: 'POST', headers: headers, body: JSON.stringify(getPrivateTagIdBody)})
+      //       //       .then(res => {
+      //       //         return res.json();
+      //       //       })
+      //       //       .then(result => {
+      //       //         // tagId = result.result;
+      //       //         return result.result;
+      //       //       })
+      //       //       .then(tagId => {
+      //       //         let addRelationshipUrl = `/add/hashtag/relationship`;
+      //       //         let headers = {
+      //       //           "Content-Type": "application/json"
+      //       //         };
+      //       //         let addRelationshipBody = {
+      //       //           'tagId': tagId,
+      //       //           'dataId': dataId
+      //       //         };
+      //       //         fetch(addRelationshipUrl, {method: 'POST', headers: headers, body: JSON.stringify(addRelationshipBody)})
+      //       //         .then(res => {
+      //       //           return res.json();
+      //       //         })
+      //       //         .then(result => {
+      //       //           if (result.result === 'Add suceessful') {
+      //       //             console.log('Add suceessful');
+      //       //           }
+      //       //           else {
+      //       //             console.log('Add failed');
+      //       //           }
+      //       //         })
+      //       //         .catch(error => {
+      //       //           console.log(error);
+      //       //         })
+      //       //       })
+      //       //       .catch(error => {
+      //       //         console.log("Error: ", error);
+      //       //       });
+      //       //     }
+      //       //   });
+      //       // }
+      //       alert('Add successful!!');
+      //       window.location.href = "/individual";
+      //     }
+      //   })
+      //   .catch(error => {
+      //     console.log("Error: ", error);
+      //   });
+      // }
+      // else {
+      //   alert('標題和內容欄位請勿為空!!');
+      //   return;
+      // }
+});
+
+document.getElementById('clean_content').addEventListener('click', function () {
+  // Reload the page
+  window.location.reload();
 });

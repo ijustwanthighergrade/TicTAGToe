@@ -122,10 +122,10 @@
                     <span class="mx-3">{{ review.tag_name }}</span>
                 </div>
                 <div class="col-3">
-                    <button type="button" id="{{ review.tag_id }}" class="btn btn-outline-success review_btn">通過</button>
+                    <button type="button" id="approve_{{ review.tag_id }}" class="btn btn-outline-success review_btn">通過</button>
                 </div>
                 <div class="col-3">
-                    <button type="button" id="{{ review.tag_id }}" class="btn btn-outline-danger review_btn">拒絕</button>
+                    <button type="button" id="reject_{{ review.tag_id }}" class="btn btn-outline-danger review_btn">拒絕</button>
                 </div>
             </div>
         </div>
@@ -142,38 +142,75 @@
         <div class="container-fluid mt-5 mb-5">
             <hr style="height: 5px; background-color: #97CBFF;">
         </div>
-        {% endfor %}
 
-        <!-- <div class="container-fluid mt-5 hashtag_list">
-            <div class="row text-center">
-                <div class="col-6">
-                    <span>H1685088060 #CYIM</span>
-                </div>
-                <div class="col-3">
-                    <button type="button" class="btn btn-outline-success review_btn">通過</button>
-                </div>
-                <div class="col-3">
-                    <button type="button" class="btn btn-outline-danger review_btn">拒絕</button>
-                </div>
-            </div>
-        </div>
-        <div class="container-fluid mt-5 hashtag_list">
-            <div class="row text-center">
-                <div class="col-6">
-                    <span>檢舉原因</span>
-                </div>
-                <div class="col-6">
-                    <span>hashtag名稱不適當</span>
-                </div>
-            </div>
-        </div>
-        <div class="container-fluid mt-5 mb-5">
-            <hr style="height: 5px; background-color: #97CBFF;">
-        </div> -->
+        <script>
+            document.getElementById('approve_{{ review.tag_id }}').addEventListener('click', async function () {
+                var fullId = this.id;
+                var tagId = fullId.split('_')[1];
+                console.log("approve id: ", tagId);
+                let url = `/update/hashtag/status/accept`;
+                let headers = {
+                    "Content-Type": "application/json"
+                }
+                let body = {
+                    "hashtagId": tagId
+                }
+                try {
+                    let response = await fetch(url, {method: "POST", headers: headers, body: JSON.stringify(body)});
+                    let result = await response.json();
+                    console.log(result.result);
+                    if (result.result === "Update successful") {
+                        console.log("Update successful");
+                        alert(result.result);
+                        window.location.href = "/hashtag_review";
+                    }
+                    else {
+                        console.log("Update failed");
+                        alert(result.result);
+                    }
+                }
+                catch {
+                    console.error("Error:", error);
+                }
+            });
+        
+
+            document.getElementById('reject_{{ review.tag_id }}').addEventListener('click', async function () {
+                var fullId = this.id;
+                var tagId = fullId.split('_')[1];
+                console.log("reject id: ", tagId);
+                let url = `/update/hashtag/status/reject`;
+                let headers = {
+                    "Content-Type": "application/json"
+                }
+                let body = {
+                    "hashtagId": tagId
+                }
+                try {
+                    let response = await fetch(url, {method: "DELETE", headers: headers, body: JSON.stringify(body)});
+                    let result = await response.json();
+                    console.log(result.result);
+                    if (result.result === "Delete successful") {
+                        console.log("Delete successful");
+                        alert(result.result);
+                        window.location.href = "/hashtag_review";
+                    }
+                    else {
+                        console.log("Delete failed");
+                        alert(result.result);
+                    }
+                }
+                catch {
+                    console.error("Error:", error);
+                }
+            });
+          </script>
+
+        {% endfor %}
 
     </main>
     
     {% include '/frame/footer.html' %}
-
+    <script src="../static/js/pageFunction/hashtag_review.js"></script>
 </body>
 </html>

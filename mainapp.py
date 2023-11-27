@@ -1336,6 +1336,7 @@ def add_tag():
     data = request.get_json()
     tag = str(data.get('tag', None))
     tagType = data.get('tagType', None)
+    status = data.get('status', None)
     print(tag)
     memId = current_user.id
     time = str(datetime.now().strftime('%Y-%m-%d-%H:%M:%S'))
@@ -1343,10 +1344,11 @@ def add_tag():
     tagId = str("H%s" % (timestamp))
     print(tagId)
     try:
-        sql = f"insert into hashtag values ('{tagId}', '{tag}', {tagType}, '{memId}', 1, '{tag}', '{time}');"
-        result = cursor.execute(sql)
-        db.commit()
-        return jsonify({"result": "Add successful"}), 200
+        with db.cursor() as cursor:
+            sql = f"insert into hashtag values ('{tagId}', '{tag}', {tagType}, '{memId}', {status}, '{tag}', '{time}');"
+            result = cursor.execute(sql)
+            db.commit()
+            return jsonify({"result": "Add successful"}), 200
     except:
         db.rollback()
         return jsonify({"result": "Add failed"}), 400
@@ -1457,7 +1459,26 @@ def delete_note():
         db.rollback()
         return jsonify({"result": "Delete failed"}), 400
 
-@app.route('/update/hashtag/status/report', methods=['PATCH'])
+@app.route('/add/hashtag/report', methods=['POST'])
+def add_hashtag_report():
+    data = request.get_json()
+    tag_id = data.get('tag_id', None)
+    memId = current_user.id
+    time = str(datetime.now().strftime('%Y-%m-%d-%H:%M:%S'))
+    timestamp = int(datetime.now().timestamp())
+    feedback_id = str("F%s" % (timestamp))
+    print(feedback_id)
+    try:
+        sql = f"insert into feedback values ('{feedback_id}', 1, '{memId}', '{tag_id}', '', '新增的tag', '{time}');"
+        cursor.execute(sql)
+        db.commit()
+        return jsonify({"result": "Add report successful"}), 200
+    except Exception as e:
+        db.rollback()
+        print(f"Error: {e}")
+        return jsonify({"result": "Add report failed"}), 400
+
+@app.route('/update/hashtag/status/report', methods=['POST'])
 def update_hashtag_status_report():
     data = request.get_json()
     hashtagId = data.get('hashtagId', None)
@@ -1470,18 +1491,38 @@ def update_hashtag_status_report():
         db.rollback()
         return jsonify({"result": "Update failed"}), 400
 
-@app.route('/update/hashtag/status/accept', methods=['PATCH'])
+@app.route('/update/hashtag/status/accept', methods=['POST'])
 def update_hashtag_status_accept():
     data = request.get_json()
     hashtagId = data.get('hashtagId', None)
     try:
-        sql = f'update hashtag set Status = 1 where TagId = {hashtagId};'
+        sql = f'update hashtag set Status = 1 where TagId = "{hashtagId}";'
+        cursor.execute(sql)
+        db.commit()
+        sql = f'delete from feedback where TagId = "{hashtagId}";'
         cursor.execute(sql)
         db.commit()
         return jsonify({"result": "Update successful"}), 200
     except:
         db.rollback()
         return jsonify({"result": "Update failed"}), 400
+
+@app.route('/update/hashtag/status/reject', methods=['DELETE'])
+def update_hashtag_status_reject():
+    data = request.get_json()
+    hashtagId = data.get('hashtagId', None)
+    try:
+        sql = f'delete from hashtag where TagId = "{hashtagId}";'
+        cursor.execute(sql)
+        db.commit()
+        sql = f'delete from feedback where TagId = "{hashtagId}";'
+        cursor.execute(sql)
+        db.commit()
+        return jsonify({"result": "Delete successful"}), 200
+    except Exception as e:
+        db.rollback()
+        print(f"Error: {e}")
+        return jsonify({"result": "Delete failed"}), 400
 
 @app.route('/delete/hashtag', methods=['DELETE'])
 def delete_hashtag():
