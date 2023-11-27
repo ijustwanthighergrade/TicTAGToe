@@ -5,7 +5,7 @@ config = {
     'host':'localhost',
     'port':3306,
     'user':'root',
-    'passwd':'zcad13qe',
+    'passwd':'1234',
     # 'passwd':'tictagtoe',
     'db':'tictagtoe',
     'charset':'utf8mb4',

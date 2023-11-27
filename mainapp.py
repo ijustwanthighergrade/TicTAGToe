@@ -1656,23 +1656,27 @@ def add_note():
     location = data.get('location', None)
     member = data.get('member', None)
     content = data.get('content', None)
-    tag = data.get('tag', None)
+    tags = data.get('tag', None)
 
-    print('#########################')
-    print(tag)
-    print('#########################')
     time = str(datetime.now().strftime('%Y-%m-%d-%H:%M:%S'))
     timestamp = int(datetime.now().timestamp())
     postId = str("P%s" % (timestamp))
     try:
-        sql = f"INSERT INTO `post` (`DataId`, `Title`, `Content`, `PostType`, `Owner`, `Status`, `CreateTime`, `Hashtag`, `Location`, `MemAtId`) VALUES ('{postId}', '{title}', '{content}', 5, '{memId}', 1, '{time}', '{tag}', '{location}', '{member}');"
+        sql = f"INSERT INTO `post` (`DataId`, `Title`, `Content`, `PostType`, `Owner`, `Status`, `CreateTime`, `Hashtag`, `Location`, `MemAtId`) VALUES ('{postId}', '{title}', '{content}', 5, '{memId}', 1, '{time}', '', '{location}', '{member}');"
         cursor.execute(sql)
         db.commit()
-
-        
+        for tag in tags:
+            sql = f"select TagId from hashtag where TagName = '{tag}';"
+            cursor.execute(sql)
+            result = cursor.fetchone()
+            tag_id = result[0]
+            sql = f"insert into `hashtag_relationship` (`TagId`, `ObjId`, `RelationshipType`, `Status`, `CreateTime`) values ('{tag_id}', '{postId}', 2, 1, '{time}');"
+            cursor.execute(sql)
+            db.commit()
         return jsonify({'result': 'Add successful', 'postId': postId}), 200
     except Exception as e:
         db.rollback()
+        print(f"Error: {e}")
         return jsonify({'result': 'Add failed'}), 400
 
 ############################## fetch ##############################
