@@ -441,7 +441,6 @@ def Personalnotes():
     result = cursor.fetchone()
     # tag = result[7]
     # tagList = tag.split(" ")
-
     postItem = {
         "location": result[8],
         "time": result[6],
@@ -451,7 +450,20 @@ def Personalnotes():
         "id": result[0]
     }
 
-    return render_template('personal_notes.html', postItem=postItem, edit_model=True)
+    # Get the most recent post
+    recent_post_sql = f"SELECT * FROM post WHERE Owner = '{memId}' ORDER BY CreateTime DESC LIMIT 1;"
+    cursor.execute(recent_post_sql)
+    recent_post_result = cursor.fetchone()
+    recent_postItem = {
+        "location": recent_post_result[8],
+        "time": recent_post_result[6],
+        "tags": recent_post_result[7],
+        "title": recent_post_result[1],
+        "content": recent_post_result[2],
+        "id": recent_post_result[0]
+    }
+
+    return render_template('personal_notes.html', postItem=postItem, recent_postItem=recent_postItem, edit_model=True)
 
 # 記事搜尋結果頁面
 @app.route("/notes/<data_id>", methods=['GET'])

@@ -249,6 +249,35 @@
         </div>
         {% endif %}
 
+        <div class="container-fluid fs-1 mt-5">
+            <div class="row"></div>
+        </div>
+        <div class="container-fluid fs-1 mt-5">
+            <div class="row"></div>
+        </div>
+        <div class="container-fluid fs-1 mt-5">
+            <div class="row"></div>
+        </div>
+        
+        {% if recent_postItem %}
+        <div class="container-fluid mt-5 mb-5">
+            <div class="row">
+                <div class="col-1"></div>
+                <div class="col-11 fs-1" style="color: #97CBFF;">
+                    <h1 style="font-size: 60px;">相關貼文</h1>
+                </div>
+            </div>
+        </div>
+
+        <div class="container-fluid fs-1 mt-5">
+            <div class="row">
+                <div class="col text-center"><a href="/notes/{{recent_postItem.id}}">{{ recent_postItem.title }}</a></div>
+                <div class="col text-center">{{ recent_postItem.time }}</div>
+            </div>
+        </div>
+
+        {% endif %}
+
     </main>
     
     {% include '/frame/footer.html' %}
