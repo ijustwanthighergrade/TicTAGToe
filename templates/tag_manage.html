@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+{% include '/frame/head.html' %}
+
+<script type="text/javascript" src="../static/js/pageFunction/index.js"></script>
+<script type="text/javascript" src="../static/js/doc.ready/index.js"></script>
+<link rel="stylesheet" type="text/css" href="../static/css/block.css">
+
+<body>
+    {% include '/frame/header.html' %}
+    <!-- <header class="header ">
+        <div>
+            <div>
+                <img src="" alt="" data-btn="index"/>
+            </div>
+            <div class="search-bar-block ">
+                <button class="menu-container" data-btn="menu">
+                    <img src="../static/img/menu_black.png" class="menu-icon"/>
+                </button>
+                <div class="search-bar"> -->
+                    <!-- <input type="text" placeholder="請輸入關鍵字" id="key" class="search-input" data-input="keyword"/> -->
+                <!-- </div> -->
+                <!-- <button type="button" class="search-btn" data-btn="search">搜尋</button> -->
+            <!-- </div>
+        </div>
+    </header> -->
+    <main>
+        <style>
+            .block-ui {
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                z-index: 9999;
+            }
+
+            .block-ui-overlay {
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background-color: rgba(0, 0, 0, 0.5);
+                z-index: 9999;
+            }
+
+            .block-ui-content {
+                background-color: white;
+                padding: 20px;
+                border-radius: 5px;
+                text-align: center;
+                z-index: 10000;
+            }
+
+        </style>
+        <!-- <div class="menu-title-div" data-block="menu">
+            <ul class="menu-title-container" >
+                <li class="menu-title">
+                    <a href="#" title="會員資料">會員資料</a>
+                </li>
+                <li class="menu-title">
+                    <a href="#" title="個人筆記">個人筆記</a>
+                </li>
+                <li class="menu-title">
+                    <a href="#" title="好有管理">好友管理</a>
+                </li>
+                <li class="menu-title">
+                    <a href="#" title="Hashtag管理">Hashtag管理</a>
+                </li>
+                <li class="menu-title">
+                    <a href="#" title="客服中心">客服中心</a>
+                </li>
+                <li class="menu-title">
+                    <a href="#" title="關於我們">關於我們</a>
+                </li>
+            </ul>
+        </div> -->
+
+        <div class="container-fluid fs-1 mt-5">
+            <div class="row text-center">
+                <div class="col">
+                    <h1>Hashtag管理</h1>
+                </div>
+            </div>
+        </div>
+
+        <div class="container-fluid mt-3 mb-5">
+            <hr style="height: 10px; background-color: #97CBFF;">
+        </div>
+
+        <div class="container fs-1 mt-5">
+            <div class="row align-items-center mb-3">
+                <div class="col">
+                    <label for="exampleFormControlInput1" class="form-label">新增hashtag</label>
+                </div>
+            </div>
+            <div class="row align-items-center">
+                <div class="col text-center">
+                    <input type="text" name="new_tag" id="new_tag" class="form-control form-control-lg" style="height: 100px; font-size: 40px;" placeholder="請輸入要新增的hashtag">
+                </div>
+            </div>
+        </div>
+
+        <div class="container fs-1 mt-5">
+            <div class="row align-items-center mb-3">
+                <div class="col">
+                    <label for="exampleFormControlInput1" class="form-label">新增hashtag的類別</label>
+                </div>
+            </div>
+            <div class="row align-items-center">
+                <div class="col-9 text-center">
+                    <select class="form-select" id="tag_type" aria-label="Default select example" style="height: 100px; font-size: 40px;">
+                        <option selected value="4">公開</option>
+                        <option value="6">私人</option>
+                    </select>
+                </div>
+                <div class="col-3 text-center">
+                    <button type="button" id="newtag_btn" class="btn btn-outline-secondary" style="height: 100px; font-size: 40px; border-radius: 25px;">新增</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="container-fluid fs-1 mt-5">
+            <div class="row"></div>
+        </div>
+
+        <div class="container fs-1 mt-5">
+            <div class="row align-items-center mb-3">
+                <div class="col">
+                    <label for="exampleFormControlInput1" class="form-label">已新增hashtag</label>
+                </div>
+            </div>
+            <div class="row align-items-center">
+                <div class="col" id="hashtag_list">
+                    <!-- <span id="test" data-hashtag-type="public" data-hashtag-status="old">#test</span>&nbsp;
+                    <span id="test1" data-hashtag-type="private" data-hashtag-status="new">#test1</span>&nbsp; -->
+                </div>
+            </div>
+        </div>
+
+        <div class="container-fluid fs-1 mt-5">
+            <div class="row"></div>
+        </div>
+        <div class="container-fluid fs-1 mt-5">
+            <div class="row"></div>
+        </div>
+        <div class="container-fluid fs-1 mt-5">
+            <div class="row"></div>
+        </div>
+        <div class="container-fluid fs-1 mt-5">
+            <div class="row"></div>
+        </div>
+        <div class="container-fluid fs-1 mt-5">
+            <div class="row"></div>
+        </div>
+
+        <div class="container-fluid fs-1 mt-5" style="margin-bottom: 100px;">
+            <div class="row align-items-center">
+                <div class="col text-center">
+                    <button id="confirm_submit" class="btn border-0 text-light btn-lg fs-1" style="background-color: #97CBFF; cursor: pointer;">確定送出</button>
+                </div>
+                <div class="col text-center">
+                    <button id="clean_content" class="btn border-0 text-light btn-lg fs-1" style="background-color: #f5aad3; cursor: pointer;">清除內容</button>
+                </div>
+            </div>
+        </div>
+
+    </main>
+    
+    {% include '/frame/footer.html' %}
+
+    <script src="../static/js/pageFunction/tag_manage.js"></script>
+
+</body>
+</html>

@@ -762,6 +762,11 @@ def HashtagReview():
     
     return render_template('hashtag_review.html', reviews=review_objs)
 
+@app.route("/tag_manage", methods=['GET'])
+def TagManage():
+
+    return render_template('tag_manage.html')
+
 ############################## page ##############################
 
 
