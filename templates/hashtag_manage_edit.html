@@ -134,6 +134,12 @@
                     <input type="radio" name="visibility" value="6" id="privateRadio" style="width: 20px; height: 20px;">
                     <label for="privateRadio">私人</label> 
                     <button id="submitButton">新增</button>
+                    <ul style="list-style-type:none;">
+                        {% if target_name %}
+                        #{{ target_name }} (公開)
+                        <!-- Add other fields here -->
+                        {% endif %}
+                    </ul>
                     <ul id="displayList" style="list-style-type:none;"></ul>
                 </div>
             </div>
