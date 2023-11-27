@@ -287,7 +287,7 @@ document.getElementById('confirm_submit').addEventListener('click', async functi
       let location = document.getElementById('location').value;
       let member = document.getElementById('member').value;
       let content = document.getElementById('content').value;
-      let tagContent = '';
+      var tagContent = [];
       let spanArray;
       let oldTagArray = [];
       let newTagArray = [];
@@ -328,8 +328,9 @@ document.getElementById('confirm_submit').addEventListener('click', async functi
             newTagArray.push(span);
           }
 
-          tagContent += span.textContent;
-          tagContent += ' ';
+        //   tagContent += span.textContent;
+        //   tagContent += ' ';
+        tagContent.push(span.split('#')[1]);
         }));
 
         console.log("tagContent: ", tagContent);
@@ -407,42 +408,42 @@ document.getElementById('confirm_submit').addEventListener('click', async functi
         //   });
         // }
 
-        if (newTagArray.length > 0) {
-          await Promise.all(newTagArray.map(async function (newTag) {
-              let addTagUrl = `/add_tag`;
-              let headers = {
-                  "Content-Type": "application/json"
-              };
-              let addTagBody = {
-                  "tag": newTag.getAttribute('id'),
-                  "tagType": newTag.dataset.hashtagType === "public" ? 4 : 6,
-                  "status": newTag.dataset.hashtagStatus === "public" ? 2 : 1
-              };
+        // if (newTagArray.length > 0) {
+        //   await Promise.all(newTagArray.map(async function (newTag) {
+        //       let addTagUrl = `/add_tag`;
+        //       let headers = {
+        //           "Content-Type": "application/json"
+        //       };
+        //       let addTagBody = {
+        //           "tag": newTag.getAttribute('id'),
+        //           "tagType": newTag.dataset.hashtagType === "public" ? 4 : 6,
+        //           "status": newTag.dataset.hashtagStatus === "public" ? 2 : 1
+        //       };
 
-              try {
-                  const res = await fetch(addTagUrl, { method: 'POST', headers: headers, body: JSON.stringify(addTagBody) });
-                  const result = await res.json();
-                  if (result.result === 'Add failed') {
-                      alert('Add failed!!');
-                      return;
-                  }
+        //       try {
+        //           const res = await fetch(addTagUrl, { method: 'POST', headers: headers, body: JSON.stringify(addTagBody) });
+        //           const result = await res.json();
+        //           if (result.result === 'Add failed') {
+        //               alert('Add failed!!');
+        //               return;
+        //           }
 
-                  let addReportUrl = `/add/hashtag/report`;
-                  let addReportBody = {
-                      "tag_id": newTag.getAttribute('id')
-                  };
+        //           let addReportUrl = `/add/hashtag/report`;
+        //           let addReportBody = {
+        //               "tag_id": newTag.getAttribute('id')
+        //           };
 
-                  const reportRes = await fetch(addReportUrl, { method: "POST", headers: headers, body: JSON.stringify(addReportBody) });
-                  const reportResult = await reportRes.json();
-                  if (reportResult.result === 'Add report failed') {
-                      alert('Add failed!!');
-                      return;
-                  }
-              } catch (error) {
-                  console.log("Error: ", error);
-              }
-          }));
-        }
+        //           const reportRes = await fetch(addReportUrl, { method: "POST", headers: headers, body: JSON.stringify(addReportBody) });
+        //           const reportResult = await reportRes.json();
+        //           if (reportResult.result === 'Add report failed') {
+        //               alert('Add failed!!');
+        //               return;
+        //           }
+        //       } catch (error) {
+        //           console.log("Error: ", error);
+        //       }
+        //   }));
+        // }
 
         let AddNoteUrl = `/add/note`;
         let headers = {
