@@ -320,18 +320,23 @@ document.getElementById('confirm_submit').addEventListener('click', async functi
         //   // console.log('hashtagStatus: ', span.dataset.hashtagStatus); 
         // });
 
-        await Promise.all(spanArray.map(async function (span) {
-          if (span.dataset.hashtagStatus === 'old') {
-            oldTagArray.push(span);
-          }
-          else if (span.dataset.hashtagStatus === 'new') {
-            newTagArray.push(span);
-          }
+        // await Promise.all(spanArray.map(async function (span) {
+        //   if (span.dataset.hashtagStatus === 'old') {
+        //     oldTagArray.push(span);
+        //   }
+        //   else if (span.dataset.hashtagStatus === 'new') {
+        //     newTagArray.push(span);
+        //   }
 
-        //   tagContent += span.textContent;
-        //   tagContent += ' ';
-        tagContent.push(span.split('#')[1]);
-        }));
+        // //   tagContent += span.textContent;
+        // //   tagContent += ' ';
+        // tagContent.push(span.split('#')[1]);
+        // }));
+
+
+        for (let i = 0; i < $("[data-hashtag-type]").length; i++) {
+            tagContent.push($("[data-hashtag-type]")[i].textContent.split('#')[1]);
+        }
 
         console.log("tagContent: ", tagContent);
 
