@@ -19,6 +19,7 @@ from selenium.webdriver.common.actions.action_builder import ActionBuilder
 from selenium.webdriver.common.by import By
 from flask_login import LoginManager, UserMixin, login_user, login_required, logout_user, current_user
 from werkzeug.utils import secure_filename
+from uuid import uuid4
 
 from model import Mysql
 import src,model
@@ -1683,6 +1684,52 @@ def add_note():
         db.rollback()
         print(f"Error: {e}")
         return jsonify({'result': 'Add failed'}), 400
+
+@app.route('/add/new/note', methods=['POST'])
+def add_new_tag():
+    data = request.get_json()
+    tags = data.get('tags', None)
+    memId = current_user.id
+    print(f"tags: {tags}")
+    for tag in tags:
+        try:
+            create_time = str(datetime.now().strftime('%Y-%m-%d-%H:%M:%S'))
+            timestamp = int(datetime.now().timestamp())
+            print(timestamp)
+            tagId = str("H%s" % (timestamp))
+            feedback_id = str("F%s" % (timestamp))
+            tag_name = tag['tag_name']
+            tag_type = tag['tag_type']
+
+            if tag_type == "public":
+                tag_type_int = 4
+                tag_status = 2
+            else:
+                tag_type_int = 6
+                tag_status = 1
+            
+            sql = f"select * from hashtag where TagName = '{tag_name}' and TagType = {tag_type_int};"
+            cursor.execute(sql)
+            result = cursor.fetchone()
+            if result:
+                db.rollback()
+                return jsonify({"result": "This hashtag has been existed!!"}), 400
+            
+            if tag_type == "public":
+                sql = f"insert into feedback values ('{feedback_id}', 1, '{memId}', '{tagId}', '', '新增的tag', '{create_time}');"
+                cursor.execute(sql)
+                db.commit()
+
+            sql = f"insert into hashtag values ('{tagId}', '{tag_name}', {tag_type_int}, '{memId}', {tag_status}, '{tag_name}', '{create_time}');"
+            print(sql)
+            result = cursor.execute(sql)
+            db.commit()
+        except Exception as e:
+            db.rollback()
+            print(f"Error: {e}")
+            return jsonify({"result": "Add failed"}), 400
+        
+    return jsonify({"result": "Add successful"}), 200
 
 ############################## fetch ##############################
 
