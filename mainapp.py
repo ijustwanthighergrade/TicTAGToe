@@ -744,9 +744,10 @@ def Hashtagmanageedit(option):
 @app.route("/hashtag_review", methods=['GET'])
 def HashtagReview():
     review_objs = []
-    sql = f'select * from feedback;'
+    sql = f'select * from feedback where Type = 1 or Type = 2;'
     cursor.execute(sql)
     results = cursor.fetchall()
+    print(results)
     for result in results:
         tag_id = result[3]
         print(tag_id)
@@ -1517,9 +1518,21 @@ def update_hashtag_status_accept():
         sql = f'update hashtag set Status = 1 where TagId = "{hashtagId}";'
         cursor.execute(sql)
         db.commit()
-        sql = f'delete from feedback where TagId = "{hashtagId}";'
+
+        sql = f"select * from feedback where TagId = '{hashtagId}';"
+        cursor.execute(sql)
+        result = cursor.fetchone()
+        target_id = result[4]
+
+        # sql = f'delete from feedback where TagId = "{hashtagId}";'
+        sql = f"update feedback set Type = 3 where TagId = '{hashtagId}';"
         cursor.execute(sql)
         db.commit()
+
+        sql = f"update hashtag_relationship set Status = 1 where TagId = '{hashtagId}' and ObjId = '{target_id}';"
+        cursor.execute(sql)
+        db.commit()
+
         return jsonify({"result": "Update successful"}), 200
     except:
         db.rollback()
@@ -1533,9 +1546,22 @@ def update_hashtag_status_reject():
         sql = f'delete from hashtag where TagId = "{hashtagId}";'
         cursor.execute(sql)
         db.commit()
-        sql = f'delete from feedback where TagId = "{hashtagId}";'
+
+        sql = f"select * from feedback where TagId = '{hashtagId}';"
+        cursor.execute(sql)
+        result = cursor.fetchone()
+        target_id = result[4]
+
+        # sql = f'delete from feedback where TagId = "{hashtagId}";'
+        sql = f"update feedback set Type = 3 where TagId = '{hashtagId}';"
         cursor.execute(sql)
         db.commit()
+
+        sql = f"delete from hashtag_relationship where TagId = '{hashtagId}' and ObjId = '{target_id}';"
+        cursor.execute(sql)
+        print(f"delete realtionship result: '{cursor.fetchone()}'")
+        db.commit()
+        
         return jsonify({"result": "Delete successful"}), 200
     except Exception as e:
         db.rollback()
