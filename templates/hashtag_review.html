@@ -104,6 +104,50 @@
             <div class="row">
                 <div class="col-1"></div>
                 <div class="col-11 fs-1" style="color: #97CBFF;">
+                    <h1 style="font-size: 60px;">審核說明</h1>
+                </div>
+            </div>
+        </div>
+
+        <div class="container-fluid mt-5 mb-5">
+            <div class="row">
+            </div>
+        </div>
+
+        <div class="container-fluid mt-5 hashtag_list">
+            <div class="row text-center">
+                <div class="col-4">
+                    <span>新增的tag:</span>
+                </div>
+                <div class="col-4">
+                    <p>通過時，新增此tag</p>
+                    <p>拒絕時，刪除此tag</p>
+                </div>
+                <div class="col-4">
+                    <span></span>
+                </div>
+            </div>
+        </div>
+
+        <div class="container-fluid mt-5 hashtag_list">
+            <div class="row text-center">
+                <div class="col-4">
+                    <span>不適當的tag:</span>
+                </div>
+                <div class="col-4">
+                    <p>通過時，恢復此tag為正常狀態</p>
+                    <p>拒絕時，刪除此tag</p>
+                </div>
+                <div class="col-4">
+                    <span></span>
+                </div>
+            </div>
+        </div>
+
+        <div class="container-fluid mt-5 mb-5">
+            <div class="row">
+                <div class="col-1"></div>
+                <div class="col-11 fs-1" style="color: #97CBFF;">
                     <h1 style="font-size: 60px;">審核列表</h1>
                 </div>
             </div>
@@ -122,10 +166,10 @@
                     <span class="mx-3">{{ review.tag_name }}</span>
                 </div>
                 <div class="col-3">
-                    <button type="button" id="approve_{{ review.tag_id }}" class="btn btn-outline-success review_btn">通過</button>
+                    <button type="button" id="approve_{{ review.feedback_id }}" class="btn btn-outline-success review_btn">通過</button>
                 </div>
                 <div class="col-3">
-                    <button type="button" id="reject_{{ review.tag_id }}" class="btn btn-outline-danger review_btn">拒絕</button>
+                    <button type="button" id="reject_{{ review.feedback_id }}" class="btn btn-outline-danger review_btn">拒絕</button>
                 </div>
             </div>
         </div>
@@ -144,16 +188,16 @@
         </div>
 
         <script>
-            document.getElementById('approve_{{ review.tag_id }}').addEventListener('click', async function () {
+            document.getElementById('approve_{{ review.feedback_id }}').addEventListener('click', async function () {
                 var fullId = this.id;
-                var tagId = fullId.split('_')[1];
-                console.log("approve id: ", tagId);
+                var feedbackId = fullId.split('_')[1];
+                console.log("approve id: ", feedbackId);
                 let url = `/update/hashtag/status/accept`;
                 let headers = {
                     "Content-Type": "application/json"
                 }
                 let body = {
-                    "hashtagId": tagId
+                    "feedbackId": feedbackId
                 }
                 try {
                     let response = await fetch(url, {method: "POST", headers: headers, body: JSON.stringify(body)});
@@ -175,16 +219,16 @@
             });
         
 
-            document.getElementById('reject_{{ review.tag_id }}').addEventListener('click', async function () {
+            document.getElementById('reject_{{ review.feedback_id }}').addEventListener('click', async function () {
                 var fullId = this.id;
-                var tagId = fullId.split('_')[1];
-                console.log("reject id: ", tagId);
+                var feedbackId = fullId.split('_')[1];
+                console.log("reject id: ", feedbackId);
                 let url = `/update/hashtag/status/reject`;
                 let headers = {
                     "Content-Type": "application/json"
                 }
                 let body = {
-                    "hashtagId": tagId
+                    "feedbackId": feedbackId
                 }
                 try {
                     let response = await fetch(url, {method: "DELETE", headers: headers, body: JSON.stringify(body)});

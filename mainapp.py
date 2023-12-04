@@ -758,7 +758,8 @@ def HashtagReview():
         obj = {
             "tag_id": res[0],
             "tag_name": res[1],
-            "reason": result[5]
+            "reason": result[5],
+            "feedback_id": result[0]
         }
         print(obj)
         review_objs.append(obj)
@@ -1514,8 +1515,13 @@ def update_hashtag_status_report():
 @app.route('/update/hashtag/status/accept', methods=['POST'])
 def update_hashtag_status_accept():
     data = request.get_json()
-    hashtagId = data.get('hashtagId', None)
+    feedbackId = data.get('feedbackId', None)
     try:
+        sql = f"select * from feedback where DataId = '{feedbackId}';"
+        cursor.execute(sql)
+        result = cursor.fetchone()
+        hashtagId = result[3]
+
         sql = f'update hashtag set Status = 1 where TagId = "{hashtagId}";'
         cursor.execute(sql)
         db.commit()
@@ -1526,7 +1532,7 @@ def update_hashtag_status_accept():
         target_id = result[4]
 
         # sql = f'delete from feedback where TagId = "{hashtagId}";'
-        sql = f"update feedback set Type = 3 where TagId = '{hashtagId}';"
+        sql = f"update feedback set Type = 3 where DataId = '{feedbackId}';"
         cursor.execute(sql)
         db.commit()
 
@@ -1542,19 +1548,20 @@ def update_hashtag_status_accept():
 @app.route('/update/hashtag/status/reject', methods=['DELETE'])
 def update_hashtag_status_reject():
     data = request.get_json()
-    hashtagId = data.get('hashtagId', None)
+    feedbackId = data.get('feedbackId', None)
     try:
+        sql = f"select * from feedback where DataId = '{feedbackId}';"
+        cursor.execute(sql)
+        result = cursor.fetchone()
+        hashtagId = result[3]
+        target_id = result[4]
+
         sql = f'delete from hashtag where TagId = "{hashtagId}";'
         cursor.execute(sql)
         db.commit()
 
-        sql = f"select * from feedback where TagId = '{hashtagId}';"
-        cursor.execute(sql)
-        result = cursor.fetchone()
-        target_id = result[4]
-
         # sql = f'delete from feedback where TagId = "{hashtagId}";'
-        sql = f"update feedback set Type = 3 where TagId = '{hashtagId}';"
+        sql = f"update feedback set Type = 3 where DataId = '{feedbackId}';"
         cursor.execute(sql)
         db.commit()
 
