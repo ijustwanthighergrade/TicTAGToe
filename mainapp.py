@@ -309,8 +309,7 @@ def SearchRes():
         print(linkData)
     else:
         print(f"資料庫之中並沒有#{tagName}這個hashtag!!")
-        error = True
-        return redirect(url_for('Index', error = error))
+        return redirect(url_for('Index'))
         # return render_template('search.html', nodeData = nodeData, linkData = linkData,Keyword=key)
 
     return render_template('search.html', nodeData = nodeData, linkData = linkData,Keyword=key)
