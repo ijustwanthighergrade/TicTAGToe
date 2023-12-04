@@ -744,6 +744,7 @@ def Hashtagmanageedit(option):
 @app.route("/hashtag_review", methods=['GET'])
 def HashtagReview():
     review_objs = []
+    db.commit()
     sql = f'select * from feedback where Type = 1 or Type = 2;'
     cursor.execute(sql)
     results = cursor.fetchall()
