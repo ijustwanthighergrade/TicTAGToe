@@ -54,6 +54,7 @@
                         進入首頁
                     </a>
                 </li>
+                {% if current_user.id != 'M1685006123' %}
                 <li class="nav-item my-5">
                     <a class="nav-link active" href="/individual" style="color: #97CBFF;">
                         <svg xmlns="http://www.w3.org/2000/svg" width="50" height="50" fill="#97CBFF" class="bi bi-person-fill me-3" viewBox="0 0 16 16">
@@ -62,6 +63,7 @@
                         會員資料
                     </a>
                 </li>
+                {% endif %}
                 <li class="nav-item my-5">
                     <a class="nav-link active" href="/newnote" style="color: #97CBFF;">
                         <svg xmlns="http://www.w3.org/2000/svg" width="50" height="50" fill="#97CBFF" class="bi bi-pencil-fill me-3" viewBox="0 0 16 16">

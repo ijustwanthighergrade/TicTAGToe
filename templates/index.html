@@ -198,5 +198,11 @@
     
     {% include '/frame/footer.html' %}
 
+    {% if error %}
+    <script>
+        alert("資料庫目前並沒有這個hashtag!!");
+    </script>
+    {% endif %}
+
 </body>
 </html>

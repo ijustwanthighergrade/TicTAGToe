@@ -213,9 +213,10 @@ def SearchRes():
         3:"obj",
         4:"tag",
         5:"post",
+        6:"tag"
     }
 
-    sql = 'select * from hashtag where TagName = "%s" and Status = %s;' % (tagName, 1)
+    sql = 'select * from hashtag where TagName = "%s" and TagType = %s and Status = %s;' % (tagName, 4, 1)
     print(sql)
     cursor.execute(sql)
     result = cursor.fetchone()
@@ -234,6 +235,7 @@ def SearchRes():
         sql = 'select * from hashtag_relationship where TagId = "%s";' % (tagId)
         cursor.execute(sql)
         results = cursor.fetchall()
+        print(results)
         for row in results:
             objId = row[1]
             relationshipType = row[2]
@@ -257,9 +259,11 @@ def SearchRes():
                 }
                 nodeData.append(node2)
             else:
+                print(f"obj result: {objId}")
                 sql = 'select * from post where DataId = "%s";' % (objId)
                 cursor.execute(sql)
                 result1 = cursor.fetchone()
+                print(f"post result: {result1}")
 
                 node2 = {
                     "key": objId,
@@ -305,6 +309,9 @@ def SearchRes():
         print(linkData)
     else:
         print(f"資料庫之中並沒有#{tagName}這個hashtag!!")
+        error = True
+        return redirect(url_for('Index', error = error))
+        # return render_template('search.html', nodeData = nodeData, linkData = linkData,Keyword=key)
 
     return render_template('search.html', nodeData = nodeData, linkData = linkData,Keyword=key)
 
