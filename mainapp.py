@@ -288,6 +288,7 @@ def SearchRes():
                 cursor.execute(sql)
                 result3 = cursor.fetchone()
 
+                print(sql)
                 node3 = {
                     "key": tagId1,
                     "category": dictCategoryType[result3[2]],
